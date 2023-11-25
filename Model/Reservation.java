@@ -1,4 +1,5 @@
-import Users.Customer;
+package Model;
+import Model.Users.Customer;
 
 public class Reservation {
 

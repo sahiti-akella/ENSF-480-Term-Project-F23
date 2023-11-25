@@ -1,4 +1,4 @@
-package Users;
+package Model.Users;
 public class FlightAttendant {
 
     private int userID;

@@ -1,6 +1,6 @@
-package Users;
-
+package Model.Users;
 import java.util.Date;
+import Model.*;
 
 public class SystemAdministrator {
 
@@ -69,7 +69,7 @@ public class SystemAdministrator {
     }
 
     public void printUserList(){
-        
+
     }
 
 

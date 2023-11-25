@@ -1,3 +1,4 @@
+package Model;
 public class Ticket {
 
     private Reservation reservation;
