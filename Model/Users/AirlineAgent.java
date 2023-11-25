@@ -1,4 +1,4 @@
-package Model.Users;
+package model.users;
 public class AirlineAgent {
     
     private int userID;

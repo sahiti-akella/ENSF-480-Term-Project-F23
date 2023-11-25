@@ -1,4 +1,4 @@
-package Model;
+package model;
 public class Aircraft {
 
     private int aircraftID;
