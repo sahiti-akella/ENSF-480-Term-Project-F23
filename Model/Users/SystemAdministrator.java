@@ -1,6 +1,7 @@
-package Model.Users;
+package model.users;
 import java.util.Date;
-import Model.*;
+
+import model.*;
 
 public class SystemAdministrator {
 
