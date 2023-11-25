@@ -11,7 +11,7 @@ CREATE TABLE USERS (
     UserName 			VARCHAR(50) NOT NULL,
     Address 			VARCHAR(100) NOT NULL,
     Email 				VARCHAR(100) NOT NULL,
-    UserType 			ENUM('User', 'TourismAgent', 'AirlineAgent', 'FlightAttendant', 'Administrator') NOT NULL,
+    UserType 			ENUM('Customer', 'TourismAgent', 'AirlineAgent', 'FlightAttendant', 'Administrator') NOT NULL,
     MembershipStatus 	ENUM('Regular', 'Registered') DEFAULT 'Regular',
     CreditCardNumber 	VARCHAR(16),
     
