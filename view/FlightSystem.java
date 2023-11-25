@@ -44,11 +44,6 @@ public class FlightSystem {
         return dbConnect;
     }
 
-    public FlightSystem(){
-        createConnection();
-    }
-
-
     // Getters
     public ArrayList<User> getUserList() {
         return this.users;
@@ -73,5 +68,58 @@ public class FlightSystem {
     public ArrayList<Ticket> getTicketList() {
         return this.tickets;
     }
-    
+
+    public FlightSystem() {
+        createConnection();
+
+        // List of Users
+
+        // List of Aircrafts
+        try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM AIRCRAFTS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                Aircraft aircraft = new Aircraft(results.getInt("AircraftID"), results.getString("AircraftType"));
+                aircrafts.add(aircraft);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+         // List of Flights
+        try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM FLIGHTS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                Flight flight = new Flight(results.getInt("FlightID"), results.getString("Origin"), 
+                results.getString("Destination"), results.getString("DepartureDate"), results.getInt("AircraftID"));
+                flights.add(flight);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // List of Seats
+
+        // List of Payments
+
+        // List of Tickets
+
+
+
+
+
+
+
+
+
+
+        
+    }
 }

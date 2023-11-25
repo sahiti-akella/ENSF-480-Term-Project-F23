@@ -8,6 +8,13 @@ public class Reservation {
     private Seat seat;
     private boolean insuranceSelected;
 
+    public Reservation(Customer customer, Flight flight, Seat seat, boolean insuranceSelected){
+        this.customer = customer;
+        this.flight = flight;
+        this.seat = seat;
+        this.insuranceSelected = insuranceSelected;
+    }
+
     public Customer getCustomer(){
         return this.customer;
     }

@@ -9,6 +9,12 @@ public class SystemAdministrator {
     private String name;
     private String email;
 
+    public SystemAdministrator(int userID, String name, String email){
+        this.userID = userID;
+        this.name = name;
+        this.email = email;
+    }
+
     public int getUserID(){
         return this.userID;
     }
