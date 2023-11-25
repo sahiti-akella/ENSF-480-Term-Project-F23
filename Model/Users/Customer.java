@@ -7,6 +7,13 @@ public class Customer {
     private String address;
     private boolean isRegistered;
 
+    public Customer(int userID, String name, String email, String address, boolean isRegistered){
+        this.userID = userID;
+        this.name = email;
+        this.address = address;
+        this.isRegistered = isRegistered;
+    }
+
     public int getUserID(){
         return this.userID;
     }

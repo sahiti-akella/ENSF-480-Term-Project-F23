@@ -1,12 +1,18 @@
 package model;
-import java.util.Date;
 
 public class CreditCard {
     
     private String cardHolderName;
     private int cardNumber;
-    private Date expiryDate;
+    private String expiryDate;
     private int cvv;
+
+    public CreditCard(String cardHolderName, int cardNumber, String expiryDate, int cvv ){
+        this.cardHolderName = cardHolderName;
+        this.cardNumber = cardNumber;
+        this.expiryDate = expiryDate;
+        this.cvv = cvv;
+    }
 
     public String getCardHolderName(){
         return this.cardHolderName;
@@ -16,7 +22,7 @@ public class CreditCard {
         return this.cardNumber;
     }
 
-    public Date expiryDate(){
+    public String expiryDate(){
         return this.expiryDate;
     }
 

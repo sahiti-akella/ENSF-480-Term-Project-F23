@@ -5,6 +5,12 @@ public class TourismAgent {
     private String name;
     private String email;
 
+    public TourismAgent(int userID, String name, String email){
+        this.userID = userID;
+        this.name = name;
+        this.email = email;
+    }
+
     public int getUserID(){
         return this.userID;
     }
