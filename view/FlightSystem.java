@@ -1,6 +1,10 @@
 package view;
 
 import java.util.*;
+
+import model.*;
+import model.users.User;
+
 import java.sql.*;
 
 public class FlightSystem {
@@ -13,12 +17,12 @@ public class FlightSystem {
     private final String PASSWORD = "";
 
     // Flight System Database Lists
-    private ArrayList<Users> users = new ArrayList<Users>();
-    private ArrayList<Aircrafts> aircrafts = new ArrayList<Aircrafts>();
-    private ArrayList<Flights> flights = new ArrayList<Flights>();
-    private ArrayList<Seats> seats = new ArrayList<Seats>();
-    private ArrayList<Payments> payments = new ArrayList<Payments>();
-    private ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+    private ArrayList<User> users = new ArrayList<User>();
+    private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>();
+    private ArrayList<Flight> flights = new ArrayList<Flight>();
+    private ArrayList<Seat> seats = new ArrayList<Seat>();
+    private ArrayList<Payment> payments = new ArrayList<Payment>();
+    private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
     
     
     /**
@@ -46,27 +50,27 @@ public class FlightSystem {
 
 
     // Getters
-    public ArrayList<Users> getUserList() {
+    public ArrayList<User> getUserList() {
         return this.users;
     }
 
-    public ArrayList<Aircrafts> getAircraftList() {
+    public ArrayList<Aircraft> getAircraftList() {
         return this.aircrafts;
     }
 
-    public ArrayList<Flights> getFlightList() {
+    public ArrayList<Flight> getFlightList() {
         return this.flights;
     }
 
-    public ArrayList<Seats> getSeatList() {
+    public ArrayList<Seat> getSeatList() {
         return this.seats;
     }
 
-    public ArrayList<Payments> getPaymentList() {
+    public ArrayList<Payment> getPaymentList() {
         return this.payments;
     }
 
-    public ArrayList<Tickets> getTicketList() {
+    public ArrayList<Ticket> getTicketList() {
         return this.tickets;
     }
     
