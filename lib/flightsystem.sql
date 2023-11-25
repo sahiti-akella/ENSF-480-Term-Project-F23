@@ -49,19 +49,6 @@ INSERT INTO USERS (UserName, Address, Email, UserType, MembershipStatus) VALUES
 ('Grace Davis', '456 Oak St', 'grace@gmail.com','Administrator', NULL),
 ('Robert White', '789 Pine St', 'robert@gmail.com', 'Administrator', NULL);
 
-# FLIGHTS TABLE
-DROP TABLE IF EXISTS FLIGHTS;
-CREATE TABLE FLIGHTS (
-    FlightID 			INT NOT NULL AUTO_INCREMENT,
-    Origin 				VARCHAR(50) NOT NULL,
-    Destination 		VARCHAR(50) NOT NULL,
-    DepartureDate 		DATETIME NOT NULL,
-    AircraftID 			INT,
-    
-    PRIMARY KEY (FlightID),
-    FOREIGN KEY (AircraftID) REFERENCES Aircrafts(AircraftID)
-);
-
 # AIRCRAFTS TABLE
 DROP TABLE IF EXISTS AIRCRAFTS;
 CREATE TABLE AIRCRAFTS (
@@ -77,6 +64,19 @@ INSERT INTO AIRCRAFTS (AircraftType) VALUES
 ('Boeing 747'),
 ('Embraer E190'),
 ('Airbus A380');
+
+# FLIGHTS TABLE
+DROP TABLE IF EXISTS FLIGHTS;
+CREATE TABLE FLIGHTS (
+    FlightID 			INT NOT NULL AUTO_INCREMENT,
+    Origin 				VARCHAR(50) NOT NULL,
+    Destination 		VARCHAR(50) NOT NULL,
+    DepartureDate 		DATETIME NOT NULL,
+    AircraftID 			INT,
+    
+    PRIMARY KEY (FlightID),
+    FOREIGN KEY (AircraftID) REFERENCES Aircrafts(AircraftID)
+);
 
 INSERT INTO FLIGHTS (Origin, Destination, DepartureDate, AircraftID) VALUES
 ('Boston', 'Los Angeles', '2023-12-01 08:00', 1),
