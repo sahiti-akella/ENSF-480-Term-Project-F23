@@ -1,3 +1,4 @@
+package Model;
 public class Airline {
 
     private String name;

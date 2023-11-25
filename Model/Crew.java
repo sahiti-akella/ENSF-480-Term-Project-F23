@@ -1,4 +1,5 @@
-import Users.FlightAttendant;
+package Model;
+import Model.Users.FlightAttendant;
 
 public class Crew {
 

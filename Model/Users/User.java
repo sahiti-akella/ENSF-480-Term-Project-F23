@@ -1,4 +1,4 @@
-package Users;
+package Model.Users;
 public class User {
     
     private String username;
