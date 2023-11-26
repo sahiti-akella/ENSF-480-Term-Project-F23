@@ -1,27 +1,20 @@
 package model.users;
-public class Customer {
+public class Customer extends User {
 
-    private int userID;
-    private String name;
+    // Customer Class Attributes
     private String email;
     private String address;
     private boolean isRegistered;
 
-    public Customer(int userID, String name, String email, String address, boolean isRegistered){
-        this.userID = userID;
-        this.name = email;
+    // Customer Constructor
+    public Customer (int userID, String username, String password, String firstName, String lastName, String email, String address, boolean isRegistered){
+        super(userID, username, password, firstName, lastName);
+        this.email = email;
         this.address = address;
         this.isRegistered = isRegistered;
     }
 
-    public int getUserID(){
-        return this.userID;
-    }
-
-    public String getName(){
-        return this.name;
-    }
-
+    // Customer Getters
     public String getEmail(){
         return this.email;
     }
@@ -34,6 +27,20 @@ public class Customer {
         return this.isRegistered;
     }
 
+    // Customer Setters
+    public void setEmail(String email){
+        this.email = email;
+    }
+
+    public void setAddress(String address){
+        this.address = address;
+    }
+
+    public void setRegistered(boolean registered){
+        this.isRegistered = registered;
+    }
+
+    // Customer Operations (Do these go here??)
     public void register(){
 
     }
