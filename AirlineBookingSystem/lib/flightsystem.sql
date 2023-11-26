@@ -47,25 +47,25 @@ CREATE TABLE CUSTOMERS (
     LastName 			VARCHAR(50) NOT NULL,
     Address 			VARCHAR(100) NOT NULL,
     Email 				VARCHAR(100) NOT NULL,
-    MembershipStatus 	ENUM('Regular', 'Registered') DEFAULT 'Regular',
+    isRegistered		BOOLEAN,
     CreditCardNumber 	INT,
     
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO CUSTOMERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, MembershipStatus) VALUES 
+INSERT INTO CUSTOMERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, isRegistered) VALUES 
 
 # CUSTOMERS VALUES
-(1, 'johndoe','password','John', 'Doe', '123 Main St', 'john@gmail.com', 'Regular'),
-(2, 'nedberry','password','Ned', 'Berry', '123 Main St', 'ned@gmail.com', 'Regular'),
-(3, 'alicejohnson','password','Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', 'Regular'),
-(4, 'bobsmith','password','Bob', 'Smith', '789 Pine St', 'bob@gmail.com', 'Registered'),
-(5, 'evadavis','password','Eva', 'Davis', '101 Elm St', 'eva@gmail.com', 'Registered'),
-(6, 'frankwhite','password','Frank', 'White', '222 Maple St', 'frank@gmail.com','Registered');
+(1, 'johndoe','password','John', 'Doe', '123 Main St', 'john@gmail.com', False),
+(2, 'nedberry','password','Ned', 'Berry', '123 Main St', 'ned@gmail.com', False),
+(3, 'alicejohnson','password','Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', False),
+(4, 'bobsmith','password','Bob', 'Smith', '789 Pine St', 'bob@gmail.com', True),
+(5, 'evadavis','password','Eva', 'Davis', '101 Elm St', 'eva@gmail.com', True),
+(6, 'frankwhite','password','Frank', 'White', '222 Maple St', 'frank@gmail.com',True);
 
 # TOURISM AGENT TABLE
-DROP TABLE IF EXISTS TOURISM_AGENT;
-CREATE TABLE TOURISM_AGENT (
+DROP TABLE IF EXISTS TOURISM_AGENTS;
+CREATE TABLE TOURISM_AGENTS (
     UserID 				INT NOT NULL AUTO_INCREMENT,
     UserName 			VARCHAR(50) NOT NULL,
     UserPassword 		VARCHAR(50) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE TOURISM_AGENT (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO TOURISM_AGENT (UserID, UserName, UserPassword, FirstName, LastName, Email) VALUES 
+INSERT INTO TOURISM_AGENTS (UserID, UserName, UserPassword, FirstName, LastName, Email) VALUES 
 
 # TOURISM AGENTS VALUES
 (7, 'kellyjohnson','password','Kelly', 'Johnson', 'kelly@gmail.com'),
@@ -84,8 +84,8 @@ INSERT INTO TOURISM_AGENT (UserID, UserName, UserPassword, FirstName, LastName, 
 (9, 'saragreen','password','Sara', 'Green', 'sara@gmail.com');
 
 # FLIGHT ATTENDANT TABLE
-DROP TABLE IF EXISTS FLIGHT_ATTENDANT;
-CREATE TABLE FLIGHT_ATTENDANT (
+DROP TABLE IF EXISTS FLIGHT_ATTENDANTS;
+CREATE TABLE FLIGHT_ATTENDANTS (
 	UserID 				INT NOT NULL AUTO_INCREMENT,
     UserName 			VARCHAR(50) NOT NULL,
     UserPassword 		VARCHAR(50) NOT NULL,
@@ -95,15 +95,15 @@ CREATE TABLE FLIGHT_ATTENDANT (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO FLIGHT_ATTENDANT (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+INSERT INTO FLIGHT_ATTENDANTS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
 # FLIGHT ATTENDANTS VALUES
 (10, 'philthomas', 'password','Phil','Thomas'),
 (11, 'michaellee','password','Michael', 'Lee' ),
 (12, 'lucywang','password','Lucy','Wang');
 
 # AIRLINE AGENT TABLE
-DROP TABLE IF EXISTS AIRLINE_AGENT;
-CREATE TABLE AIRLINE_AGENT (
+DROP TABLE IF EXISTS AIRLINE_AGENTS;
+CREATE TABLE AIRLINE_AGENTS (
     UserID 				INT NOT NULL AUTO_INCREMENT,
     UserName 			VARCHAR(50) NOT NULL,
     UserPassword 		VARCHAR(50) NOT NULL,
@@ -113,15 +113,15 @@ CREATE TABLE AIRLINE_AGENT (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO AIRLINE_AGENT (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+INSERT INTO AIRLINE_AGENTS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
 # AIRLINE AGENTS VALUES
 (13, 'janesmith', 'password','Jane', 'Smith'),
 (14, 'jackwilson','password','Jack', 'Wilson'),
 (15, 'emmamiller','password','Emma', 'Miller');
 
 # SYSTEM ADMIN TABLE
-DROP TABLE IF EXISTS SYSTEM_ADMIN;
-CREATE TABLE SYSTEM_ADMIN (
+DROP TABLE IF EXISTS SYSTEM_ADMINS;
+CREATE TABLE SYSTEM_ADMINS (
     UserID 				INT NOT NULL AUTO_INCREMENT,
     UserName 			VARCHAR(50) NOT NULL,
     UserPassword 		VARCHAR(50) NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE SYSTEM_ADMIN (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO SYSTEM_ADMIN(UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+INSERT INTO SYSTEM_ADMINS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
 # SYSTEM ADMINISTRATORS VALUES
 (16, 'hellenpotter','password','Helen', 'Potter'),
 (17, 'adamjohnson','password','Adam', 'Johnson'),
