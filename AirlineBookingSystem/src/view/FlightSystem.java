@@ -3,7 +3,7 @@ package view;
 import java.util.*;
 
 import model.*;
-import model.users.User;
+import model.users.*;
 
 import java.sql.*;
 
@@ -18,6 +18,11 @@ public class FlightSystem {
 
     // Flight System Database Lists
     private ArrayList<User> users = new ArrayList<User>();
+    private ArrayList<Customer> customers = new ArrayList<Customer>();
+    private ArrayList<TourismAgent> tourismAgents = new ArrayList<TourismAgent>();
+    private ArrayList<AirlineAgent> airlineAgents = new ArrayList<AirlineAgent>();
+    private ArrayList<FlightAttendant> flightAttendants = new ArrayList<FlightAttendant>();
+    private ArrayList<SystemAdministrator> systemAdministrators = new ArrayList<SystemAdministrator>();
     private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>();
     private ArrayList<Flight> flights = new ArrayList<Flight>();
     private ArrayList<Seat> seats = new ArrayList<Seat>();
@@ -73,6 +78,122 @@ public class FlightSystem {
         createConnection();
 
         // List of Users
+         try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM USERS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                User user = new User(results.getInt("UserID"), 
+                results.getString("UserName"),
+                results.getString("UserPassword"),
+                results.getString("FirstName"),
+                results.getString("LastName"));
+                users.add(user);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // List of Customers
+         try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM CUSTOMERS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                Customer customer = new Customer(results.getInt("UserID"), 
+                results.getString("UserName"),
+                results.getString("UserPassword"),
+                results.getString("FirstName"),
+                results.getString("LastName"),
+                results.getString("Email"),
+                results.getString("Address"),
+                results.getBoolean("isRegistered"));
+                customers.add(customer);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // List of Tourism Agents
+        try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM TOURISM_AGENTS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                TourismAgent tourismAgent = new TourismAgent(results.getInt("UserID"), 
+                results.getString("UserName"),
+                results.getString("UserPassword"),
+                results.getString("FirstName"),
+                results.getString("LastName"),
+                results.getString("Email"));
+                tourismAgents.add(tourismAgent);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // List of Airline Agents
+        try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM AIRLINE_AGENTS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                AirlineAgent airlineAgent = new AirlineAgent(results.getInt("UserID"), 
+                results.getString("UserName"),
+                results.getString("UserPassword"),
+                results.getString("FirstName"),
+                results.getString("LastName"));
+                airlineAgents.add(airlineAgent);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // List of Flight Attendants
+         try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM FLIGHT_ATTENDANTS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                FlightAttendant flightAttendant = new FlightAttendant(results.getInt("UserID"), 
+                results.getString("UserName"),
+                results.getString("UserPassword"),
+                results.getString("FirstName"),
+                results.getString("LastName"));
+                flightAttendants.add(flightAttendant);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // List of System Admins
+         try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM SYSTEM_ADMINS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                SystemAdministrator systemAdministrator = new SystemAdministrator(results.getInt("UserID"), 
+                results.getString("UserName"),
+                results.getString("UserPassword"),
+                results.getString("FirstName"),
+                results.getString("LastName"));
+                systemAdministrators.add(systemAdministrator);
+            }
+
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
 
         // List of Aircrafts
         try {
@@ -130,16 +251,6 @@ public class FlightSystem {
         // List of Payments
 
         // List of Tickets
-
-
-
-
-
-
-
-
-
-
-        
+  
     }
 }
