@@ -80,7 +80,8 @@ public class FlightSystem {
             results = myStmt.executeQuery();
 
             while (results.next()) {
-                Aircraft aircraft = new Aircraft(results.getInt("AircraftID"), results.getString("AircraftType"));
+                Aircraft aircraft = new Aircraft(results.getInt("AircraftID"), 
+                results.getString("AircraftType"));
                 aircrafts.add(aircraft);
             }
 
@@ -89,9 +90,42 @@ public class FlightSystem {
             ex.printStackTrace();
         }
 
-         // List of Flights
+        // List of Flights
+         try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM FLIGHTS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                Flight flight = new Flight(results.getInt("AircraftID"), 
+                results.getString("AircraftType"), 
+                results.getInt("FlightID"), 
+                results.getString("Origin"), 
+                results.getString("Destination "), 
+                results.getString("DepartureDate "));
+                flights.add(flight);
+            }
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
 
         // List of Seats
+         try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM SEATS");
+            results = myStmt.executeQuery();
+
+            while (results.next()) {
+                Seat seat = new Seat(results.getInt("FlightID"), 
+                results.getInt("SeatID"), 
+                results.getString("SeatType"), 
+                results.getDouble("Price"), 
+                results.getBoolean("IsAvailable"));
+                seats.add(seat);
+            }
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
 
         // List of Payments
 
