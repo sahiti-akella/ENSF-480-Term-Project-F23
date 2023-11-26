@@ -3,28 +3,11 @@ import java.util.Date;
 
 import model.*;
 
-public class SystemAdministrator {
+public class SystemAdministrator extends User{
 
-    private int userID;
-    private String name;
-    private String email;
-
-    public SystemAdministrator(int userID, String name, String email){
-        this.userID = userID;
-        this.name = name;
-        this.email = email;
-    }
-
-    public int getUserID(){
-        return this.userID;
-    }
-
-    public String getName(){
-        return this.name;
-    }
-
-    public String getEmail(){
-        return this.email;
+   // SystemAdministrator Constructor
+   public SystemAdministrator (int userID, String username, String password, String firstName, String lastName){
+        super(userID, username, password, firstName, lastName);
     }
 
     public void browseFlights(Date date){

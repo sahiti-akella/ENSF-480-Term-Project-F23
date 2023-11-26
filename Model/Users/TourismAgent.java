@@ -1,26 +1,9 @@
 package model.users;
-public class TourismAgent {
+public class TourismAgent extends User{
 
-    private int userID;
-    private String name;
-    private String email;
-
-    public TourismAgent(int userID, String name, String email){
-        this.userID = userID;
-        this.name = name;
-        this.email = email;
-    }
-
-    public int getUserID(){
-        return this.userID;
-    }
-
-    public String getName(){
-        return this.name;
-    }
-
-    public String getEmail(){
-        return this.email;
+    // TourismAgent Constructor
+    public TourismAgent (int userID, String username, String password, String firstName, String lastName){
+        super(userID, username, password, firstName, lastName);
     }
     
 }

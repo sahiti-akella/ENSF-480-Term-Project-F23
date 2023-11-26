@@ -90,20 +90,6 @@ public class FlightSystem {
         }
 
          // List of Flights
-        try {
-            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM FLIGHTS");
-            results = myStmt.executeQuery();
-
-            while (results.next()) {
-                Flight flight = new Flight(results.getInt("FlightID"), results.getString("Origin"), 
-                results.getString("Destination"), results.getString("DepartureDate"), results.getInt("AircraftID"));
-                flights.add(flight);
-            }
-
-            myStmt.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
 
         // List of Seats
 
