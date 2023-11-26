@@ -9,45 +9,134 @@ DROP TABLE IF EXISTS USERS;
 CREATE TABLE USERS (
     UserID 				INT NOT NULL AUTO_INCREMENT,
     UserName 			VARCHAR(50) NOT NULL,
-    Address 			VARCHAR(100) NOT NULL,
-    Email 				VARCHAR(100) NOT NULL,
-    UserType 			ENUM('Customer', 'TourismAgent', 'AirlineAgent', 'FlightAttendant', 'Administrator') NOT NULL,
-    MembershipStatus 	ENUM('Regular', 'Registered') DEFAULT 'Regular',
-    CreditCardNumber 	INT,
+    UserPassword 		VARCHAR(50) NOT NULL,
+    FirstName 			VARCHAR(50) NOT NULL,
+    LastName 			VARCHAR(50) NOT NULL,
     
     PRIMARY KEY (UserID)
 );
 
-INSERT INTO USERS (UserName, Address, Email, UserType, MembershipStatus) VALUES 
+INSERT INTO USERS (UserID, UserName, UserPassword, FirstName, LastName) VALUES
+(1, 'johndoe', 'password', 'John', 'Doe'),
+(2, 'nedberry', 'password', 'Ned', 'Berry'),
+(3, 'alicejohnson', 'password', 'Alice', 'Johnson'),
+(4, 'bobsmith', 'password', 'Bob', 'Smith'),
+(5, 'evadavis', 'password', 'Eva', 'Davis'),
+(6, 'frankwhite', 'password', 'Frank', 'White'),
+(7, 'kellyjohnson', 'password', 'Kelly', 'Johnson'),
+(8, 'tombrown', 'password', 'Tom', 'Brown'),
+(9, 'saragreen', 'password', 'Sara', 'Green'),
+(10, 'philthomas', 'password', 'Phil', 'Thomas'),
+(11, 'michaellee', 'password', 'Michael', 'Lee'),
+(12, 'lucywang', 'password', 'Lucy', 'Wang'),
+(13, 'janesmith', 'password', 'Jane', 'Smith'),
+(14, 'jackwilson', 'password', 'Jack', 'Wilson'),
+(15, 'emmamiller', 'password', 'Emma', 'Miller'),
+(16, 'hellenpotter', 'password', 'Helen', 'Potter'),
+(17, 'adamjohnson', 'password', 'Adam', 'Johnson'),
+(18, 'gracedavis', 'password', 'Grace', 'Davis'),
+(19, 'robertwhite', 'password', 'Robert', 'White');
 
-# CUSTOMERS
-('John Doe', '123 Main St', 'john@gmail.com', 'Customer', 'Regular'),
-('Ned Berry', '123 Main St', 'ned@gmail.com', 'Customer', 'Regular'),
-('Alice Johnson', '456 Oak St', 'alice@gmail.com', 'Customer', 'Regular'),
-('Bob Smith', '789 Pine St', 'bob@gmail.com', 'Customer', 'Registered'),
-('Eva Davis', '101 Elm St', 'eva@gmail.com', 'Customer', 'Registered'),
-('Frank White', '222 Maple St', 'frank@gmail.com', 'Customer', 'Registered'),
+# CUSTOMERS TABLE
+DROP TABLE IF EXISTS CUSTOMERS;
+CREATE TABLE CUSTOMERS (
+	UserID 				INT NOT NULL AUTO_INCREMENT,
+    UserName 			VARCHAR(50) NOT NULL,
+    UserPassword 		VARCHAR(50) NOT NULL,
+    FirstName 			VARCHAR(50) NOT NULL,
+    LastName 			VARCHAR(50) NOT NULL,
+    Address 			VARCHAR(100) NOT NULL,
+    Email 				VARCHAR(100) NOT NULL,
+    MembershipStatus 	ENUM('Regular', 'Registered') DEFAULT 'Regular',
+    CreditCardNumber 	INT,
+    
+   FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+);
 
-# TOURISM AGENTS
-('Kelly Johnson', '101 Elm St', 'kelly@gmail.com', 'TourismAgent', NULL),
-('Tom Brown', '333 Oak St', 'tom@gmail.com', 'TourismAgent', NULL),
-('Sara Green', '444 Pine St', 'sara@gmail.com', 'TourismAgent', NULL),
+INSERT INTO CUSTOMERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, MembershipStatus) VALUES 
 
-# FLIGHT ATTENDANTS
-('Phil Thomas', '555 Maple St', 'phil@gmail.com', 'FlightAttendant', NULL),
-('Michael Lee', '666 Oak St', 'michael@gmail.com', 'FlightAttendant', NULL),
-('Lucy Wang', '777 Pine St', 'lucy@gmail.com','FlightAttendant', NULL),
+# CUSTOMERS VALUES
+(1, 'johndoe','password','John', 'Doe', '123 Main St', 'john@gmail.com', 'Regular'),
+(2, 'nedberry','password','Ned', 'Berry', '123 Main St', 'ned@gmail.com', 'Regular'),
+(3, 'alicejohnson','password','Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', 'Regular'),
+(4, 'bobsmith','password','Bob', 'Smith', '789 Pine St', 'bob@gmail.com', 'Registered'),
+(5, 'evadavis','password','Eva', 'Davis', '101 Elm St', 'eva@gmail.com', 'Registered'),
+(6, 'frankwhite','password','Frank', 'White', '222 Maple St', 'frank@gmail.com','Registered');
 
-# AIRLINE AGENTS
-('Jane Smith', '456 Oak St', 'jane@gmail.com', 'AirlineAgent', NULL),
-('Jack Wilson', '888 Pine St', 'jack@gmail.com', 'AirlineAgent', NULL),
-('Emma Miller', '999 Elm St', 'emma@gmail.com','AirlineAgent', NULL),
+# TOURISM AGENT TABLE
+DROP TABLE IF EXISTS TOURISM_AGENT;
+CREATE TABLE TOURISM_AGENT (
+    UserID 				INT NOT NULL AUTO_INCREMENT,
+    UserName 			VARCHAR(50) NOT NULL,
+    UserPassword 		VARCHAR(50) NOT NULL,
+    FirstName 			VARCHAR(50) NOT NULL,
+    LastName 			VARCHAR(50) NOT NULL,
+    Email 				VARCHAR(100) NOT NULL,
+    
+   FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+);
 
-# SYSTEM ADMINISTRATORS
-('Helen Potter', '789 Pine St', 'helen@gmail.com', 'Administrator', NULL),
-('Adam Johnson', '123 Main St', 'adam@gmail.com','Administrator', NULL),
-('Grace Davis', '456 Oak St', 'grace@gmail.com','Administrator', NULL),
-('Robert White', '789 Pine St', 'robert@gmail.com', 'Administrator', NULL);
+INSERT INTO TOURISM_AGENT (UserID, UserName, UserPassword, FirstName, LastName, Email) VALUES 
+
+# TOURISM AGENTS VALUES
+(7, 'kellyjohnson','password','Kelly', 'Johnson', 'kelly@gmail.com'),
+(8, 'tombrown','password','Tom', 'Brown', 'tom@gmail.com'),
+(9, 'saragreen','password','Sara', 'Green', 'sara@gmail.com');
+
+# FLIGHT ATTENDANT TABLE
+DROP TABLE IF EXISTS FLIGHT_ATTENDANT;
+CREATE TABLE FLIGHT_ATTENDANT (
+	UserID 				INT NOT NULL AUTO_INCREMENT,
+    UserName 			VARCHAR(50) NOT NULL,
+    UserPassword 		VARCHAR(50) NOT NULL,
+    FirstName 			VARCHAR(50) NOT NULL,
+    LastName 			VARCHAR(50) NOT NULL,
+    
+   FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+);
+
+INSERT INTO FLIGHT_ATTENDANT (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+# FLIGHT ATTENDANTS VALUES
+(10, 'philthomas', 'password','Phil','Thomas'),
+(11, 'michaellee','password','Michael', 'Lee' ),
+(12, 'lucywang','password','Lucy','Wang');
+
+# AIRLINE AGENT TABLE
+DROP TABLE IF EXISTS AIRLINE_AGENT;
+CREATE TABLE AIRLINE_AGENT (
+    UserID 				INT NOT NULL AUTO_INCREMENT,
+    UserName 			VARCHAR(50) NOT NULL,
+    UserPassword 		VARCHAR(50) NOT NULL,
+    FirstName 			VARCHAR(50) NOT NULL,
+    LastName 			VARCHAR(50) NOT NULL,
+    
+   FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+);
+
+INSERT INTO AIRLINE_AGENT (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+# AIRLINE AGENTS VALUES
+(13, 'janesmith', 'password','Jane', 'Smith'),
+(14, 'jackwilson','password','Jack', 'Wilson'),
+(15, 'emmamiller','password','Emma', 'Miller');
+
+# SYSTEM ADMIN TABLE
+DROP TABLE IF EXISTS SYSTEM_ADMIN;
+CREATE TABLE SYSTEM_ADMIN (
+    UserID 				INT NOT NULL AUTO_INCREMENT,
+    UserName 			VARCHAR(50) NOT NULL,
+    UserPassword 		VARCHAR(50) NOT NULL,
+    FirstName 			VARCHAR(50) NOT NULL,
+    LastName 			VARCHAR(50) NOT NULL,
+    
+   FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+);
+
+INSERT INTO SYSTEM_ADMIN(UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+# SYSTEM ADMINISTRATORS VALUES
+(16, 'hellenpotter','password','Helen', 'Potter'),
+(17, 'adamjohnson','password','Adam', 'Johnson'),
+(18, 'gracedavis','password','Grace', 'Davis'),
+(19, 'robertwhite','password','Robert', 'White');
 
 # AIRCRAFTS TABLE
 DROP TABLE IF EXISTS AIRCRAFTS;
@@ -106,84 +195,84 @@ CREATE TABLE SEATS (
 INSERT INTO SEATS (FlightID, SeatID, SeatType, Price, IsAvailable) VALUES
 
 #  FlightID 1
-(1, '1', 'Business-Class', 500.00, true),
-(1, '2', 'Business-Class', 500.00, true),
-(1, '3', 'Comfort', 300.00, true),
-(1, '4', 'Comfort', 300.00, true),
-(1, '5', 'Ordinary', 150.00, true),
-(1, '6', 'Ordinary', 150.00, true),
+(1, 1, 'Business-Class', 500.00, true),
+(1, 2, 'Business-Class', 500.00, true),
+(1, 3, 'Comfort', 300.00, true),
+(1, 4, 'Comfort', 300.00, true),
+(1, 5, 'Ordinary', 150.00, true),
+(1, 6, 'Ordinary', 150.00, true),
 
 # FlightID 2
-(2, '1', 'Business-Class', 550.00, true),
-(2, '2', 'Business-Class', 550.00, true),
-(2, '3', 'Comfort', 330.00, true),
-(2, '4', 'Comfort', 330.00, true),
-(2, '5', 'Ordinary', 165.00, true),
-(2, '6', 'Ordinary', 165.00, true),
+(2, 7, 'Business-Class', 550.00, true),
+(2, 8, 'Business-Class', 550.00, true),
+(2, 9, 'Comfort', 330.00, true),
+(2, 10, 'Comfort', 330.00, true),
+(2, 11, 'Ordinary', 165.00, true),
+(2, 12, 'Ordinary', 165.00, true),
 
 # FlightID 3
-(3, '1', 'Business-Class', 600.00, true),
-(3, '2', 'Business-Class', 600.00, true),
-(3, '3', 'Comfort', 400.00, true),
-(3, '4', 'Comfort', 400.00, true),
-(3, '5', 'Ordinary', 100.00, true),
-(3, '6', 'Ordinary', 100.00, true),
+(3, 13, 'Business-Class', 600.00, true),
+(3, 14, 'Business-Class', 600.00, true),
+(3, 15, 'Comfort', 400.00, true),
+(3, 16, 'Comfort', 400.00, true),
+(3, 17, 'Ordinary', 100.00, true),
+(3, 18, 'Ordinary', 100.00, true),
 
 # FlightID 4
-(4, '1', 'Business-Class', 600.00, true),
-(4, '2', 'Business-Class', 600.00, true),
-(4, '3', 'Comfort', 400.00, true),
-(4, '4', 'Comfort', 400.00, true),
-(4, '5', 'Ordinary', 100.00, true),
-(4, '6', 'Ordinary', 100.00, true),
+(4, 19, 'Business-Class', 600.00, true),
+(4, 20, 'Business-Class', 600.00, true),
+(4, 21, 'Comfort', 400.00, true),
+(4, 22, 'Comfort', 400.00, true),
+(4, 23, 'Ordinary', 100.00, true),
+(4, 24, 'Ordinary', 100.00, true),
 
 # FlightID 5
-(5, '1', 'Business-Class', 600.00, true),
-(5, '2', 'Business-Class', 600.00, true),
-(5, '3', 'Comfort', 400.00, true),
-(5, '4', 'Comfort', 400.00, true),
-(5, '5', 'Ordinary', 100.00, true),
-(5, '6', 'Ordinary', 100.00, true),
+(5, 25, 'Business-Class', 600.00, true),
+(5, 26, 'Business-Class', 600.00, true),
+(5, 27, 'Comfort', 400.00, true),
+(5, 28, 'Comfort', 400.00, true),
+(5, 29, 'Ordinary', 100.00, true),
+(5, 30, 'Ordinary', 100.00, true),
 
 # FlightID 6
-(6, '1', 'Business-Class', 600.00, true),
-(6, '2', 'Business-Class', 600.00, true),
-(6, '3', 'Comfort', 400.00, true),
-(6, '4', 'Comfort', 400.00, true),
-(6, '5', 'Ordinary', 100.00, true),
-(6, '6', 'Ordinary', 100.00, true),
+(6, 31, 'Business-Class', 600.00, true),
+(6, 32, 'Business-Class', 600.00, true),
+(6, 33, 'Comfort', 400.00, true),
+(6, 34, 'Comfort', 400.00, true),
+(6, 35, 'Ordinary', 100.00, true),
+(6, 36, 'Ordinary', 100.00, true),
 
 # FlightID 7
-(7, '1', 'Business-Class', 600.00, true),
-(7, '2', 'Business-Class', 600.00, true),
-(7, '3', 'Comfort', 400.00, true),
-(7, '4', 'Comfort', 400.00, true),
-(7, '5', 'Ordinary', 100.00, true),
-(7, '6', 'Ordinary', 100.00, true),
+(7, 37, 'Business-Class', 600.00, true),
+(7, 38, 'Business-Class', 600.00, true),
+(7, 39, 'Comfort', 400.00, true),
+(7, 40, 'Comfort', 400.00, true),
+(7, 41, 'Ordinary', 100.00, true),
+(7, 42, 'Ordinary', 100.00, true),
 
 # FlightID 8
-(8, '1', 'Business-Class', 600.00, true),
-(8, '2', 'Business-Class', 600.00, true),
-(8, '3', 'Comfort', 400.00, true),
-(8, '4', 'Comfort', 400.00, true),
-(8, '5', 'Ordinary', 100.00, true),
-(8, '6', 'Ordinary', 100.00, true),
+(8, 43, 'Business-Class', 600.00, true),
+(8, 44, 'Business-Class', 600.00, true),
+(8, 45, 'Comfort', 400.00, true),
+(8, 46, 'Comfort', 400.00, true),
+(8, 47, 'Ordinary', 100.00, true),
+(8, 48, 'Ordinary', 100.00, true),
 
 # FlightID 9
-(9, '1', 'Business-Class', 600.00, true),
-(9, '2', 'Business-Class', 600.00, true),
-(9, '3', 'Comfort', 400.00, true),
-(9, '4', 'Comfort', 400.00, true),
-(9, '5', 'Ordinary', 100.00, true),
-(9, '6', 'Ordinary', 100.00, true),
+(9, 49, 'Business-Class', 600.00, true),
+(9, 50, 'Business-Class', 600.00, true),
+(9, 51, 'Comfort', 400.00, true),
+(9, 52, 'Comfort', 400.00, true),
+(9, 53, 'Ordinary', 100.00, true),
+(9, 54, 'Ordinary', 100.00, true),
 
 # FlightID 10
-(10, '1', 'Business-Class', 600.00, true),
-(10, '2', 'Business-Class', 600.00, true),
-(10, '3', 'Comfort', 400.00, true),
-(10, '4', 'Comfort', 400.00, true),
-(10, '5', 'Ordinary', 100.00, true),
-(10, '6', 'Ordinary', 100.00, true);
+(10, 55, 'Business-Class', 600.00, true),
+(10, 56, 'Business-Class', 600.00, true),
+(10, 57, 'Comfort', 400.00, true),
+(10, 58, 'Comfort', 400.00, true),
+(10, 59, 'Ordinary', 100.00, true),
+(10, 60, 'Ordinary', 100.00, true);
 
 # PAYMENTS TABLE
 DROP TABLE IF EXISTS PAYMENTS;
