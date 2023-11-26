@@ -1,19 +1,21 @@
+package view;
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
 
-public class GUI implements ActionListener {
+public class LoginGUI implements ActionListener {
 	JTextField userText;
 	JPasswordField passwordText;
 	JLabel success;
 	
 	public static void main(String[] args) {
-        GUI gui = new GUI();
+        LoginGUI gui = new LoginGUI();
         gui.createUI();
     }
 
     public void createUI() {
         JFrame frame = new JFrame();
+        frame.setTitle("Flight Reservation Application");
         JPanel login = new JPanel();
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,7 +23,7 @@ public class GUI implements ActionListener {
 
         login.setLayout(null);
 
-        JLabel userLabel = new JLabel("User:");
+        JLabel userLabel = new JLabel("UserName:");
         userLabel.setBounds(20, 20, 80, 25);
         login.add(userLabel);
 
@@ -55,9 +57,9 @@ public class GUI implements ActionListener {
 			String username = userText.getText();
             String password = String.valueOf(passwordText.getPassword());
          // Database Connection Details
-            String url = "jdbc:mysql://localhost:3306/flightsystem";
+            String url = "jdbc:mysql://localhost/FRWA";
             String dbUsername = "UserName";
-            String dbPassword = "Password";
+            String dbPassword = "UserPassword";
 
             try {
                 Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword);
@@ -74,7 +76,7 @@ public class GUI implements ActionListener {
                     Timer timer = new Timer(2000, new ActionListener() {
                     	@Override
                     	public void actionPerformed(ActionEvent e) {
-                    		System.out.println("successful login"); // change to create menu
+                    		System.out.println("Successful login"); // change to create menu
                     	}
                     });
                     timer.setRepeats(false); // Set to run only once
