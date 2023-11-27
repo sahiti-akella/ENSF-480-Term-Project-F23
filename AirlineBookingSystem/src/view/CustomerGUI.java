@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class CustomerGUI implements ActionListener {
-    private static final String DB_URL = "jdbc:mysql://your_database_url:3306/FRWA";
+    private static final String DB_URL = "jdbc:mysql::3306/FRWA";
     private static final String USER = "username";
     private static final String PASSWORD = "password";
 
