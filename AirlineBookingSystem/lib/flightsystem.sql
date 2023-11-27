@@ -168,16 +168,16 @@ CREATE TABLE FLIGHTS (
 );
 
 INSERT INTO FLIGHTS (FlightID, Origin, Destination, DepartureDate, AircraftID) VALUES
-(1, 'Boston', 'Los Angeles', 'Dec 1, 2023', 1),
-(2, 'Houston', 'Philadelphia', 'Dec 12, 2023', 1),
-(3, 'Portland', 'Chicago', 'Dec 5, 2023', 2),
-(4, 'San Jose', 'Halifax', 'Dec 15, 2023', 2),
-(5, 'Denver', 'Miami', 'Dec 8, 2023', 3),
-(6, 'Edmonton', 'Austin', 'Dec 17, 2023', 3),
-(7, 'Toronto', 'San Francisco', 'Dec 11, 2023', 4),
-(8, 'Phoenix', 'Montreal', 'Dec 29, 2023', 4),
-(9, 'Las Vegas', 'Calgary', 'Dec 26, 2023', 5),
-(10, 'Vancouver', 'Dallas', 'Dec 10, 2023', 5);
+(1, 'Boston', 'Los Angeles', '12/01/2023', 1),
+(2, 'Houston', 'Philadelphia', '12/12/2023', 1),
+(3, 'Portland', 'Chicago', '12/05/2023', 2),
+(4, 'San Jose', 'Halifax', '12/15/2023', 2),
+(5, 'Denver', 'Miami', '12/08/2023', 3),
+(6, 'Edmonton', 'Austin', '12/17/2023', 3),
+(7, 'Toronto', 'San Francisco', '12/11/2023', 4),
+(8, 'Phoenix', 'Montreal', '12/29/2023', 4),
+(9, 'Las Vegas', 'Calgary', '12/26/2023', 5),
+(10, 'Vancouver', 'Dallas', '12/10/2023', 5);
 
 # SEATS TABLE
 DROP TABLE IF EXISTS SEATS;

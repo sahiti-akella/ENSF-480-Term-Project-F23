@@ -58,10 +58,11 @@ public class LoginGUI implements ActionListener {
             String password = String.valueOf(passwordText.getPassword());
          // Database Connection Details
             String url = "jdbc:mysql://localhost/FRWA";
-            String dbUsername = "UserName";
-            String dbPassword = "UserPassword";
+            String dbUsername = "root";
+            String dbPassword = "password";
 
             try {
+               
                 Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword);
 
                 PreparedStatement credentials = connection.prepareStatement("SELECT * FROM users WHERE username=? AND password=?");
