@@ -21,17 +21,19 @@ public class BrowseSeatGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         seatPanel = new JPanel();
-        seatPanel.setLayout(new GridLayout(5, 5)); // Change the dimensions as needed
+        seatPanel.setLayout(new GridLayout(3, 4)); // Change the dimensions as needed
 
-        // Create seats
-        for (int row = 1; row <= 4; row++) {
-            for (int col = 1; col <= 4; col++) {
-                JButton seatButton = new JButton("Seat " + row + "-" + col);
-                seatButton.addActionListener(new SeatClickListener());
-
-                seatPanel.add(seatButton);
-            }
+         // Create seats
+         int seatNumber = 1;
+         for (int row = 1; row <= 3; row++) {
+             for (int col = 1; col <= 4; col++) {
+             JButton seatButton = new JButton("Seat " + seatNumber);
+             seatButton.addActionListener(new SeatClickListener());
+ 
+         seatPanel.add(seatButton);
+         seatNumber++;
         }
+    }
 
         frame.add(seatPanel);
         frame.setVisible(true);

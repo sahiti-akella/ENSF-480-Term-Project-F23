@@ -179,100 +179,87 @@ INSERT INTO FLIGHTS (FlightID, Origin, Destination, DepartureDate, AircraftID) V
 (9, 'Las Vegas', 'Calgary', '12/26/2023', 5),
 (10, 'Vancouver', 'Dallas', '12/10/2023', 5);
 
+
+# SEAT LAYOUT TABLE
+DROP TABLE IF EXISTS SEAT_LAYOUTS;
+CREATE TABLE SEAT_LAYOUTS (
+    LayoutID            INT NOT NULL AUTO_INCREMENT,
+    SeatType            ENUM('Ordinary', 'Comfort', 'Business-Class') NOT NULL,
+    Price               DECIMAL(10, 2) NOT NULL,
+    
+    PRIMARY KEY (LayoutID)
+);
+
+INSERT INTO SEAT_LAYOUTS (LayoutID, SeatType, Price) VALUES
+(1, 'Ordinary', 150.00),
+(2, 'Comfort', 300.00),
+(3, 'Business-Class', 500.00);
+
+
 # SEATS TABLE
 DROP TABLE IF EXISTS SEATS;
 CREATE TABLE SEATS (
     FlightID 			INT,
     SeatID 				INT NOT NULL AUTO_INCREMENT,
-    SeatType 			ENUM('Ordinary', 'Comfort', 'Business-Class') NOT NULL,
-    Price 				DECIMAL(10, 2) NOT NULL,
+    LayoutID            INT,
     IsAvailable 		BOOLEAN NOT NULL DEFAULT TRUE,
     
     PRIMARY KEY (SeatID),
-    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
+    FOREIGN KEY (LayoutID) REFERENCES SEAT_LAYOUTS(LayoutID)
 );
 
-INSERT INTO SEATS (FlightID, SeatID, SeatType, Price, IsAvailable) VALUES
+INSERT INTO SEATS (FlightID, LayoutID, IsAvailable) VALUES
 
 #  FlightID 1
-(1, 1, 'Business-Class', 500.00, true),
-(1, 2, 'Business-Class', 500.00, true),
-(1, 3, 'Comfort', 300.00, true),
-(1, 4, 'Comfort', 300.00, true),
-(1, 5, 'Ordinary', 150.00, true),
-(1, 6, 'Ordinary', 150.00, true),
+(1, 1, true), (1, 1, true), (1, 1, true), (1, 1, true), 
+(1, 2, false), (1, 2, true), (1, 2, true), (1, 2, false), 
+(1, 3, true), (1, 3, false), (1, 3, true), (1, 3, true),
 
 # FlightID 2
-(2, 7, 'Business-Class', 550.00, true),
-(2, 8, 'Business-Class', 550.00, true),
-(2, 9, 'Comfort', 330.00, true),
-(2, 10, 'Comfort', 330.00, true),
-(2, 11, 'Ordinary', 165.00, true),
-(2, 12, 'Ordinary', 165.00, true),
+(2, 1, false), (2, 1, true), (2, 1, true), (2, 1, true), 
+(2, 2, true), (2, 2, true), (2, 2, false), (2, 2, true), 
+(2, 3, true), (2, 3, false), (2, 3, true), (2, 3, true),
 
 # FlightID 3
-(3, 13, 'Business-Class', 600.00, true),
-(3, 14, 'Business-Class', 600.00, true),
-(3, 15, 'Comfort', 400.00, true),
-(3, 16, 'Comfort', 400.00, true),
-(3, 17, 'Ordinary', 100.00, true),
-(3, 18, 'Ordinary', 100.00, true),
+(3, 1, true), (3, 1, true), (3, 1, true), (3, 1, false), 
+(3, 2, true), (3, 2, false), (3, 2, true), (3, 2, true), 
+(3, 3, false), (3, 3, true), (3, 3, true), (3, 3, true),
 
 # FlightID 4
-(4, 19, 'Business-Class', 600.00, true),
-(4, 20, 'Business-Class', 600.00, true),
-(4, 21, 'Comfort', 400.00, true),
-(4, 22, 'Comfort', 400.00, true),
-(4, 23, 'Ordinary', 100.00, true),
-(4, 24, 'Ordinary', 100.00, true),
+(4, 1, true), (4, 1, false), (4, 1, true), (4, 1, true), 
+(4, 2, false), (4, 2, true), (4, 2, true), (4, 2, true), 
+(4, 3, true), (4, 3, true), (4, 3, false), (4, 3, true),
 
 # FlightID 5
-(5, 25, 'Business-Class', 600.00, true),
-(5, 26, 'Business-Class', 600.00, true),
-(5, 27, 'Comfort', 400.00, true),
-(5, 28, 'Comfort', 400.00, true),
-(5, 29, 'Ordinary', 100.00, true),
-(5, 30, 'Ordinary', 100.00, true),
+(5, 1, true), (5, 1, true), (5, 1, false), (5, 1, true), 
+(5, 2, true), (5, 2, false), (5, 2, true), (5, 2, true), 
+(5, 3, false), (5, 3, true), (5, 3, true), (5, 3, true),
 
 # FlightID 6
-(6, 31, 'Business-Class', 600.00, true),
-(6, 32, 'Business-Class', 600.00, true),
-(6, 33, 'Comfort', 400.00, true),
-(6, 34, 'Comfort', 400.00, true),
-(6, 35, 'Ordinary', 100.00, true),
-(6, 36, 'Ordinary', 100.00, true),
+(6, 1, true), (6, 1, true), (6, 1, true), (6, 1, true), 
+(6, 2, true), (6, 2, false), (6, 2, true), (6, 2, true), 
+(6, 3, true), (6, 3, true), (6, 3, false), (6, 3, true),
 
 # FlightID 7
-(7, 37, 'Business-Class', 600.00, true),
-(7, 38, 'Business-Class', 600.00, true),
-(7, 39, 'Comfort', 400.00, true),
-(7, 40, 'Comfort', 400.00, true),
-(7, 41, 'Ordinary', 100.00, true),
-(7, 42, 'Ordinary', 100.00, true),
+(7, 1, true), (7, 1, true), (7, 1, true), (7, 1, false), 
+(7, 2, true), (7, 2, false), (7, 2, true), (7, 2, true), 
+(7, 3, true), (7, 3, true), (7, 3, false), (7, 3, true),
 
 # FlightID 8
-(8, 43, 'Business-Class', 600.00, true),
-(8, 44, 'Business-Class', 600.00, true),
-(8, 45, 'Comfort', 400.00, true),
-(8, 46, 'Comfort', 400.00, true),
-(8, 47, 'Ordinary', 100.00, true),
-(8, 48, 'Ordinary', 100.00, true),
+(8, 1, false), (8, 1, true), (8, 1, true), (8, 1, true), 
+(8, 2, true), (8, 2, true), (8, 2, false), (8, 2, true), 
+(8, 3, true), (8, 3, false), (8, 3, true), (8, 3, true),
 
 # FlightID 9
-(9, 49, 'Business-Class', 600.00, true),
-(9, 50, 'Business-Class', 600.00, true),
-(9, 51, 'Comfort', 400.00, true),
-(9, 52, 'Comfort', 400.00, true),
-(9, 53, 'Ordinary', 100.00, true),
-(9, 54, 'Ordinary', 100.00, true),
+(9, 1, true), (9, 1, false), (9, 1, true), (9, 1, true), 
+(9, 2, false), (9, 2, true), (9, 2, true), (9, 2, true), 
+(9, 3, true), (9, 3, true), (9, 3, false), (9, 3, true),
 
 # FlightID 10
-(10, 55, 'Business-Class', 600.00, true),
-(10, 56, 'Business-Class', 600.00, true),
-(10, 57, 'Comfort', 400.00, true),
-(10, 58, 'Comfort', 400.00, true),
-(10, 59, 'Ordinary', 100.00, true),
-(10, 60, 'Ordinary', 100.00, true);
+(10, 1, true), (10, 1, false), (10, 1, true), (10, 1, true), 
+(10, 2, true), (10, 2, true), (10, 2, false), (10, 2, true), 
+(10, 3, false), (10, 3, true), (10, 3, true), (10, 3, true);
 
 # PAYMENTS TABLE
 DROP TABLE IF EXISTS PAYMENTS;
