@@ -1,4 +1,8 @@
 package model.users;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Customer extends User {
 
     // Customer Class Attributes
@@ -38,6 +42,34 @@ public class Customer extends User {
 
     public void setRegistered(boolean registered){
         this.isRegistered = registered;
+    }
+
+
+    // Validation functions for customer information
+    private boolean isValidEmail(String email) {
+        // Simple email validation using regex
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private boolean isValidName(String name) {
+        // Simple name validation: should not be empty
+        return !name.trim().isEmpty();
+    }
+
+    private boolean isValidAddress(String address) {
+        // Simple address validation: should not be empty
+        return !address.trim().isEmpty();
+    }
+
+    // Validate all customer information
+    public boolean isValidCustomerInfo() {
+        return isValidName(getFirstName()) &&
+                isValidName(getLastName()) &&
+                isValidEmail(email) &&
+                isValidAddress(address);
     }
 
     // Customer Operations (Do these go here??)

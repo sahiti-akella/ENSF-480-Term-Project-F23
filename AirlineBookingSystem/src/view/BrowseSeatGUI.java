@@ -17,7 +17,7 @@ public class BrowseSeatGUI {
     public void createUI() {
         frame = new JFrame();
         frame.setTitle("Browse Seats - " + selectedFlight);
-        frame.setSize(600, 400);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         seatPanel = new JPanel();
