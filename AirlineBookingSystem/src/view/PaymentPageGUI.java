@@ -64,7 +64,7 @@ public class PaymentPageGUI {
         panel.add(cvvField);
 
         JButton proceedButton = new JButton("Confirm Payment");
-        proceedButton.setBounds(30, 200, 150, 40);
+        proceedButton.setBounds(100, 210, 150, 40);
         proceedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
