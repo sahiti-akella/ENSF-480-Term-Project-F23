@@ -8,17 +8,15 @@ import java.awt.event.ActionListener;
 public class BrowseSeatGUI {
     private JFrame frame;
     private JPanel seatPanel;
+    private String selectedFlight;
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            BrowseSeatGUI seatGUI = new BrowseSeatGUI();
-            seatGUI.createUI();
-        });
+    public BrowseSeatGUI(String selectedFlight) {
+        this.selectedFlight = selectedFlight;
     }
 
     public void createUI() {
         frame = new JFrame();
-        frame.setTitle("Browse Seats");
+        frame.setTitle("Browse Seats - " + selectedFlight);
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -30,7 +28,7 @@ public class BrowseSeatGUI {
             for (int col = 1; col <= 4; col++) {
                 JButton seatButton = new JButton("Seat " + row + "-" + col);
                 seatButton.addActionListener(new SeatClickListener());
-         
+
                 seatPanel.add(seatButton);
             }
         }
@@ -44,7 +42,13 @@ public class BrowseSeatGUI {
         public void actionPerformed(ActionEvent e) {
             JButton seatButton = (JButton) e.getSource();
             String seatName = seatButton.getText();
-            JOptionPane.showMessageDialog(frame, "You selected " + seatName);
+            frame.dispose(); // Close the seat selection frame
+            openInsuranceSelectionFrame(seatName);
         }
+    }
+    
+    private void openInsuranceSelectionFrame(String selectedSeat) {
+        SelectInsuranceGUI insuranceGUI = new SelectInsuranceGUI(selectedSeat);
+        insuranceGUI.createUI();
     }
 }
