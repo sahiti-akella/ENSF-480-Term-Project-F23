@@ -191,9 +191,9 @@ CREATE TABLE SEAT_LAYOUTS (
 );
 
 INSERT INTO SEAT_LAYOUTS (LayoutID, SeatType, Price) VALUES
-(1, 'Ordinary', 150.00),
-(2, 'Comfort', 300.00),
-(3, 'Business-Class', 500.00);
+(1, 'Ordinary', 800.00),
+(2, 'Comfort', 1150.00),
+(3, 'Business-Class', 1600.00);
 
 
 # SEATS TABLE
@@ -202,7 +202,7 @@ CREATE TABLE SEATS (
     FlightID 			INT,
     SeatID 				INT NOT NULL AUTO_INCREMENT,
     LayoutID            INT,
-    IsAvailable 		BOOLEAN NOT NULL DEFAULT TRUE,
+    IsAvailable 		INT NOT NULL DEFAULT 1,
     
     PRIMARY KEY (SeatID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
@@ -212,54 +212,54 @@ CREATE TABLE SEATS (
 INSERT INTO SEATS (FlightID, LayoutID, IsAvailable) VALUES
 
 #  FlightID 1
-(1, 1, true), (1, 1, true), (1, 1, true), (1, 1, true), 
-(1, 2, false), (1, 2, true), (1, 2, true), (1, 2, false), 
-(1, 3, true), (1, 3, false), (1, 3, true), (1, 3, true),
+(1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), 
+(1, 2, 1), (1, 2, 1), (1, 2, 1), (1, 2, 0), 
+(1, 3, 1), (1, 3, 0), (1, 3, 1), (1, 3, 1),
 
 # FlightID 2
-(2, 1, false), (2, 1, true), (2, 1, true), (2, 1, true), 
-(2, 2, true), (2, 2, true), (2, 2, false), (2, 2, true), 
-(2, 3, true), (2, 3, false), (2, 3, true), (2, 3, true),
+(2, 1, 1), (2, 1, 1), (2, 1, 1), (2, 1, 1), 
+(2, 2, 1), (2, 2, 1), (2, 2, 0), (2, 2, 1), 
+(2, 3, 1), (2, 3, 0), (2, 3, 1), (2, 3, 1),
 
 # FlightID 3
-(3, 1, true), (3, 1, true), (3, 1, true), (3, 1, false), 
-(3, 2, true), (3, 2, false), (3, 2, true), (3, 2, true), 
-(3, 3, false), (3, 3, true), (3, 3, true), (3, 3, true),
+(3, 1, 1), (3, 1, 1), (3, 1, 1), (3, 1, 1), 
+(3, 2, 1), (3, 2, 1), (3, 2, 1), (3, 2, 1), 
+(3, 3, 1), (3, 3, 1), (3, 3, 1), (3, 3, 1),
 
 # FlightID 4
-(4, 1, true), (4, 1, false), (4, 1, true), (4, 1, true), 
-(4, 2, false), (4, 2, true), (4, 2, true), (4, 2, true), 
-(4, 3, true), (4, 3, true), (4, 3, false), (4, 3, true),
+(4, 1, 1), (4, 1, 0), (4, 1, 1), (4, 1, 1), 
+(4, 2, 1), (4, 2, 1), (4, 2, 1), (4, 2, 1), 
+(4, 3, 1), (4, 3, 1), (4, 3, 0), (4, 3, 1),
 
 # FlightID 5
-(5, 1, true), (5, 1, true), (5, 1, false), (5, 1, true), 
-(5, 2, true), (5, 2, false), (5, 2, true), (5, 2, true), 
-(5, 3, false), (5, 3, true), (5, 3, true), (5, 3, true),
+(5, 1, 1), (5, 1, 1), (5, 1, 0), (5, 1, 1), 
+(5, 2, 1), (5, 2, 0), (5, 2, 1), (5, 2, 1), 
+(5, 3, 1), (5, 3, 1), (5, 3, 1), (5, 3, 1),
 
 # FlightID 6
-(6, 1, true), (6, 1, true), (6, 1, true), (6, 1, true), 
-(6, 2, true), (6, 2, false), (6, 2, true), (6, 2, true), 
-(6, 3, true), (6, 3, true), (6, 3, false), (6, 3, true),
+(6, 1, 1), (6, 1, 1), (6, 1, 1), (6, 1, 1), 
+(6, 2, 1), (6, 2, 0), (6, 2, 1), (6, 2, 1), 
+(6, 3, 1), (6, 3, 1), (6, 3, 0), (6, 3, 1),
 
 # FlightID 7
-(7, 1, true), (7, 1, true), (7, 1, true), (7, 1, false), 
-(7, 2, true), (7, 2, false), (7, 2, true), (7, 2, true), 
-(7, 3, true), (7, 3, true), (7, 3, false), (7, 3, true),
+(7, 1, 1), (7, 1, 1), (7, 1, 1), (7, 1, 0), 
+(7, 2, 1), (7, 2, 0), (7, 2, 1), (7, 2, 1), 
+(7, 3, 1), (7, 3, 1), (7, 3, 0), (7, 3, 1),
 
 # FlightID 8
-(8, 1, false), (8, 1, true), (8, 1, true), (8, 1, true), 
-(8, 2, true), (8, 2, true), (8, 2, false), (8, 2, true), 
-(8, 3, true), (8, 3, false), (8, 3, true), (8, 3, true),
+(8, 1, 1), (8, 1, 1), (8, 1, 0), (8, 1, 1), 
+(8, 2, 1), (8, 2, 0), (8, 2, 0), (8, 2, 0), 
+(8, 3, 1), (8, 3, 0), (8, 3, 1), (8, 3, 1),
 
 # FlightID 9
-(9, 1, true), (9, 1, false), (9, 1, true), (9, 1, true), 
-(9, 2, false), (9, 2, true), (9, 2, true), (9, 2, true), 
-(9, 3, true), (9, 3, true), (9, 3, false), (9, 3, true),
+(9, 1, 1), (9, 1, 0), (9, 1, 1), (9, 1, 1), 
+(9, 2, 1), (9, 2, 1), (9, 2, 0), (9, 2, 1), 
+(9, 3, 1), (9, 3, 1), (9, 3, 0), (9, 3, 1),
 
 # FlightID 10
-(10, 1, true), (10, 1, false), (10, 1, true), (10, 1, true), 
-(10, 2, true), (10, 2, true), (10, 2, false), (10, 2, true), 
-(10, 3, false), (10, 3, true), (10, 3, true), (10, 3, true);
+(10, 1, 1), (10, 1, 0), (10, 1, 1), (10, 1, 1), 
+(10, 2, 1), (10, 2, 1), (10, 2, 0), (10, 2, 1), 
+(10, 3, 1), (10, 3, 0), (10, 3, 1), (10, 3, 1);
 
 # PAYMENTS TABLE
 DROP TABLE IF EXISTS PAYMENTS;
@@ -267,12 +267,14 @@ CREATE TABLE PAYMENTS (
     PaymentID 			INT NOT NULL AUTO_INCREMENT,
     UserID 				INT,
     FlightID 			INT,
+    LayoutID			INT,
+    InsuranceSelected 	BOOLEAN,
     Amount 				DECIMAL(10, 2) NOT NULL,
-    PaymentStatus 		ENUM('Pending', 'Completed', 'Failed') DEFAULT 'Pending',
     
     PRIMARY KEY (PaymentID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
+    FOREIGN KEY (LayoutID) REFERENCES Seat_Layouts(LayoutID)
 );
 
 # TICKETS TABLE
@@ -282,7 +284,6 @@ CREATE TABLE TICKETS (
     UserID 				INT,
     FlightID 			INT,
     SeatID 				INT,
-    InsuranceSelected 	BOOLEAN,
     TicketDate 			DATETIME NOT NULL,
     IsCancelled 		BOOLEAN NOT NULL DEFAULT FALSE,
     

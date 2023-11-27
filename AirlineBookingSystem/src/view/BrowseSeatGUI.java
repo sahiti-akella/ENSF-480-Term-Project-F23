@@ -23,17 +23,25 @@ public class BrowseSeatGUI {
         seatPanel = new JPanel();
         seatPanel.setLayout(new GridLayout(3, 4)); // Change the dimensions as needed
 
-         // Create seats
-         int seatNumber = 1;
-         for (int row = 1; row <= 3; row++) {
-             for (int col = 1; col <= 4; col++) {
-             JButton seatButton = new JButton("Seat " + seatNumber);
-             seatButton.addActionListener(new SeatClickListener());
- 
-         seatPanel.add(seatButton);
-         seatNumber++;
+        // Create seats
+        int seatNumber = 1;
+        for (int row = 1; row <= 3; row++) {
+            String seatType;
+            if (row == 1) {
+                seatType = "Ordinary ($800)";
+            } else if (row == 2) {
+                seatType = "Comfort ($1150)";
+            } else {
+                seatType = "Business ($1600)";
+            }
+
+            for (int col = 1; col <= 4; col++) {
+                JButton seatButton = new JButton(seatType + " - Seat " + seatNumber);
+                seatButton.addActionListener(new SeatClickListener());
+                seatPanel.add(seatButton);
+                seatNumber++;
+            }
         }
-    }
 
         frame.add(seatPanel);
         frame.setVisible(true);
@@ -48,7 +56,7 @@ public class BrowseSeatGUI {
             openInsuranceSelectionFrame(seatName);
         }
     }
-    
+
     private void openInsuranceSelectionFrame(String selectedSeat) {
         SelectInsuranceGUI insuranceGUI = new SelectInsuranceGUI(selectedSeat);
         insuranceGUI.createUI();
