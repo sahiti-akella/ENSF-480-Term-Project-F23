@@ -10,7 +10,7 @@ public class Payment {
     private int cvv;
     private double total;
 
-    // Payment Constructor
+    // Payment Constructors
     public Payment(String cardHolderFirstName, String cardHolderLastName, String cardNumber, String expiryDate, int cvv, double total){
         this.cardHolderFirstName = cardHolderFirstName;
         this.cardHolderLastName = cardHolderLastName;
@@ -18,6 +18,14 @@ public class Payment {
         this.expiryDate = expiryDate;
         this.cvv = cvv;
         this.total = total;
+    }
+
+    public Payment(String cardHolderFirstName, String cardHolderLastName, String cardNumber, String expiryDate, int cvv){
+        this.cardHolderFirstName = cardHolderFirstName;
+        this.cardHolderLastName = cardHolderLastName;
+        this.cardNumber = cardNumber;
+        this.expiryDate = expiryDate;
+        this.cvv = cvv;
     }
 
     // Payment Getters
@@ -69,6 +77,49 @@ public class Payment {
     
     public void setTotal(double total){
         this.total = total;
+    }
+
+    // Validate payment information
+    public boolean isValid() {
+        return isValidCardHolderName() && isValidCardNumber() && isValidExpiryDate() && isValidCvv();
+    }
+
+    private boolean isValidCardHolderName() {
+        return cardHolderFirstName != null && !cardHolderFirstName.isEmpty()
+                && cardHolderLastName != null && !cardHolderLastName.isEmpty();
+    }
+
+    private boolean isValidCardNumber() {
+        return cardNumber != null && cardNumber.matches("\\d{16}");
+    }
+
+    private boolean isValidCvv() {
+        return String.valueOf(cvv).length() == 3;
+    }
+
+    private boolean isValidExpiryDate() {
+        // Check if the expiry date is in the format "dd/mm/yyyy"
+    if (expiryDate != null && expiryDate.matches("\\d{2}/\\d{2}/\\d{4}")) {
+        String[] parts = expiryDate.split("/");
+        int day = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+
+        // Check for valid month (1 to 12)
+        if (month < 1 || month > 12) {
+            return false;
+        }
+
+        // Check for valid day based on the month
+        int[] daysInMonth = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (day < 1 || day > daysInMonth[month]) {
+            return false;
+        }
+
+        // Optionally, you can check for a valid year range here
+
+        return true;
+    }
+    return false;
     }
     
 }
