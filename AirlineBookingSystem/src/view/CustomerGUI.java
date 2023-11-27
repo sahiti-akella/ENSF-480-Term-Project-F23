@@ -3,14 +3,24 @@ package view;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class CustomerGUI implements ActionListener {
+    private static final String DB_URL = "jdbc:mysql://your_database_url:3306/FRWA";
+    private static final String USER = "username";
+    private static final String PASSWORD = "password";
+
+    private Connection connection;
     public static void main(String[] args) {
         CustomerGUI gui = new CustomerGUI();
         gui.createUI();
     }
 
+
     public void createUI() {
+        initializeDatabase();
         JFrame frame = new JFrame();
         frame.setTitle("Customer Welcome Page");
         JPanel panel = new JPanel();
@@ -31,6 +41,15 @@ public class CustomerGUI implements ActionListener {
         panel.add(browseFlightsButton);
 
         frame.setVisible(true);
+    }
+
+    private void initializeDatabase() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -89,4 +108,6 @@ public class CustomerGUI implements ActionListener {
         BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight);
         seatGUI.createUI();
     }
+
+
 }
