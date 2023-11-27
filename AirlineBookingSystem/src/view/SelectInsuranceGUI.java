@@ -17,7 +17,7 @@ public class SelectInsuranceGUI {
         frame = new JFrame();
         frame.setTitle("Insurance Selection");
         JPanel panel = new JPanel();
-        frame.setSize(400, 200);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 

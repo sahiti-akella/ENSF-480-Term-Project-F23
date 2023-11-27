@@ -13,7 +13,7 @@ public class PaymentPageGUI {
         frame = new JFrame();
         frame.setTitle("Payment Page");
         JPanel panel = new JPanel();
-        frame.setSize(400, 300);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
@@ -120,7 +120,7 @@ public class PaymentPageGUI {
         JFrame successFrame = new JFrame();
         successFrame.setTitle("Success!");
         JPanel successPanel = new JPanel();
-        successFrame.setSize(400, 200);
+        successFrame.setSize(800, 600);
         successFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         successFrame.add(successPanel);
 
