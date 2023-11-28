@@ -17,10 +17,10 @@ public class SystemAdminGUI {
     private JTextArea displayArea;
 
     public SystemAdminGUI() {
-        initialize();
+        createUI();
     }
 
-    private void initialize() {
+    public void createUI() {
         frame = new JFrame("System Admin GUI");
         frame.setBounds(100, 100, 800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -30,7 +30,7 @@ public class LoginGUI implements ActionListener {
         } else if (type.equals("tourism-agent")){
             // Open Tourism Agent GUI
             new TourismAgentGUI().createUI();
-        } Else {
+        } else {
         	success.setText("Unknown acount type");
         }
 	}
@@ -99,9 +99,12 @@ public class LoginGUI implements ActionListener {
                     Timer timer = new Timer(2000, new ActionListener() {
                     	@Override
                     	public void actionPerformed(ActionEvent e) {
-                    		String accountType = resultSet.getString("AccountType");
-
-                            openUserGui(accountType);
+                    		try {
+                                String accountType = resultSet.getString("AccountType");
+                                openUserGui(accountType);
+                            } catch (SQLException ex) {
+                                ex.printStackTrace(); // handle the exception appropriately
+                            }
                     	}
                     });
                     timer.setRepeats(false); // Set to run only once
