@@ -22,25 +22,27 @@ CREATE TABLE USERS (
 );
 
 INSERT INTO USERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered, CreditCardNumber) VALUES
-(1, 'johndoe', 'password', 'John', 'Doe', '123 Main St', 'john@gmail.com', 'admin', NULL, NULL),
-(2, 'nedberry', 'password', 'Ned', 'Berry', '123 Main St', 'ned@gmail.com', 'customer' True, "1234567897654321"),
+(1, 'johndoe', 'password', 'John', 'Doe', '123 Main St', 'john@gmail.com', 'admin', FALSE, NULL),
+(2, 'nedberry', 'password', 'Ned', 'Berry', '123 Main St', 'ned@gmail.com', 'customer', TRUE, '1234567897654321'),
 (3, 'alicejohnson', 'password', 'Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', 'airline-agent', NULL, NULL),
 (4, 'bobsmith', 'password', 'Bob', 'Smith', '789 Pine St', 'bob@gmail.com', 'flight-attendant', NULL, NULL),
 (5, 'evadavis', 'password', 'Eva', 'Davis', '101 Elm St', 'eva@gmail.com', 'tourism-agent', NULL, NULL),
-(6, 'frankwhite', 'password', 'Frank', 'White', '222 Maple St', 'frank@gmail.com', 'customer', True),
-(7, 'kellyjohnson', 'password', 'Kelly', NULL, 'kelly@gmail.com', 'Johnson', 'customer', False, NULL),
-(8, 'tombrown', 'password', 'Tom', 'Brown', NULL, 'tom@gmail.com', 'customer', False, NULL),
-(9, 'saragreen', 'password', 'Sara', 'Green', NULL, 'sara@gmail.com', 'customer', True),
-(10, 'philthomas', 'password', 'Phil', 'Thomas', NULL, 'thomas@gmail.com', 'customer', True),
-(11, 'michaellee', 'password', 'Michael', 'Lee', NULL, 'michael@gmail.com', 'customer', False, NULL),
-(12, 'lucywang', 'password', 'Lucy', 'Wang', NULL, 'lucy@gmail.com', 'tourism-agent', NULL, NULL),
-(13, 'janesmith', 'password', 'Jane', 'Smith', NULL, 'jane@gmail.com', 'tourism-agent', NULL, NULL),
-(14, 'jackwilson', 'password', 'Jack', 'Wilson', NULL, 'jack@gmail.com', 'flight-attendant', NULL, NULL),
-(15, 'emmamiller', 'password', 'Emma', 'Miller', NULL, 'emma@gmail.com', 'flight-attendant', NULL, NULL),
-(16, 'hellenpotter', 'password', 'Helen', 'Potter', NULL, 'helen@gmail.com', 'airline-agent', NULL, NULL),
-(17, 'adamjohnson', 'password', 'Adam', 'Johnson', NULL, 'adam@gmail.com', 'airline-agent', NULL, NULL),
-(18, 'gracedavis', 'password', 'Grace', 'Davis', NULL, 'grace@gmail.com', 'admin', NULL, NULL),
-(19, 'robertwhite', 'password', 'Robert', 'White', NULL, 'robert@gmail.com', 'admin', NULL, NULL);
+(6, 'frankwhite', 'password', 'Frank', 'White', '222 Maple St', 'frank@gmail.com', 'customer', TRUE, NULL),
+(7, 'kellyjohnson', 'password', 'Kelly', 'Johnson', '543 Cedar St', 'kelly@gmail.com', 'customer', FALSE, NULL),
+(8, 'tombrown', 'password', 'Tom', 'Brown', '654 Birch St', 'tom@gmail.com', 'customer', FALSE, NULL),
+(9, 'saragreen', 'password', 'Sara', 'Green', '765 Pine St', 'sara@gmail.com', 'customer', TRUE, NULL),
+(10, 'philthomas', 'password', 'Phil', 'Thomas', '876 Oak St', 'thomas@gmail.com', 'customer', TRUE, NULL),
+(11, 'michaellee', 'password', 'Michael', 'Lee', '987 Elm St', 'michael@gmail.com', 'customer', FALSE, NULL),
+(12, 'lucywang', 'password', 'Lucy', 'Wang', '876 Cedar St', 'lucy@gmail.com', 'tourism-agent', NULL, NULL),
+(13, 'janesmith', 'password', 'Jane', 'Smith', '765 Birch St', 'jane@gmail.com', 'tourism-agent', NULL, NULL),
+(14, 'jackwilson', 'password', 'Jack', 'Wilson', '654 Pine St', 'jack@gmail.com', 'flight-attendant', NULL, NULL),
+(15, 'emmamiller', 'password', 'Emma', 'Miller', '543 Oak St', 'emma@gmail.com', 'flight-attendant', NULL, NULL),
+(16, 'hellenpotter', 'password', 'Helen', 'Potter', '432 Main St', 'helen@gmail.com', 'airline-agent', NULL, NULL),
+(17, 'adamjohnson', 'password', 'Adam', 'Johnson', '321 Elm St', 'adam@gmail.com', 'airline-agent', NULL, NULL),
+(18, 'gracedavis', 'password', 'Grace', 'Davis', '210 Oak St', 'grace@gmail.com', 'admin', NULL, NULL),
+(19, 'robertwhite', 'password', 'Robert', 'White', '109 Pine St', 'robert@gmail.com', 'admin', NULL, NULL);
+
+
 
 # CUSTOMERS TABLE
 DROP TABLE IF EXISTS CUSTOMERS;
@@ -58,10 +60,10 @@ CREATE TABLE CUSTOMERS (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO CUSTOMERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, isRegistered) VALUES 
+INSERT INTO CUSTOMERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, isRegistered)
 SELECT UserID, UserName, UserPassword, FirstName, LastName, Address, Email, isRegistered
 FROM USERS
-WHERE AccountType = 'customer'
+WHERE AccountType = 'customer';
 
 # TOURISM AGENT TABLE
 DROP TABLE IF EXISTS TOURISM_AGENTS;
@@ -76,10 +78,10 @@ CREATE TABLE TOURISM_AGENTS (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO TOURISM_AGENTS (UserID, UserName, UserPassword, FirstName, LastName, Email) VALUES 
+INSERT INTO TOURISM_AGENTS (UserID, UserName, UserPassword, FirstName, LastName, Email)
 SELECT UserID, UserName, UserPassword, FirstName, LastName, Email
 FROM USERS
-WHERE AccountType = 'tourism-agent'
+WHERE AccountType = 'tourism-agent';
 
 
 # FLIGHT ATTENDANT TABLE
@@ -94,10 +96,10 @@ CREATE TABLE FLIGHT_ATTENDANTS (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO FLIGHT_ATTENDANTS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+INSERT INTO FLIGHT_ATTENDANTS (UserID, UserName, UserPassword, FirstName, LastName) 
 SELECT UserID, UserName, UserPassword, FirstName, LastName
 FROM USERS
-WHERE AccountType = 'flight-attendant'
+WHERE AccountType = 'flight-attendant';
 
 # AIRLINE AGENT TABLE
 DROP TABLE IF EXISTS AIRLINE_AGENTS;
@@ -111,10 +113,10 @@ CREATE TABLE AIRLINE_AGENTS (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO AIRLINE_AGENTS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+INSERT INTO AIRLINE_AGENTS (UserID, UserName, UserPassword, FirstName, LastName)
 SELECT UserID, UserName, UserPassword, FirstName, LastName
 FROM USERS
-WHERE AccountType = 'airline-agent'
+WHERE AccountType = 'airline-agent';
 
 # SYSTEM ADMIN TABLE
 DROP TABLE IF EXISTS SYSTEM_ADMINS;
@@ -128,10 +130,10 @@ CREATE TABLE SYSTEM_ADMINS (
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );
 
-INSERT INTO SYSTEM_ADMINS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
+INSERT INTO SYSTEM_ADMINS (UserID, UserName, UserPassword, FirstName, LastName) 
 SELECT UserID, UserName, UserPassword, FirstName, LastName
 FROM USERS
-WHERE AccountType = 'admin'
+WHERE AccountType = 'admin';
 
 # AIRCRAFTS TABLE
 DROP TABLE IF EXISTS AIRCRAFTS;
