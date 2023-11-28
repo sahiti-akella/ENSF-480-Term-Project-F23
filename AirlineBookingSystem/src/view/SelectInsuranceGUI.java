@@ -24,7 +24,7 @@ public class SelectInsuranceGUI {
         panel.setLayout(null);
 
         JLabel seatLabel = new JLabel("Selected Seat: " + selectedSeat);
-        seatLabel.setBounds(30, 10, 200, 40);
+        seatLabel.setBounds(30, 10, 500, 40);
         seatLabel.setFont(new Font("Arial", Font.BOLD, 15));
         panel.add(seatLabel);
 
