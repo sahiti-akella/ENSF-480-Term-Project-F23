@@ -12,30 +12,35 @@ CREATE TABLE USERS (
     UserPassword 		VARCHAR(50) NOT NULL,
     FirstName 			VARCHAR(50) NOT NULL,
     LastName 			VARCHAR(50) NOT NULL,
+    Address             VARCHAR(100),
+    Email               VARCHAR(100) NOT NULL,
+    AccountType         VARCHAR(50) NOT NULL,
+    isRegistered        BOOLEAN,
+    CreditCardNumber 	VARCHAR(16),
     
     PRIMARY KEY (UserID)
 );
 
-INSERT INTO USERS (UserID, UserName, UserPassword, FirstName, LastName) VALUES
-(1, 'johndoe', 'password', 'John', 'Doe'),
-(2, 'nedberry', 'password', 'Ned', 'Berry'),
-(3, 'alicejohnson', 'password', 'Alice', 'Johnson'),
-(4, 'bobsmith', 'password', 'Bob', 'Smith'),
-(5, 'evadavis', 'password', 'Eva', 'Davis'),
-(6, 'frankwhite', 'password', 'Frank', 'White'),
-(7, 'kellyjohnson', 'password', 'Kelly', 'Johnson'),
-(8, 'tombrown', 'password', 'Tom', 'Brown'),
-(9, 'saragreen', 'password', 'Sara', 'Green'),
-(10, 'philthomas', 'password', 'Phil', 'Thomas'),
-(11, 'michaellee', 'password', 'Michael', 'Lee'),
-(12, 'lucywang', 'password', 'Lucy', 'Wang'),
-(13, 'janesmith', 'password', 'Jane', 'Smith'),
-(14, 'jackwilson', 'password', 'Jack', 'Wilson'),
-(15, 'emmamiller', 'password', 'Emma', 'Miller'),
-(16, 'hellenpotter', 'password', 'Helen', 'Potter'),
-(17, 'adamjohnson', 'password', 'Adam', 'Johnson'),
-(18, 'gracedavis', 'password', 'Grace', 'Davis'),
-(19, 'robertwhite', 'password', 'Robert', 'White');
+INSERT INTO USERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered, CreditCardNumber) VALUES
+(1, 'johndoe', 'password', 'John', 'Doe', '123 Main St', 'john@gmail.com', 'admin', NULL, NULL),
+(2, 'nedberry', 'password', 'Ned', 'Berry', '123 Main St', 'ned@gmail.com', 'customer' True, "1234567897654321"),
+(3, 'alicejohnson', 'password', 'Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', 'airline-agent', NULL, NULL),
+(4, 'bobsmith', 'password', 'Bob', 'Smith', '789 Pine St', 'bob@gmail.com', 'flight-attendant', NULL, NULL),
+(5, 'evadavis', 'password', 'Eva', 'Davis', '101 Elm St', 'eva@gmail.com', 'tourism-agent', NULL, NULL),
+(6, 'frankwhite', 'password', 'Frank', 'White', '222 Maple St', 'frank@gmail.com', 'customer', True),
+(7, 'kellyjohnson', 'password', 'Kelly', NULL, 'kelly@gmail.com', 'Johnson', 'customer', False, NULL),
+(8, 'tombrown', 'password', 'Tom', 'Brown', NULL, 'tom@gmail.com', 'customer', False, NULL),
+(9, 'saragreen', 'password', 'Sara', 'Green', NULL, 'sara@gmail.com', 'customer', True),
+(10, 'philthomas', 'password', 'Phil', 'Thomas', NULL, 'thomas@gmail.com', 'customer', True),
+(11, 'michaellee', 'password', 'Michael', 'Lee', NULL, 'michael@gmail.com', 'customer', False, NULL),
+(12, 'lucywang', 'password', 'Lucy', 'Wang', NULL, 'lucy@gmail.com', 'tourism-agent', NULL, NULL),
+(13, 'janesmith', 'password', 'Jane', 'Smith', NULL, 'jane@gmail.com', 'tourism-agent', NULL, NULL),
+(14, 'jackwilson', 'password', 'Jack', 'Wilson', NULL, 'jack@gmail.com', 'flight-attendant', NULL, NULL),
+(15, 'emmamiller', 'password', 'Emma', 'Miller', NULL, 'emma@gmail.com', 'flight-attendant', NULL, NULL),
+(16, 'hellenpotter', 'password', 'Helen', 'Potter', NULL, 'helen@gmail.com', 'airline-agent', NULL, NULL),
+(17, 'adamjohnson', 'password', 'Adam', 'Johnson', NULL, 'adam@gmail.com', 'airline-agent', NULL, NULL),
+(18, 'gracedavis', 'password', 'Grace', 'Davis', NULL, 'grace@gmail.com', 'admin', NULL, NULL),
+(19, 'robertwhite', 'password', 'Robert', 'White', NULL, 'robert@gmail.com', 'admin', NULL, NULL);
 
 # CUSTOMERS TABLE
 DROP TABLE IF EXISTS CUSTOMERS;
@@ -54,14 +59,9 @@ CREATE TABLE CUSTOMERS (
 );
 
 INSERT INTO CUSTOMERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, isRegistered) VALUES 
-
-# CUSTOMERS VALUES
-(1, 'johndoe','password','John', 'Doe', '123 Main St', 'john@gmail.com', False),
-(2, 'nedberry','password','Ned', 'Berry', '123 Main St', 'ned@gmail.com', False),
-(3, 'alicejohnson','password','Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', False),
-(4, 'bobsmith','password','Bob', 'Smith', '789 Pine St', 'bob@gmail.com', True),
-(5, 'evadavis','password','Eva', 'Davis', '101 Elm St', 'eva@gmail.com', True),
-(6, 'frankwhite','password','Frank', 'White', '222 Maple St', 'frank@gmail.com',True);
+SELECT UserID, UserName, UserPassword, FirstName, LastName, Address, Email, isRegistered
+FROM USERS
+WHERE AccountType = 'customer'
 
 # TOURISM AGENT TABLE
 DROP TABLE IF EXISTS TOURISM_AGENTS;
@@ -77,11 +77,10 @@ CREATE TABLE TOURISM_AGENTS (
 );
 
 INSERT INTO TOURISM_AGENTS (UserID, UserName, UserPassword, FirstName, LastName, Email) VALUES 
+SELECT UserID, UserName, UserPassword, FirstName, LastName, Email
+FROM USERS
+WHERE AccountType = 'tourism-agent'
 
-# TOURISM AGENTS VALUES
-(7, 'kellyjohnson','password','Kelly', 'Johnson', 'kelly@gmail.com'),
-(8, 'tombrown','password','Tom', 'Brown', 'tom@gmail.com'),
-(9, 'saragreen','password','Sara', 'Green', 'sara@gmail.com');
 
 # FLIGHT ATTENDANT TABLE
 DROP TABLE IF EXISTS FLIGHT_ATTENDANTS;
@@ -96,10 +95,9 @@ CREATE TABLE FLIGHT_ATTENDANTS (
 );
 
 INSERT INTO FLIGHT_ATTENDANTS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
-# FLIGHT ATTENDANTS VALUES
-(10, 'philthomas', 'password','Phil','Thomas'),
-(11, 'michaellee','password','Michael', 'Lee' ),
-(12, 'lucywang','password','Lucy','Wang');
+SELECT UserID, UserName, UserPassword, FirstName, LastName
+FROM USERS
+WHERE AccountType = 'flight-attendant'
 
 # AIRLINE AGENT TABLE
 DROP TABLE IF EXISTS AIRLINE_AGENTS;
@@ -114,10 +112,9 @@ CREATE TABLE AIRLINE_AGENTS (
 );
 
 INSERT INTO AIRLINE_AGENTS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
-# AIRLINE AGENTS VALUES
-(13, 'janesmith', 'password','Jane', 'Smith'),
-(14, 'jackwilson','password','Jack', 'Wilson'),
-(15, 'emmamiller','password','Emma', 'Miller');
+SELECT UserID, UserName, UserPassword, FirstName, LastName
+FROM USERS
+WHERE AccountType = 'airline-agent'
 
 # SYSTEM ADMIN TABLE
 DROP TABLE IF EXISTS SYSTEM_ADMINS;
@@ -132,11 +129,9 @@ CREATE TABLE SYSTEM_ADMINS (
 );
 
 INSERT INTO SYSTEM_ADMINS (UserID, UserName, UserPassword, FirstName, LastName) VALUES 
-# SYSTEM ADMINISTRATORS VALUES
-(16, 'hellenpotter','password','Helen', 'Potter'),
-(17, 'adamjohnson','password','Adam', 'Johnson'),
-(18, 'gracedavis','password','Grace', 'Davis'),
-(19, 'robertwhite','password','Robert', 'White');
+SELECT UserID, UserName, UserPassword, FirstName, LastName
+FROM USERS
+WHERE AccountType = 'admin'
 
 # AIRCRAFTS TABLE
 DROP TABLE IF EXISTS AIRCRAFTS;
@@ -191,9 +186,9 @@ CREATE TABLE SEAT_LAYOUTS (
 );
 
 INSERT INTO SEAT_LAYOUTS (LayoutID, SeatType, Price) VALUES
-(1, 'Ordinary', 800.00),
-(2, 'Comfort', 1150.00),
-(3, 'Business-Class', 1600.00);
+(1, 'Ordinary', 150.00),
+(2, 'Comfort', 300.00),
+(3, 'Business-Class', 500.00);
 
 
 # SEATS TABLE
@@ -202,65 +197,64 @@ CREATE TABLE SEATS (
     FlightID 			INT,
     SeatID 				INT NOT NULL AUTO_INCREMENT,
     LayoutID            INT,
-    IsAvailable 		INT NOT NULL DEFAULT 1,
+    IsAvailable 		BOOLEAN NOT NULL DEFAULT TRUE,
     
     PRIMARY KEY (SeatID),
     FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
     FOREIGN KEY (LayoutID) REFERENCES SEAT_LAYOUTS(LayoutID)
 );
 
-INSERT INTO SEATS (SeatID, FlightID, LayoutID, IsAvailable) VALUES
+INSERT INTO SEATS (FlightID, LayoutID, IsAvailable) VALUES
 
--- FlightID 1
-(1, 1, 1, 1), (2, 1, 1, 1), (3, 1, 1, 1), (4, 1, 1, 1),
-(5, 1, 2, 1), (6, 1, 2, 1), (7, 1, 2, 1), (8, 1, 2, 0),
-(9, 1, 3, 1), (10, 1, 3, 0), (11, 1, 3, 1), (12, 1, 3, 1),
+#  FlightID 1
+(1, 1, true), (1, 1, true), (1, 1, true), (1, 1, true), 
+(1, 2, false), (1, 2, true), (1, 2, true), (1, 2, false), 
+(1, 3, true), (1, 3, false), (1, 3, true), (1, 3, true),
 
--- FlightID 2
-(13, 2, 1, 1), (14, 2, 1, 1), (15, 2, 1, 1), (16, 2, 1, 1),
-(17, 2, 2, 1), (18, 2, 2, 1), (19, 2, 2, 0), (20, 2, 2, 1),
-(21, 2, 3, 1), (22, 2, 3, 0), (23, 2, 3, 1), (24, 2, 3, 1),
+# FlightID 2
+(2, 1, false), (2, 1, true), (2, 1, true), (2, 1, true), 
+(2, 2, true), (2, 2, true), (2, 2, false), (2, 2, true), 
+(2, 3, true), (2, 3, false), (2, 3, true), (2, 3, true),
 
--- FlightID 3
-(25, 3, 1, 1), (26, 3, 1, 1), (27, 3, 1, 1), (28, 3, 1, 1),
-(29, 3, 2, 1), (30, 3, 2, 1), (31, 3, 2, 1), (32, 3, 2, 1),
-(33, 3, 3, 1), (34, 3, 3, 1), (35, 3, 3, 1), (36, 3, 3, 1),
+# FlightID 3
+(3, 1, true), (3, 1, true), (3, 1, true), (3, 1, false), 
+(3, 2, true), (3, 2, false), (3, 2, true), (3, 2, true), 
+(3, 3, false), (3, 3, true), (3, 3, true), (3, 3, true),
 
--- FlightID 4
-(37, 4, 1, 1), (38, 4, 1, 0), (39, 4, 1, 1), (40, 4, 1, 1),
-(41, 4, 2, 1), (42, 4, 2, 1), (43, 4, 2, 1), (44, 4, 2, 1),
-(45, 4, 3, 1), (46, 4, 3, 1), (47, 4, 3, 0), (48, 4, 3, 1),
+# FlightID 4
+(4, 1, true), (4, 1, false), (4, 1, true), (4, 1, true), 
+(4, 2, false), (4, 2, true), (4, 2, true), (4, 2, true), 
+(4, 3, true), (4, 3, true), (4, 3, false), (4, 3, true),
 
--- FlightID 5
-(49, 5, 1, 1), (50, 5, 1, 1), (51, 5, 1, 0), (52, 5, 1, 1),
-(53, 5, 2, 1), (54, 5, 2, 0), (55, 5, 2, 1), (56, 5, 2, 1),
-(57, 5, 3, 1), (58, 5, 3, 1), (59, 5, 3, 1), (60, 5, 3, 1),
+# FlightID 5
+(5, 1, true), (5, 1, true), (5, 1, false), (5, 1, true), 
+(5, 2, true), (5, 2, false), (5, 2, true), (5, 2, true), 
+(5, 3, false), (5, 3, true), (5, 3, true), (5, 3, true),
 
--- FlightID 6
-(61, 6, 1, 1), (62, 6, 1, 1), (63, 6, 1, 1), (64, 6, 1, 1),
-(65, 6, 2, 1), (66, 6, 2, 0), (67, 6, 2, 1), (68, 6, 2, 1),
-(69, 6, 3, 1), (70, 6, 3, 1), (71, 6, 3, 0), (72, 6, 3, 1),
+# FlightID 6
+(6, 1, true), (6, 1, true), (6, 1, true), (6, 1, true), 
+(6, 2, true), (6, 2, false), (6, 2, true), (6, 2, true), 
+(6, 3, true), (6, 3, true), (6, 3, false), (6, 3, true),
 
--- FlightID 7
-(73, 7, 1, 1), (74, 7, 1, 1), (75, 7, 1, 1), (76, 7, 1, 0),
-(77, 7, 2, 1), (78, 7, 2, 0), (79, 7, 2, 1), (80, 7, 2, 1),
-(81, 7, 3, 1), (82, 7, 3, 1), (83, 7, 3, 0), (84, 7, 3, 1),
+# FlightID 7
+(7, 1, true), (7, 1, true), (7, 1, true), (7, 1, false), 
+(7, 2, true), (7, 2, false), (7, 2, true), (7, 2, true), 
+(7, 3, true), (7, 3, true), (7, 3, false), (7, 3, true),
 
--- FlightID 8
-(85, 8, 1, 1), (86, 8, 1, 1), (87, 8, 1, 0), (88, 8, 1, 1),
-(89, 8, 2, 1), (90, 8, 2, 0), (91, 8, 2, 0), (92, 8, 2, 0),
-(93, 8, 3, 1), (94, 8, 3, 0), (95, 8, 3, 1), (96, 8, 3, 1),
+# FlightID 8
+(8, 1, false), (8, 1, true), (8, 1, true), (8, 1, true), 
+(8, 2, true), (8, 2, true), (8, 2, false), (8, 2, true), 
+(8, 3, true), (8, 3, false), (8, 3, true), (8, 3, true),
 
--- FlightID 9
-(97, 9, 1, 1), (98, 9, 1, 0), (99, 9, 1, 1), (100, 9, 1, 1),
-(101, 9, 2, 1), (102, 9, 2, 1), (103, 9, 2, 0), (104, 9, 2, 1),
-(105, 9, 3, 1), (106, 9, 3, 1), (107, 9, 3, 0), (108, 9, 3, 1),
+# FlightID 9
+(9, 1, true), (9, 1, false), (9, 1, true), (9, 1, true), 
+(9, 2, false), (9, 2, true), (9, 2, true), (9, 2, true), 
+(9, 3, true), (9, 3, true), (9, 3, false), (9, 3, true),
 
--- FlightID 10
-(109, 10, 1, 1), (110, 10, 1, 0), (111, 10, 1, 1), (112, 10, 1, 1),
-(113, 10, 2, 1), (114, 10, 2, 1), (115, 10, 2, 0), (116, 10, 2, 1),
-(117, 10, 3, 1), (118, 10, 3, 0), (119, 10, 3, 0), (120, 10, 3, 1);
-
+# FlightID 10
+(10, 1, true), (10, 1, false), (10, 1, true), (10, 1, true), 
+(10, 2, true), (10, 2, true), (10, 2, false), (10, 2, true), 
+(10, 3, false), (10, 3, true), (10, 3, true), (10, 3, true);
 
 # PAYMENTS TABLE
 DROP TABLE IF EXISTS PAYMENTS;
@@ -268,14 +262,12 @@ CREATE TABLE PAYMENTS (
     PaymentID 			INT NOT NULL AUTO_INCREMENT,
     UserID 				INT,
     FlightID 			INT,
-    LayoutID			INT,
-    InsuranceSelected 	BOOLEAN,
     Amount 				DECIMAL(10, 2) NOT NULL,
+    PaymentStatus 		ENUM('Pending', 'Completed', 'Failed') DEFAULT 'Pending',
     
     PRIMARY KEY (PaymentID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID),
-    FOREIGN KEY (LayoutID) REFERENCES Seat_Layouts(LayoutID)
+    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
 );
 
 # TICKETS TABLE
@@ -285,6 +277,7 @@ CREATE TABLE TICKETS (
     UserID 				INT,
     FlightID 			INT,
     SeatID 				INT,
+    InsuranceSelected 	BOOLEAN,
     TicketDate 			DATETIME NOT NULL,
     IsCancelled 		BOOLEAN NOT NULL DEFAULT FALSE,
     
