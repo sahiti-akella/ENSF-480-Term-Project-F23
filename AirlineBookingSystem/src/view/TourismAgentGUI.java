@@ -45,10 +45,10 @@ public class TourismAgentGUI implements ActionListener {
 }
 
     private Connection connection;
-    public static void main(String[] args) {
-        CustomerGUI gui = new CustomerGUI();
-        gui.createUI();
-    }
+    // public static void main(String[] args) {
+    //     CustomerGUI gui = new CustomerGUI();
+    //     gui.createUI();
+    // }
 
 
     public void createUI() {

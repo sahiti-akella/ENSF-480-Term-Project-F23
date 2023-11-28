@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
+import model.*;
+import model.users.*;
 
 public class FlightCancellation {
     private JFrame frame;
@@ -50,53 +52,28 @@ public class FlightCancellation {
     }
 
     private void displayTickets() {
-        ArrayList<String> ticketList = getTicketsForUser(userID);
+        ArrayList<Ticket> ticketList = getTicketsForUser(userID);
 
         int yOffset = 60;
-        for (String ticketInfo : ticketList) {
-            JLabel ticketLabel = new JLabel(ticketInfo);
+        for (Ticket ticketInfo : ticketList) {
+            JLabel ticketLabel = new JLabel(ticketInfo.toString()); //display flight ID
             ticketLabel.setBounds(30, yOffset, 500, 25);
             panel.add(ticketLabel);
             yOffset += 30;
         }
     }
 
-    private ArrayList<String> getTicketsForUser(int userID) {
-        ArrayList<String> ticketList = new ArrayList<>();
-
-        // Load database properties
-        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
-        if (properties == null) {
-            // Handle the error appropriately
-            return ticketList;
-        }
-
-        String url = properties.getProperty("db.url");
-        String dbUsername = properties.getProperty("db.username");
-        String dbPassword = properties.getProperty("db.password");
-
-        try (Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword)) {
-            String query = "SELECT TicketID, FlightID, SeatID, TicketDate FROM TICKETS WHERE UserID = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, userID);
-                ResultSet resultSet = statement.executeQuery();
-
-                while (resultSet.next()) {
-                    int ticketID = resultSet.getInt("TicketID");
-                    int flightID = resultSet.getInt("FlightID");
-                    int seatID = resultSet.getInt("SeatID");
-                    Timestamp ticketDate = resultSet.getTimestamp("TicketDate");
-
-                    String ticketInfo = "TicketID: " + ticketID + " | FlightID: " + flightID +
-                            " | SeatID: " + seatID + " | Date: " + ticketDate.toString();
-                    ticketList.add(ticketInfo);
-                }
+    private ArrayList<Ticket> getTicketsForUser(int userID) {
+        ArrayList<Ticket> userTicketList = new ArrayList<>();
+        ArrayList<Ticket> ticketList = new FlightSystem().getTicketList();
+        
+        for (Ticket ticket : ticketList) {
+            if (ticket.getCustomer().getUserID() == userID) {
+                userTicketList.add(ticket);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return ticketList;
+    
+        return userTicketList;
     }
 
     private void handleCancellation() {
