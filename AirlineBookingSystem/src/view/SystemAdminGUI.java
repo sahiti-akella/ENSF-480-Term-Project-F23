@@ -2,13 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class SystemAdminGUI {
 
@@ -64,35 +58,30 @@ public class SystemAdminGUI {
     }
 
     private void fetchAndDisplayPassengerInfo(JTextArea passengerListArea) {
-        // Implement the logic to fetch passenger information from the database
-        // and display it in the text area
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/FRWA", "", "");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/FRWA", "root", "password");
             String query = "SELECT * FROM CUSTOMERS";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            while (resultSet.next()) {
-                String userInfo = String.format("UserID: %d, UserName: %s, FirstName: %s, LastName: %s, Address: %s, Email: %s, Registered: %b%n",
-                        resultSet.getInt("UserID"),
-                        resultSet.getString("UserName"),
-                        resultSet.getString("FirstName"),
-                        resultSet.getString("LastName"),
-                        resultSet.getString("Address"),
-                        resultSet.getString("Email"),
-                        resultSet.getBoolean("isRegistered"));
-                passengerListArea.append(userInfo);
+                while (resultSet.next()) {
+                    String userInfo = String.format("UserID: %d, UserName: %s, FirstName: %s, LastName: %s, Address: %s, Email: %s, Registered: %b%n",
+                            resultSet.getInt("UserID"),
+                            resultSet.getString("UserName"),
+                            resultSet.getString("FirstName"),
+                            resultSet.getString("LastName"),
+                            resultSet.getString("Address"),
+                            resultSet.getString("Email"),
+                            resultSet.getBoolean("isRegistered"));
+                    passengerListArea.append(userInfo);
+                }
             }
-
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     private void performAdminAction() {
-        // Implement the logic for system admin actions
-
         displayArea.setText("Performing System Admin Action...\n");
 
         // admin action logic
@@ -112,4 +101,3 @@ public class SystemAdminGUI {
         });
     }
 }
-
