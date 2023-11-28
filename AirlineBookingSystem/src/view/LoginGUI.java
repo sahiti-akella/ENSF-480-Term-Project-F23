@@ -12,6 +12,28 @@ public class LoginGUI implements ActionListener {
         LoginGUI gui = new LoginGUI();
         gui.createUI();
     }
+	
+	public void openUserGui(String type) {
+		// Valid credentials, check account type
+        if (type.equals("admin")) {
+            // Open System Admin GUI
+            new SystemAdminGUI().createUI();
+        } else if (type.equals("customer")) {
+            // Open Customer GUI
+            new CustomerGUI().createUI();
+        } else if (type.equals("airline-agent")){
+            // Open Airline Agent GUI
+        	new AirlineAgentGUI().createUI();
+        } else if (type.equals("flight-attendant")){
+        	// Open Flight Attendant GUI
+        	new FlightAttendantGUI().createUI();
+        } else if (type.equals("tourism-agent")){
+            // Open Tourism Agent GUI
+            new TourismAgentGUI().createUI();
+        } Else {
+        	success.setText("Unknown acount type");
+        }
+	}
 
     public void createUI() {
         JFrame frame = new JFrame();
@@ -77,7 +99,9 @@ public class LoginGUI implements ActionListener {
                     Timer timer = new Timer(2000, new ActionListener() {
                     	@Override
                     	public void actionPerformed(ActionEvent e) {
-                    		System.out.println("Successful login"); // change to create menu
+                    		String accountType = resultSet.getString("AccountType");
+
+                            openUserGui(accountType);
                     	}
                     });
                     timer.setRepeats(false); // Set to run only once
