@@ -23,6 +23,7 @@ public class BrowseSeatGUI {
     }
 
     public void createUI() {
+        createConnection(); 
         frame = new JFrame();
         frame.setTitle("Browse Seats - " + selectedFlight);
         frame.setSize(800, 600);
