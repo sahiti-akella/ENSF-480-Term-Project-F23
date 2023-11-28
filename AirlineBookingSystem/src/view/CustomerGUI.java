@@ -20,6 +20,11 @@ public class CustomerGUI implements ActionListener {
     private JTextField lastNameField;
     private JTextField emailField;
     private JTextField addressField;
+    private int userID;
+
+    public CustomerGUI(int userID) {
+        this.userID = userID;
+    }
 
     private ArrayList<String> getAvailableFlights() {
     ArrayList<String> flightList = new ArrayList<>();
@@ -46,11 +51,10 @@ public class CustomerGUI implements ActionListener {
 }
 
     private Connection connection;
-    public static void main(String[] args) {
-        CustomerGUI gui = new CustomerGUI();
-        gui.createUI();
-    }
-
+    // public static void main(String[] args) {
+    //     CustomerGUI gui = new CustomerGUI();
+    //     gui.createUI();
+    // }
 
     public void createUI() {
         initializeDatabase();

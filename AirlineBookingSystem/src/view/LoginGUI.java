@@ -14,14 +14,14 @@ public class LoginGUI implements ActionListener {
         gui.createUI();
     }
 	
-	public void openUserGui(String type) {
+	public void openUserGui(String type, int userID) {
 		// Valid credentials, check account type
         if (type.equals("admin")) {
             // Open System Admin GUI
             new SystemAdminGUI().createUI();
         } else if (type.equals("customer")) {
             // Open Customer GUI
-            new CustomerGUI().createUI();
+            new CustomerGUI(userID).createUI();
         } else if (type.equals("airline-agent")){
             // Open Airline Agent GUI
         	new AirlineAgentGUI().createUI();
@@ -96,7 +96,7 @@ public class LoginGUI implements ActionListener {
                
                 Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword);
 
-                PreparedStatement credentials = connection.prepareStatement("SELECT * FROM users WHERE username=? AND password=?");
+                PreparedStatement credentials = connection.prepareStatement("SELECT * FROM users WHERE UserName=? AND UserPassword=?");
                 credentials.setString(1, username);
                 credentials.setString(2, password);
 
@@ -110,7 +110,8 @@ public class LoginGUI implements ActionListener {
                     	public void actionPerformed(ActionEvent e) {
                     		try {
                                 String accountType = resultSet.getString("AccountType");
-                                openUserGui(accountType);
+                                int userID = resultSet.getInt("UserID");
+                                openUserGui(accountType, userID);
                             } catch (SQLException ex) {
                                 ex.printStackTrace(); // handle the exception appropriately
                             }

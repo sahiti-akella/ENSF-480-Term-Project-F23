@@ -60,4 +60,10 @@ public class Ticket {
     public void setTotal(double total){
         this.total = total;
     }
+
+    @Override
+    public String toString() {
+        
+        return "FlightID: " + flight.getflightID(); 
+    }
 }
