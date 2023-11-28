@@ -12,11 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class CustomerGUI implements ActionListener {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/FRWA";
-    private static final String USER = "root";
-    private static final String PASSWORD = "password";
+    
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JTextField emailField;
@@ -161,9 +160,21 @@ public class CustomerGUI implements ActionListener {
     }
 
     private void initializeDatabase() {
+
+        // Load database properties
+        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
+        if (properties == null) {
+            // Handle the error appropriately
+            return;
+        }
+
+        String url = properties.getProperty("db.url");
+        String dbUsername = properties.getProperty("db.username");
+        String dbPassword = properties.getProperty("db.password");
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(url, dbUsername, dbPassword);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

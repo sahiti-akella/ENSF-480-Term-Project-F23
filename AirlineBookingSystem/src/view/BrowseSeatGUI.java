@@ -9,14 +9,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class BrowseSeatGUI {
     private JFrame frame;
     private JPanel seatPanel;
     private String selectedFlight;
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/FRWA";
-    private static final String USER = "root";
-    private static final String PASSWORD = "sahi2004";
+    private Connection dbConnect;
     private static final int SEATS_PER_FLIGHT = 12;
 
     public BrowseSeatGUI(String selectedFlight) {
@@ -57,6 +56,30 @@ public class BrowseSeatGUI {
         frame.setVisible(true);
     }
 
+    /**
+     * This method creates a connection to the SQL database.
+     */
+    public void createConnection() {
+        // Load database properties
+        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
+        if (properties == null) {
+            // Handle the error appropriately
+            return;
+        }
+
+        String url = properties.getProperty("db.url");
+        String dbUsername = properties.getProperty("db.username");
+        String dbPassword = properties.getProperty("db.password");
+
+        
+        try {
+            dbConnect = DriverManager.getConnection(url, dbUsername, dbPassword);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private JButton createSeatButton(String seatType, int seatNumber) {
         JButton seatButton = new JButton(seatType + " - Seat " + seatNumber);
         seatButton.addActionListener(new SeatClickListener());
@@ -70,11 +93,11 @@ public class BrowseSeatGUI {
     }
 
     private boolean isSeatAvailable(int seatNumber) {
+
         try {
             // Query the database to check seat availability for the selected flight
-            Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             String query = "SELECT IsAvailable FROM SEATS WHERE FlightID = ? AND SeatID = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = dbConnect.prepareStatement(query);
             statement.setInt(1, getFlightID(selectedFlight));
             statement.setInt(2, seatNumber);
             ResultSet resultSet = statement.executeQuery();
@@ -92,9 +115,8 @@ public class BrowseSeatGUI {
     private int getFlightID(String selectedFlight) {
         // Query the database to get the FlightID for the selected flight
         try {
-            Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             String query = "SELECT FlightID FROM FLIGHTS WHERE CONCAT(Origin, ' -> ', Destination, ' : ', DepartureDate) = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = dbConnect.prepareStatement(query);
             statement.setString(1, selectedFlight);
             ResultSet resultSet = statement.executeQuery();
 
