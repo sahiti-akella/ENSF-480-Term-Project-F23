@@ -12,9 +12,6 @@ public class FlightSystem {
     // MySQL Connection Variables
     private Connection dbConnect;
     private ResultSet results;
-    private final String DBURL = "jdbc:mysql://localhost/FRWA";
-    private final String USERNAME = "root";
-    private final String PASSWORD = "";
 
     // Flight System Database Lists
     private ArrayList<User> users = new ArrayList<User>();
@@ -34,8 +31,20 @@ public class FlightSystem {
      * This method creates a connection to the SQL database.
      */
     public void createConnection() {
+        // Load database properties
+        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
+        if (properties == null) {
+            // Handle the error appropriately
+            return;
+        }
+
+        String url = properties.getProperty("db.url");
+        String dbUsername = properties.getProperty("db.username");
+        String dbPassword = properties.getProperty("db.password");
+
+        
         try {
-            dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+            dbConnect = DriverManager.getConnection(url, dbUsername, dbPassword);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -2,6 +2,7 @@ package view;
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.Properties;
 
 public class LoginGUI implements ActionListener {
 	JTextField userText;
@@ -78,10 +79,18 @@ public class LoginGUI implements ActionListener {
 		if (e.getActionCommand().equals("Login")) {
 			String username = userText.getText();
             String password = String.valueOf(passwordText.getPassword());
-         // Database Connection Details
-            String url = "jdbc:mysql://localhost/FRWA";
-            String dbUsername = "root";
-            String dbPassword = "password";
+        
+            // Load database properties
+            Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
+            if (properties == null) {
+                // Handle the error appropriately
+                return;
+            }
+
+            String url = properties.getProperty("db.url");
+            String dbUsername = properties.getProperty("db.username");
+            String dbPassword = properties.getProperty("db.password");
+
 
             try {
                
