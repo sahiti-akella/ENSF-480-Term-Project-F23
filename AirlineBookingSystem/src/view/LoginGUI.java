@@ -96,7 +96,7 @@ public class LoginGUI implements ActionListener {
                
                 Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword);
 
-                PreparedStatement credentials = connection.prepareStatement("SELECT * FROM users WHERE username=? AND password=?");
+                PreparedStatement credentials = connection.prepareStatement("SELECT * FROM users WHERE UserName=? AND UserPassword=?");
                 credentials.setString(1, username);
                 credentials.setString(2, password);
 
