@@ -32,7 +32,6 @@ public class Ticket {
     public Seat getSeat(){
         return this.seat;
     }
-
     public boolean getInsuranceSelection(){
         return this.insuranceSelected;
     }
