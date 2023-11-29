@@ -35,9 +35,8 @@ public class CustomerGUI implements ActionListener {
             String destination = flight.getDestination();
             String departureDate = flight.getDepartureDate();
 
-            String flightInfo = flightID + " | " + origin + " -> " + destination + " : " + departureDate;
+            String flightInfo = "ID: " + flightID + " | " + origin + " -> " + destination + " : " + departureDate;
             strFlightList.add(flightInfo);
-            System.out.println(flightInfo);
         }
 
         return strFlightList;
