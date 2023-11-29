@@ -114,7 +114,13 @@ public class SystemAdminGUI {
         }
     }
 
-    private void performAdminAction() {
+       private void performAdminAction() {
+
+        if (isEmpty(firstNameField.getText()) || isEmpty(lastNameField.getText()) || isEmpty(emailField.getText()) || isEmpty(addressField.getText())) {
+            showError("Incomplete fields. Please fill in all the information.");
+            return;
+        }
+
         // Get the selected admin action
         String selectedAction = getAdminActionFromUser();
 
@@ -142,6 +148,13 @@ public class SystemAdminGUI {
                 // Handle the case where an unknown action is selected
                 JOptionPane.showMessageDialog(null, "Invalid action selected.");
         }
+    }
+    private boolean isEmpty(String value) {
+        return value.trim().isEmpty();
+    }
+
+    private void showError(String message) {
+        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private String getAdminActionFromUser() {
