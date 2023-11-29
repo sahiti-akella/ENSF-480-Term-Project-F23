@@ -2,102 +2,229 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Properties;
 
 public class SystemAdminGUI {
 
-    private JFrame frame;
-    private JPanel mainPanel;
-    private JTextArea displayArea;
+    private Connection connection;
+
+    private JTextField firstNameField;
+    private JTextField lastNameField;
+    private JTextField emailField;
+    private JTextField addressField;
 
     public SystemAdminGUI() {
         createUI();
     }
 
     public void createUI() {
-        frame = new JFrame("System Admin GUI");
-        frame.setBounds(100, 100, 800, 600);
+        initializeDatabase();
+        JFrame frame = new JFrame();
+        frame.setTitle("Admin Welcome Page");
+        JPanel panel = new JPanel();
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(panel);
 
-        mainPanel = new JPanel();
-        frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
-        mainPanel.setLayout(new FlowLayout());
+        panel.setLayout(null);
 
-        displayArea = new JTextArea(20, 60);
-        JScrollPane scrollPane = new JScrollPane(displayArea);
-        mainPanel.add(scrollPane);
+        JLabel welcomeLabel = new JLabel("Welcome!");
+        welcomeLabel.setBounds(30, 10, 200, 40);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        panel.add(welcomeLabel);
 
-        JButton browsePassengerListButton = new JButton("Browse Passenger List");
-        mainPanel.add(browsePassengerListButton);
+        JLabel promptLabel = new JLabel("Please input your information:");
+        promptLabel.setBounds(30, 50, 250, 25);
+        panel.add(promptLabel);
 
-        JButton performSomeAdminAction = new JButton("Perform Admin Action");
-        mainPanel.add(performSomeAdminAction);
+        collectAdminInfo(panel);
 
-        browsePassengerListButton.addActionListener(e -> openBrowsePassengerListFrame());
+        JLabel errorLabel = new JLabel("");
+        errorLabel.setBounds(30, 190, 300, 25);
+        errorLabel.setForeground(Color.RED);
+        panel.add(errorLabel);
 
-        performSomeAdminAction.addActionListener(e -> performAdminAction());
+        JButton continueButton = new JButton("Continue");
+        continueButton.setBounds(80, 220, 180, 40);
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                performAdminAction();
+            }
+        });
+        panel.add(continueButton);
 
         frame.setVisible(true);
     }
 
-    private void openBrowsePassengerListFrame() {
-        JFrame browseFrame = new JFrame("Browse Passenger List");
-        browseFrame.setBounds(200, 200, 600, 400);
+    private void collectAdminInfo(JPanel panel) {
+        JLabel firstNameLabel = new JLabel("First Name:");
+        firstNameLabel.setBounds(30, 80, 80, 25);
+        panel.add(firstNameLabel);
 
-        JPanel browsePanel = new JPanel();
-        browseFrame.getContentPane().add(browsePanel, BorderLayout.CENTER);
+        firstNameField = new JTextField();
+        firstNameField.setBounds(110, 80, 200, 25);
+        panel.add(firstNameField);
 
-        JTextArea passengerListArea = new JTextArea(15, 40);
-        JScrollPane scrollPane = new JScrollPane(passengerListArea);
-        browsePanel.add(scrollPane);
+        JLabel lastNameLabel = new JLabel("Last Name:");
+        lastNameLabel.setBounds(30, 110, 80, 25);
+        panel.add(lastNameLabel);
 
-        // Call the method to fetch and display passenger information
-        fetchAndDisplayPassengerInfo(passengerListArea);
+        lastNameField = new JTextField();
+        lastNameField.setBounds(110, 110, 200, 25);
+        panel.add(lastNameField);
 
-        browseFrame.setVisible(true);
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setBounds(30, 140, 80, 25);
+        panel.add(emailLabel);
+
+        emailField = new JTextField();
+        emailField.setBounds(110, 140, 200, 25);
+        panel.add(emailField);
+
+        JLabel addressLabel = new JLabel("Address:");
+        addressLabel.setBounds(30, 170, 80, 25);
+        panel.add(addressLabel);
+
+        addressField = new JTextField();
+        addressField.setBounds(110, 170, 200, 25);
+        panel.add(addressField);
     }
 
-    private void fetchAndDisplayPassengerInfo(JTextArea passengerListArea) {
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/FRWA", "root", "password");
-            String query = "SELECT * FROM CUSTOMERS";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+    private void initializeDatabase() {
+        // Load database properties
+        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
+        if (properties == null) {
+            // Handle the error appropriately
+            return;
+        }
 
-                while (resultSet.next()) {
-                    String userInfo = String.format("UserID: %d, UserName: %s, FirstName: %s, LastName: %s, Address: %s, Email: %s, Registered: %b%n",
-                            resultSet.getInt("UserID"),
-                            resultSet.getString("UserName"),
-                            resultSet.getString("FirstName"),
-                            resultSet.getString("LastName"),
-                            resultSet.getString("Address"),
-                            resultSet.getString("Email"),
-                            resultSet.getBoolean("isRegistered"));
-                    passengerListArea.append(userInfo);
-                }
-            }
-        } catch (SQLException e) {
+        String url = properties.getProperty("db.url");
+        String dbUsername = properties.getProperty("db.username");
+        String dbPassword = properties.getProperty("db.password");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(url, dbUsername, dbPassword);
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
     private void performAdminAction() {
-        displayArea.setText("Performing System Admin Action...\n");
+        // Placeholder for admin action logic
+        // You can call specific methods for different admin actions here
 
-        // admin action logic
+        // Example: Add/remove a flight
+        // addFlight("New York", "Los Angeles", "01/01/2024", 1);
 
-        displayArea.append("System Admin Action Completed!");
+        // Example: Add/remove a crew
+        // addCrew("John Doe", "Flight Attendant");
+
+        // Example: Add/remove an aircraft
+        // addAircraft("Airbus A320");
+
+        // Example: Add/remove flight destination
+        // addFlightDestination("Chicago");
+
+        // Example: Add/remove/modify flights information
+        // modifyFlightInformation(1, "New York", "Los Angeles", "01/01/2024", 1);
+
+        // Example: Print list of users
+        // printListOfUsers();
+
+        // Add more admin actions as needed
+    }
+
+    private void addFlight(String origin, String destination, String departureDate, int aircraftID) {
+        // Display a dialog to get flight information from the admin
+        JTextField originField = new JTextField();
+        JTextField destinationField = new JTextField();
+        JTextField departureDateField = new JTextField();
+        JTextField aircraftIDField = new JTextField();
+
+        Object[] message = {
+                "Origin:", originField,
+                "Destination:", destinationField,
+                "Departure Date:", departureDateField,
+                "Aircraft ID:", aircraftIDField
+        };
+
+        int option = JOptionPane.showConfirmDialog(null, message, "Enter Flight Information", JOptionPane.OK_CANCEL_OPTION);
+
+        // Check if the admin clicked "OK"
+        if (option == JOptionPane.OK_OPTION) {
+            // Get the entered values
+            String newOrigin = originField.getText();
+            String newDestination = destinationField.getText();
+            String newDepartureDate = departureDateField.getText();
+            int newAircraftID = Integer.parseInt(aircraftIDField.getText());
+
+            // Use the entered values to insert a new flight into the database
+            try {
+                String sql = "INSERT INTO FLIGHTS (Origin, Destination, DepartureDate, AircraftID) VALUES (?, ?, ?, ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, newOrigin);
+                preparedStatement.setString(2, newDestination);
+                preparedStatement.setString(3, newDepartureDate);
+                preparedStatement.setInt(4, newAircraftID);
+
+                // Execute the query
+                preparedStatement.executeUpdate();
+
+                // Display a success message
+                JOptionPane.showMessageDialog(null, "Flight added successfully.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle the exception (e.g., display an error message)
+                JOptionPane.showMessageDialog(null, "Error adding flight. Please check the input and try again.");
+            }
+        }
+    }
+    private void addCrew(String crewName, String crewRole) {
+        // Implement logic to add a crew member to the database
+        // ...
+
+        // Example: Display a success message
+        JOptionPane.showMessageDialog(null, "Crew member added successfully.");
+    }
+
+    private void addAircraft(String aircraftType) {
+        // Implement logic to add an aircraft to the database
+        // ...
+
+        // Example: Display a success message
+        JOptionPane.showMessageDialog(null, "Aircraft added successfully.");
+    }
+
+    private void addFlightDestination(String destination) {
+        // Implement logic to add a new flight destination to the database
+        // ...
+
+        // Example: Display a success message
+        JOptionPane.showMessageDialog(null, "Flight destination added successfully.");
+    }
+
+    private void modifyFlightInformation(int flightID, String newOrigin, String newDestination, String newDepartureDate, int newAircraftID) {
+        // Implement logic to modify flight information in the database
+        // ...
+
+        // Example: Display a success message
+        JOptionPane.showMessageDialog(null, "Flight information modified successfully.");
+    }
+
+    private void printListOfUsers() {
+        // Implement logic to retrieve and print the list of users from the database
+        // ...
+
+        // Example: Display the list in a message dialog
+        JOptionPane.showMessageDialog(null, "List of users:\nUser1, User2, User3, ...");
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                // Load the JDBC driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                new SystemAdminGUI();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        new SystemAdminGUI().createUI();
     }
 }
