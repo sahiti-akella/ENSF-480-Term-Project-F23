@@ -25,7 +25,32 @@ public class FlightSystem {
     private ArrayList<Seat> seats = new ArrayList<Seat>();
     private ArrayList<Payment> payments = new ArrayList<Payment>();
     private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+
+    //Singleton instance
+    private static FlightSystem onlyInstance;
+
+    //Private constructor
+    private FlightSystem(){
+        createConnection();
+        initializeData();
+    }
     
+    /**
+     * Getter method returns the singleton instance of FlightSystem.
+     * If the instance does not exist, it creates a new one.
+     *
+     * @return the singleton instance of FlightSystem.
+     */
+    public static FlightSystem getInstance() {
+        if (onlyInstance == null) {
+            synchronized (FlightSystem.class) {
+                if (onlyInstance == null) {
+                    onlyInstance = new FlightSystem();
+                }
+            }
+        }
+        return onlyInstance;
+    }
     
     /**
      * This method creates a connection to the SQL database.
@@ -63,6 +88,10 @@ public class FlightSystem {
         return this.users;
     }
 
+    public ArrayList<Customer> getCustomerList() {
+        return this.customers;
+    }
+
     public ArrayList<Aircraft> getAircraftList() {
         return this.aircrafts;
     }
@@ -83,8 +112,7 @@ public class FlightSystem {
         return this.tickets;
     }
 
-    public FlightSystem() {
-        createConnection();
+    private void initializeData() {
 
         // List of Users
          try {

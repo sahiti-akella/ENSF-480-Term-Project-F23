@@ -64,8 +64,10 @@ public class FlightCancellation {
     }
 
     private ArrayList<Ticket> getTicketsForUser(int userID) {
+        FlightSystem sys = FlightSystem.getInstance();
+
         ArrayList<Ticket> userTicketList = new ArrayList<>();
-        ArrayList<Ticket> ticketList = new FlightSystem().getTicketList();
+        ArrayList<Ticket> ticketList = sys.getTicketList();
         
         for (Ticket ticket : ticketList) {
             if (ticket.getCustomer().getUserID() == userID) {
