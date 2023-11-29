@@ -1,42 +1,48 @@
 package view;
 import javax.swing.*;
-
-import model.users.*;
-
 import java.awt.event.*;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class LoginGUI implements ActionListener {
 	JTextField userText;
 	JPasswordField passwordText;
 	JLabel success;
+    int UserID = 0;
+    String UserName = null;
+    String UserPassword = null;
+    String FirstName= null;
+    String LastName = null;
+    String Address = null;
+    String Email = null; 
+    String AccountType = null;
+    boolean isRegistered = false; 
+    String CreditCardNumber = null;
 	
 	public static void main(String[] args) {
         LoginGUI gui = new LoginGUI();
         gui.createUI();
     }
 	
-	public void openUserGui(String type, int userID) {
+	public void openUserGui(int UserID, String UserName, String UserPassword, String FirstName, String LastName, String Address, String Email, String AccountType, boolean isRegistered, String CreditCardNumber) {
 		// Valid credentials, check account type
-        if (type.equals("admin")) {
+        if (AccountType.equals("admin")) {
             // Open System Admin GUI
-            new SystemAdminGUI().createUI();
-        } else if (type.equals("customer")) {
+            new SystemAdminGUI().initialize();
+        } else if (AccountType.equals("customer")) {
             // Open Customer GUI
-            new CustomerGUI(userID).createUI();
-        } else if (type.equals("airline-agent")){
+            new CustomerGUI().createCustomer(UserID, UserName, UserPassword, FirstName, LastName, Email, Address, isRegistered);
+        } else if (AccountType.equals("airline-agent")){
             // Open Airline Agent GUI
         	new AirlineAgentGUI().createUI();
-        } else if (type.equals("flight-attendant")){
+        } else if (AccountType.equals("flight-attendant")){
         	// Open Flight Attendant GUI
         	new FlightAttendantGUI().createUI();
-        } else if (type.equals("tourism-agent")){
+        } else if (AccountType.equals("tourism-agent")){
             // Open Tourism Agent GUI
             new TourismAgentGUI().createUI();
         } else {
-        	success.setText("Unknown acount type");
+        	success.setText("Unknown account type");
         }
 	}
 
@@ -95,26 +101,39 @@ public class LoginGUI implements ActionListener {
             String dbUsername = properties.getProperty("db.username");
             String dbPassword = properties.getProperty("db.password");
 
+
             try {
+               
                 Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword);
-            
-                PreparedStatement credentials = connection.prepareStatement("SELECT * FROM users WHERE UserName=? AND UserPassword=?");
+
+                PreparedStatement credentials = connection.prepareStatement("SELECT * FROM users WHERE username=? AND userpassword=?");
                 credentials.setString(1, username);
                 credentials.setString(2, password);
-            
+
                 ResultSet resultSet = credentials.executeQuery();
-            
+
                 if (resultSet.next()) {
                     // Valid credentials
-                    String accountType = resultSet.getString("AccountType");
-                    int userID = resultSet.getInt("UserID");
+                    UserID = resultSet.getInt("UserID");
+                    UserName = resultSet.getString("UserName");
+                    UserPassword = resultSet.getString("UserPassword");
+                    FirstName= resultSet.getString("FirstName");
+                    LastName = resultSet.getString("LastName");
+                    Address = resultSet.getString("Address");
+                    Email = resultSet.getString("Email"); 
+                    AccountType = resultSet.getString("AccountType");
+                    isRegistered = resultSet.getBoolean("isRegistered");
+                    CreditCardNumber = resultSet.getString("CreditCardNumber");
                     success.setText("Login Successful");
-            
                     Timer timer = new Timer(2000, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            openUserGui(accountType, userID);
-                        }
+                    	@Override
+                    	public void actionPerformed(ActionEvent e) {
+                    		try {
+                                openUserGui(UserID, UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered, CreditCardNumber);
+                            } catch (SQLException ex) {
+                                ex.printStackTrace(); // handle the exception appropriately
+                            }
+                    	}
                     });
                     timer.setRepeats(false); // Set to run only once
                     timer.start();
@@ -122,12 +141,11 @@ public class LoginGUI implements ActionListener {
                     // Invalid credentials
                     success.setText("Login Failed");
                 }
-            
+
                 connection.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            
         }
     }
 }
