@@ -232,14 +232,17 @@ public class FlightSystem {
             ex.printStackTrace();
         }
 
-        // List of Aircrafts
+       // List of Aircrafts
         try {
             PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM AIRCRAFTS");
             results = myStmt.executeQuery();
 
             while (results.next()) {
-                Aircraft aircraft = new Aircraft(results.getInt("AircraftID"), 
-                results.getString("AircraftType"));
+                Aircraft aircraft = new Aircraft(
+                    results.getInt("AircraftID"),
+                    results.getString("AircraftType")
+                    
+                );
                 aircrafts.add(aircraft);
             }
 
@@ -247,10 +250,12 @@ public class FlightSystem {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
         // List of Flights
          try {
-            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM FLIGHTS");
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT FLIGHTS.*, AIRCRAFTS.AircraftType " +
+                "FROM FLIGHTS " +
+                "JOIN AIRCRAFTS ON FLIGHTS.AircraftID = AIRCRAFTS.AircraftID");
+                
             results = myStmt.executeQuery();
 
             while (results.next()) {
@@ -258,8 +263,8 @@ public class FlightSystem {
                 results.getString("AircraftType"), 
                 results.getInt("FlightID"), 
                 results.getString("Origin"), 
-                results.getString("Destination "), 
-                results.getString("DepartureDate "));
+                results.getString("Destination"), 
+                results.getString("DepartureDate"));
                 flights.add(flight);
             }
             myStmt.close();
@@ -269,7 +274,10 @@ public class FlightSystem {
 
         // List of Seats
          try {
-            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM SEATS");
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT s.FlightID, s.SeatID, sl.SeatType, sl.Price, s.IsAvailable " +
+                "FROM SEATS s " +
+                "JOIN SEAT_LAYOUTS sl ON s.LayoutID = sl.LayoutID");
+
             results = myStmt.executeQuery();
 
             while (results.next()) {
