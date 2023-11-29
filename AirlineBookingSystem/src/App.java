@@ -1,3 +1,4 @@
+import view.FlightSystem;
 import view.LoginGUI;
 
 public class App {
