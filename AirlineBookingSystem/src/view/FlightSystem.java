@@ -269,7 +269,10 @@ public class FlightSystem {
 
         // List of Seats
          try {
-            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM SEATS");
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT s.FlightID, s.SeatID, sl.SeatType, sl.Price, s.IsAvailable " +
+                "FROM SEATS s " +
+                "JOIN SEAT_LAYOUTS sl ON s.LayoutID = sl.LayoutID");
+                
             results = myStmt.executeQuery();
 
             while (results.next()) {

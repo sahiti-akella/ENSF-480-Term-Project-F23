@@ -35,14 +35,13 @@ public class CustomerGUI implements ActionListener {
             String destination = flight.getDestination();
             String departureDate = flight.getDepartureDate();
 
-            String flightInfo = origin + " -> " + destination + " : " + departureDate;
+            String flightInfo = flightID + " | " + origin + " -> " + destination + " : " + departureDate;
             strFlightList.add(flightInfo);
+            System.out.println(flightInfo);
         }
 
         return strFlightList;
     }
-
-    private Connection connection;
     // public static void main(String[] args) {
     //     CustomerGUI gui = new CustomerGUI();
     //     gui.createUI();
@@ -79,6 +78,7 @@ public class CustomerGUI implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current frame
+                //open browse flights
                 openBrowseFlightListFrame();
             }
         });
@@ -90,7 +90,8 @@ public class CustomerGUI implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current frame
-                showCancelConfirmation();
+                //Open FLight cancellation gui
+                new FlightCancellation(userID).createUI();
             }
         });
         panel.add(cancelFlightButton);
@@ -102,21 +103,6 @@ public class CustomerGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //empty 
-    }
-
-    
-    private void showCancelConfirmation() {
-        int result = JOptionPane.showConfirmDialog(null,
-                "Are you sure you want to cancel your flight?",
-                "Cancel Confirmation",
-                JOptionPane.YES_NO_OPTION);
-
-        if (result == JOptionPane.YES_OPTION) {
-            // Update database or perform cancellation actions
-            // ...
-
-            JOptionPane.showMessageDialog(null, "Flight cancelled successfully.");
-        }
     }
 
     private void openBrowseFlightListFrame() {
