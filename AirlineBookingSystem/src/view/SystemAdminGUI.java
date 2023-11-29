@@ -115,9 +115,62 @@ public class SystemAdminGUI {
     }
 
     private void performAdminAction() {
+        // Get the selected admin action
+        String selectedAction = getAdminActionFromUser();
+
+        // Check the selected action and perform the corresponding logic
+        switch (selectedAction) {
+            case "Add Flight":
+                addFlight();
+                break;
+            case "Add Crew":
+                addCrew();
+                break;
+            case "Add Aircraft":
+                addAircraft();
+                break;
+            case "Add Flight Destination":
+                addFlightDestination();
+                break;
+            case "Modify Flight Information":
+                modifyFlightInformation();
+                break;
+            case "Print List of Users":
+                printListOfUsers();
+                break;
+            default:
+                // Handle the case where an unknown action is selected
+                JOptionPane.showMessageDialog(null, "Invalid action selected.");
+        }
     }
 
-    private void addFlight(String origin, String destination, String departureDate, int aircraftID) {
+    private String getAdminActionFromUser() {
+        // Array of possible admin actions
+        String[] actions = {
+                "Add Flight",
+                "Add Crew",
+                "Add Aircraft",
+                "Add Flight Destination",
+                "Modify Flight Information",
+                "Print List of Users"
+        };
+
+        // Display a dialog with a dropdown menu for admin actions
+        String selectedAction = (String) JOptionPane.showInputDialog(
+                null,
+                "Select an action:",
+                "Admin Action",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                actions,
+                actions[0]
+        );
+
+        // Return the selected action
+        return selectedAction;
+    }
+
+    private void addFlight() {
         // Display a dialog to get flight information from the admin
         JTextField originField = new JTextField();
         JTextField destinationField = new JTextField();
@@ -164,108 +217,183 @@ public class SystemAdminGUI {
         }
     }
 
-    private void addCrew(String crewName, String crewRole) {
-        // Implement logic to add a crew member to the database
-        try {
-            String sql = "INSERT INTO CREW_MEMBERS (CrewName, CrewRole) VALUES (?, ?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, crewName);
-                preparedStatement.setString(2, crewRole);
+    private void addCrew() {
+        // Display a dialog to get crew information from the admin
+        JTextField crewNameField = new JTextField();
+        JTextField crewRoleField = new JTextField();
 
-                // Execute the update
-                int rowsAffected = preparedStatement.executeUpdate();
+        Object[] message = {
+                "Crew Name:", crewNameField,
+                "Crew Role:", crewRoleField
+        };
 
-                if (rowsAffected > 0) {
-                    // Display a success message
-                    JOptionPane.showMessageDialog(null, "Crew member added successfully.");
-                } else {
-                    // Display a message if no rows were affected (insert failed)
-                    JOptionPane.showMessageDialog(null, "Failed to add crew member. Please try again.");
+        int option = JOptionPane.showConfirmDialog(null, message, "Enter Crew Information", JOptionPane.OK_CANCEL_OPTION);
+
+        // Check if the admin clicked "OK"
+        if (option == JOptionPane.OK_OPTION) {
+            // Get the entered values
+            String newCrewName = crewNameField.getText();
+            String newCrewRole = crewRoleField.getText();
+
+            // Use the entered values to insert a new crew member into the database
+            try {
+                String sql = "INSERT INTO CREW_MEMBERS (CrewName, CrewRole) VALUES (?, ?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    preparedStatement.setString(1, newCrewName);
+                    preparedStatement.setString(2, newCrewRole);
+
+                    // Execute the update
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        // Display a success message
+                        JOptionPane.showMessageDialog(null, "Crew member added successfully.");
+                    } else {
+                        // Display a message if no rows were affected (insert failed)
+                        JOptionPane.showMessageDialog(null, "Failed to add crew member. Please try again.");
+                    }
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle any SQL exceptions
+                JOptionPane.showMessageDialog(null, "Error adding crew member. Please check the input and try again.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle any SQL exceptions
-            JOptionPane.showMessageDialog(null, "Error adding crew member. Please check the input and try again.");
         }
     }
 
-    private void addAircraft(String aircraftType) {
-        // Implement logic to add an aircraft to the database
-        try {
-            String sql = "INSERT INTO AIRCRAFTS (AircraftType) VALUES (?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, aircraftType);
+    private void addAircraft() {
+        // Display a dialog to get aircraft information from the admin
+        JTextField aircraftTypeField = new JTextField();
 
-                // Execute the update
-                int rowsAffected = preparedStatement.executeUpdate();
+        Object[] message = {
+                "Aircraft Type:", aircraftTypeField
+        };
 
-                if (rowsAffected > 0) {
-                    // Display a success message
-                    JOptionPane.showMessageDialog(null, "Aircraft added successfully.");
-                } else {
-                    // Display a message if no rows were affected (insert failed)
-                    JOptionPane.showMessageDialog(null, "Failed to add aircraft. Please try again.");
+        int option = JOptionPane.showConfirmDialog(null, message, "Enter Aircraft Information", JOptionPane.OK_CANCEL_OPTION);
+
+        // Check if the admin clicked "OK"
+        if (option == JOptionPane.OK_OPTION) {
+            // Get the entered values
+            String newAircraftType = aircraftTypeField.getText();
+
+            // Use the entered values to insert a new aircraft into the database
+            try {
+                String sql = "INSERT INTO AIRCRAFTS (AircraftType) VALUES (?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    preparedStatement.setString(1, newAircraftType);
+
+                    // Execute the update
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        // Display a success message
+                        JOptionPane.showMessageDialog(null, "Aircraft added successfully.");
+                    } else {
+                        // Display a message if no rows were affected (insert failed)
+                        JOptionPane.showMessageDialog(null, "Failed to add aircraft. Please try again.");
+                    }
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle any SQL exceptions
+                JOptionPane.showMessageDialog(null, "Error adding aircraft. Please check the input and try again.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle any SQL exceptions
-            JOptionPane.showMessageDialog(null, "Error adding aircraft. Please check the input and try again.");
         }
     }
 
-    private void addFlightDestination(String destination) {
-        // Implement logic to add a new flight destination to the database
-        try {
-            String sql = "INSERT INTO FLIGHT_DESTINATIONS (Destination) VALUES (?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, destination);
+    private void addFlightDestination() {
+        // Display a dialog to get flight destination information from the admin
+        JTextField destinationField = new JTextField();
 
-                // Execute the update
-                int rowsAffected = preparedStatement.executeUpdate();
+        Object[] message = {
+                "Flight Destination:", destinationField
+        };
 
-                if (rowsAffected > 0) {
-                    // Display a success message
-                    JOptionPane.showMessageDialog(null, "Flight destination added successfully.");
-                } else {
-                    // Display a message if no rows were affected (insert failed)
-                    JOptionPane.showMessageDialog(null, "Failed to add flight destination. Please try again.");
+        int option = JOptionPane.showConfirmDialog(null, message, "Enter Flight Destination Information", JOptionPane.OK_CANCEL_OPTION);
+
+        // Check if the admin clicked "OK"
+        if (option == JOptionPane.OK_OPTION) {
+            // Get the entered values
+            String newDestination = destinationField.getText();
+
+            // Use the entered values to insert a new flight destination into the database
+            try {
+                String sql = "INSERT INTO FLIGHT_DESTINATIONS (Destination) VALUES (?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    preparedStatement.setString(1, newDestination);
+
+                    // Execute the update
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        // Display a success message
+                        JOptionPane.showMessageDialog(null, "Flight destination added successfully.");
+                    } else {
+                        // Display a message if no rows were affected (insert failed)
+                        JOptionPane.showMessageDialog(null, "Failed to add flight destination. Please try again.");
+                    }
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle any SQL exceptions
+                JOptionPane.showMessageDialog(null, "Error adding flight destination. Please check the input and try again.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle any SQL exceptions
-            JOptionPane.showMessageDialog(null, "Error adding flight destination. Please check the input and try again.");
         }
     }
 
-    private void modifyFlightInformation(int flightID, String newOrigin, String newDestination, String newDepartureDate, int newAircraftID) {
-        // Implement logic to modify flight information in the database
-        try {
-            String sql = "UPDATE FLIGHTS SET Origin=?, Destination=?, DepartureDate=?, AircraftID=? WHERE FlightID=?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, newOrigin);
-                preparedStatement.setString(2, newDestination);
-                preparedStatement.setString(3, newDepartureDate);
-                preparedStatement.setInt(4, newAircraftID);
-                preparedStatement.setInt(5, flightID);
+    private void modifyFlightInformation() {
+        // Display a dialog to get flight modification information from the admin
+        JTextField flightIDField = new JTextField();
+        JTextField newOriginField = new JTextField();
+        JTextField newDestinationField = new JTextField();
+        JTextField newDepartureDateField = new JTextField();
+        JTextField newAircraftIDField = new JTextField();
 
-                // Execute the update
-                int rowsAffected = preparedStatement.executeUpdate();
+        Object[] message = {
+                "Flight ID:", flightIDField,
+                "New Origin:", newOriginField,
+                "New Destination:", newDestinationField,
+                "New Departure Date:", newDepartureDateField,
+                "New Aircraft ID:", newAircraftIDField
+        };
 
-                if (rowsAffected > 0) {
-                    // Display a success message
-                    JOptionPane.showMessageDialog(null, "Flight information modified successfully.");
-                } else {
-                    // Display a message if no rows were affected (update failed)
-                    JOptionPane.showMessageDialog(null, "Failed to modify flight information. Please try again.");
+        int option = JOptionPane.showConfirmDialog(null, message, "Enter Flight Modification Information", JOptionPane.OK_CANCEL_OPTION);
+
+        // Check if the admin clicked "OK"
+        if (option == JOptionPane.OK_OPTION) {
+            // Get the entered values
+            int flightID = Integer.parseInt(flightIDField.getText());
+            String newOrigin = newOriginField.getText();
+            String newDestination = newDestinationField.getText();
+            String newDepartureDate = newDepartureDateField.getText();
+            int newAircraftID = Integer.parseInt(newAircraftIDField.getText());
+
+            // Use the entered values to modify flight information in the database
+            try {
+                String sql = "UPDATE FLIGHTS SET Origin=?, Destination=?, DepartureDate=?, AircraftID=? WHERE FlightID=?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    preparedStatement.setString(1, newOrigin);
+                    preparedStatement.setString(2, newDestination);
+                    preparedStatement.setString(3, newDepartureDate);
+                    preparedStatement.setInt(4, newAircraftID);
+                    preparedStatement.setInt(5, flightID);
+
+                    // Execute the update
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        // Display a success message
+                        JOptionPane.showMessageDialog(null, "Flight information modified successfully.");
+                    } else {
+                        // Display a message if no rows were affected (update failed)
+                        JOptionPane.showMessageDialog(null, "Failed to modify flight information. Please try again.");
+                    }
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle any SQL exceptions
+                JOptionPane.showMessageDialog(null, "Error modifying flight information. Please check the input and try again.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle any SQL exceptions
-            JOptionPane.showMessageDialog(null, "Error modifying flight information. Please check the input and try again.");
         }
     }
 
@@ -290,7 +418,6 @@ public class SystemAdminGUI {
             JOptionPane.showMessageDialog(null, "Error retrieving list of users. Please try again.");
         }
     }
-
     public static void main(String[] args) {
         new SystemAdminGUI().createUI();
     }
