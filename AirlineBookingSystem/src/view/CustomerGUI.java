@@ -12,19 +12,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class CustomerGUI implements ActionListener {
-    
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/FRWA";
+    private static final String USER = "root";
+    private static final String PASSWORD = "password";
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JTextField emailField;
     private JTextField addressField;
-    private int userID;
-
-    public CustomerGUI(int userID) {
-        this.userID = userID;
-    }
 
     private ArrayList<String> getAvailableFlights() {
     ArrayList<String> flightList = new ArrayList<>();
@@ -51,10 +47,11 @@ public class CustomerGUI implements ActionListener {
 }
 
     private Connection connection;
-    // public static void main(String[] args) {
-    //     CustomerGUI gui = new CustomerGUI();
-    //     gui.createUI();
-    // }
+    public static void main(String[] args) {
+        CustomerGUI gui = new CustomerGUI();
+        gui.createUI();
+    }
+
 
     public void createUI() {
         initializeDatabase();
@@ -137,25 +134,11 @@ public class CustomerGUI implements ActionListener {
     }
 
      // Validate and create customer object
-    private Customer createCustomer() {
-        String firstName = firstNameField.getText().trim();
-        String lastName = lastNameField.getText().trim();
-        String email = emailField.getText().trim();
-        String address = addressField.getText().trim();
+    Customer createCustomer(int UserID, String UserName, String UserPassword, String firstName, String lastName, String email, String address, boolean isRegistered) {
+        
 
-        // Check if any field is empty
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || address.isEmpty()) {
-            showError("Please complete the form.");
-            return null;
-        }
-
-        Customer customer = new Customer(0, "", "", firstName, lastName, email, address, false);
-
-        if (!customer.isValidCustomerInfo()) {
-            showError("Please enter a valid email.");
-            return null;
-        }
-
+        Customer customer = new Customer(UserID, UserName, UserPassword, firstName, lastName, email, address, isRegistered);
+        openOptionsPanel(customer);
         return customer;
     }
 
@@ -164,21 +147,9 @@ public class CustomerGUI implements ActionListener {
     }
 
     private void initializeDatabase() {
-
-        // Load database properties
-        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
-        if (properties == null) {
-            // Handle the error appropriately
-            return;
-        }
-
-        String url = properties.getProperty("db.url");
-        String dbUsername = properties.getProperty("db.username");
-        String dbPassword = properties.getProperty("db.password");
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url, dbUsername, dbPassword);
+            connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
