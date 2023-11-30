@@ -8,6 +8,7 @@ import java.util.Properties;
 public class SystemAdminGUI {
 
     private Connection connection;
+    private FlightSystem sys = FlightSystem.getInstance();
 
 
 
@@ -167,6 +168,9 @@ public class SystemAdminGUI {
 
                     // Display a success message
                     JOptionPane.showMessageDialog(null, "Flight added successfully.");
+                    
+                    // Reset FlightSys
+                    sys.synchronizeFlightSys();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
