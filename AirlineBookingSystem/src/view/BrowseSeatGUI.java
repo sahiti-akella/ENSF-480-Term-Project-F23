@@ -9,17 +9,22 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
+import model.*;
 
 public class BrowseSeatGUI {
     private JFrame frame;
     private JPanel seatPanel;
-    private String selectedFlight;
+    private Flight selectedFlight;
     private Connection dbConnect;
+    private FlightSystem sys;
     private static final int SEATS_PER_FLIGHT = 12;
 
-    public BrowseSeatGUI(String selectedFlight) {
+
+    public BrowseSeatGUI(Flight selectedFlight) {
         this.selectedFlight = selectedFlight;
+        this.sys = FlightSystem.getInstance();
     }
 
     public void createUI() {
@@ -33,7 +38,7 @@ public class BrowseSeatGUI {
         seatPanel.setLayout(new GridLayout(3, 4)); // Change the dimensions as needed
 
         // Calculate the starting seat number based on the flight
-        int startingSeatNumber = (getFlightID(selectedFlight) - 1) * SEATS_PER_FLIGHT + 1;
+        int startingSeatNumber = (selectedFlight.getflightID() - 1) * SEATS_PER_FLIGHT + 1;
 
         // Create seats
         for (int row = 1; row <= 3; row++) {
@@ -95,40 +100,20 @@ public class BrowseSeatGUI {
 
     private boolean isSeatAvailable(int seatNumber) {
 
-        try {
-            // Query the database to check seat availability for the selected flight
-            String query = "SELECT IsAvailable FROM SEATS WHERE FlightID = ? AND SeatID = ?";
-            PreparedStatement statement = dbConnect.prepareStatement(query);
-            statement.setInt(1, getFlightID(selectedFlight));
-            statement.setInt(2, seatNumber);
-            ResultSet resultSet = statement.executeQuery();
+        ArrayList<Seat> seatsList = sys.getSeatList();
 
-            if (resultSet.next()) {
-                int isAvailable = resultSet.getInt("IsAvailable");
-                return isAvailable == 1; // Assuming 1 represents available and 0 represents not available
+        for (Seat seat : seatsList){
+            if (seat.getSeatID() == seatNumber){
+                if(seat.isAvailable()){
+                    return true;
+                }
+                else return false;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return false; // Default to not available in case of an error
+        System.out.println("ERROR: seatNumber " + seatNumber + " not found in seat list");
+        return false; //in case of error
     }
 
-    private int getFlightID(String selectedFlight) {
-        // Query the database to get the FlightID for the selected flight
-        try {
-            String query = "SELECT FlightID FROM FLIGHTS WHERE CONCAT(Origin, ' -> ', Destination, ' : ', DepartureDate) = ?";
-            PreparedStatement statement = dbConnect.prepareStatement(query);
-            statement.setString(1, selectedFlight);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return resultSet.getInt("FlightID");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 in case of an error
-    }
 
     private class SeatClickListener implements ActionListener {
         @Override
