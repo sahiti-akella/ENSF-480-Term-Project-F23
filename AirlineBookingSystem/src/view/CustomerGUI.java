@@ -8,6 +8,8 @@ import model.users.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class CustomerGUI implements ActionListener {
@@ -131,8 +133,34 @@ public class CustomerGUI implements ActionListener {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedFlight = (String) dropdown.getSelectedItem();
-                if (!selectedFlight.equals("Select flight..")) {
+                String selectedFlightStr = (String) dropdown.getSelectedItem();
+
+                int flightID = -99; //default value most likely not a flight ID
+
+                // Define the pattern for extracting the ID
+                Pattern pattern = Pattern.compile("ID: (\\d+)");
+
+                Matcher matcher = pattern.matcher(selectedFlightStr);
+
+                // Check if the pattern matches
+                if (matcher.find()) {
+                    // Extract the matched ID as a string
+                    String idString = matcher.group(1);
+
+                    // Convert the string ID to an integer
+                    flightID = Integer.parseInt(idString);
+
+                } 
+                //loop through flight list
+                ArrayList<Flight> flightList = sys.getFlightList();
+                Flight selectedFlight = null;
+                for (Flight flight : flightList){
+                    if (flight.getflightID() == flightID){
+                        selectedFlight = flight;
+                    }
+                }
+
+                if (!selectedFlightStr.equals("Select flight..")) {
                     frame.dispose(); // Close the current frame
                     openBrowseSeatFrame(selectedFlight);
                 } else {
@@ -146,7 +174,7 @@ public class CustomerGUI implements ActionListener {
     }
     
 
-    private void openBrowseSeatFrame(String selectedFlight) {
+    private void openBrowseSeatFrame(Flight selectedFlight) {
         BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight);
         seatGUI.createUI();
     }

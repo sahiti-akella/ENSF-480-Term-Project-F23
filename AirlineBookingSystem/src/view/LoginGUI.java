@@ -1,11 +1,7 @@
 package view;
 import javax.swing.*;
-
-import model.users.*;
-
 import java.awt.event.*;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class LoginGUI implements ActionListener {
@@ -34,7 +30,7 @@ public class LoginGUI implements ActionListener {
         	new FlightAttendantGUI().createUI();
         } else if (type.equals("tourism-agent")){
             // Open Tourism Agent GUI
-            new TourismAgentGUI().createUI();
+            new TourismAgentGUI(userID).createUI();
         } else {
         	success.setText("Unknown acount type");
         }
