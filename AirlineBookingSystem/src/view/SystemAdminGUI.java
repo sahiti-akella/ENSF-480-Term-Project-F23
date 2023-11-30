@@ -3,7 +3,9 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
+import model.*;
 
 public class SystemAdminGUI {
 
@@ -153,6 +155,7 @@ public class SystemAdminGUI {
             String newDestination = destinationField.getText();
             String newDepartureDate = departureDateField.getText();
             int newAircraftID = Integer.parseInt(aircraftIDField.getText());
+            int flightID;
 
             // Use the entered values to insert a new flight into the database
             try {
@@ -171,12 +174,17 @@ public class SystemAdminGUI {
                     
                     // Reset FlightSys
                     sys.synchronizeFlightSys();
+
+                    ArrayList<Flight> flightList = sys.getFlightList();
+                    flightID = flightList.size(); 
+
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle the exception (e.g., display an error message)
                 JOptionPane.showMessageDialog(null, "Error adding flight. Please check the input and try again.");
             }
+            
         }
     }
 
