@@ -4,20 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 import model.*;
 
 public class BrowseSeatGUI {
     private JFrame frame;
     private JPanel seatPanel;
     private Flight selectedFlight;
-    private Connection dbConnect;
     private FlightSystem sys;
     private static final int SEATS_PER_FLIGHT = 12;
 
@@ -27,8 +20,7 @@ public class BrowseSeatGUI {
         this.sys = FlightSystem.getInstance();
     }
 
-    public void createUI() {
-        createConnection(); 
+    public void createUI() { 
         frame = new JFrame();
         frame.setTitle("Browse Seats - " + selectedFlight);
         frame.setSize(800, 600);
@@ -60,29 +52,6 @@ public class BrowseSeatGUI {
 
         frame.add(seatPanel);
         frame.setVisible(true);
-    }
-
-    /**
-     * This method creates a connection to the SQL database.
-     */
-    public void createConnection() {
-        // Load database properties
-        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
-        if (properties == null) {
-            // Handle the error appropriately
-            return;
-        }
-
-        String url = properties.getProperty("db.url");
-        String dbUsername = properties.getProperty("db.username");
-        String dbPassword = properties.getProperty("db.password");
-
-        
-        try {
-            dbConnect = DriverManager.getConnection(url, dbUsername, dbPassword);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 
