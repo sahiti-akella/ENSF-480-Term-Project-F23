@@ -2,8 +2,6 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Properties;
 
@@ -11,84 +9,47 @@ public class SystemAdminGUI {
 
     private Connection connection;
 
-    private JTextField firstNameField;
-    private JTextField lastNameField;
-    private JTextField emailField;
-    private JTextField addressField;
+
 
     public void createUI() {
         initializeDatabase();
+
         JFrame frame = new JFrame();
         frame.setTitle("Admin Welcome Page");
         JPanel panel = new JPanel();
-        frame.setSize(800, 600);
+        frame.setSize(400, 200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
-        panel.setLayout(null);
+        panel.setLayout(new GridLayout(0, 1));
 
-        JLabel welcomeLabel = new JLabel("Welcome!");
-        welcomeLabel.setBounds(30, 10, 200, 40);
+        JLabel welcomeLabel = new JLabel("Welcome to Admin Page!");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
         panel.add(welcomeLabel);
 
-        JLabel promptLabel = new JLabel("Please input your information:");
-        promptLabel.setBounds(30, 50, 250, 25);
-        panel.add(promptLabel);
+        String[] adminActions = {
+                "Add Flight",
+                "Add Crew",
+                "Add Aircraft",
+                "Add Flight Destination",
+                "Modify Flight Information",
+                "Print List of Users"
+        };
 
-        collectAdminInfo(panel);
-
-        JLabel errorLabel = new JLabel("");
-        errorLabel.setBounds(30, 190, 300, 25);
-        errorLabel.setForeground(Color.RED);
-        panel.add(errorLabel);
+        JComboBox<String> adminActionsDropdown = new JComboBox<>(adminActions);
+        panel.add(adminActionsDropdown);
 
         JButton continueButton = new JButton("Continue");
-        continueButton.setBounds(80, 220, 180, 40);
-        continueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                performAdminAction();
-            }
-        });
         panel.add(continueButton);
+
+        continueButton.addActionListener(e -> {
+            String selectedAction = (String) adminActionsDropdown.getSelectedItem();
+            performAdminAction(selectedAction);
+        });
 
         frame.setVisible(true);
     }
 
-    private void collectAdminInfo(JPanel panel) {
-        JLabel firstNameLabel = new JLabel("First Name:");
-        firstNameLabel.setBounds(30, 80, 80, 25);
-        panel.add(firstNameLabel);
-
-        firstNameField = new JTextField();
-        firstNameField.setBounds(110, 80, 200, 25);
-        panel.add(firstNameField);
-
-        JLabel lastNameLabel = new JLabel("Last Name:");
-        lastNameLabel.setBounds(30, 110, 80, 25);
-        panel.add(lastNameLabel);
-
-        lastNameField = new JTextField();
-        lastNameField.setBounds(110, 110, 200, 25);
-        panel.add(lastNameField);
-
-        JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setBounds(30, 140, 80, 25);
-        panel.add(emailLabel);
-
-        emailField = new JTextField();
-        emailField.setBounds(110, 140, 200, 25);
-        panel.add(emailField);
-
-        JLabel addressLabel = new JLabel("Address:");
-        addressLabel.setBounds(30, 170, 80, 25);
-        panel.add(addressLabel);
-
-        addressField = new JTextField();
-        addressField.setBounds(110, 170, 200, 25);
-        panel.add(addressField);
-    }
 
     private void initializeDatabase() {
         // Load database properties
@@ -110,17 +71,7 @@ public class SystemAdminGUI {
         }
     }
 
-       private void performAdminAction() {
-
-        if (isEmpty(firstNameField.getText()) || isEmpty(lastNameField.getText()) || isEmpty(emailField.getText()) || isEmpty(addressField.getText())) {
-            showError("Incomplete fields. Please fill in all the information.");
-            return;
-        }
-
-        // Get the selected admin action
-        String selectedAction = getAdminActionFromUser();
-
-        // Check the selected action and perform the corresponding logic
+    private void performAdminAction(String selectedAction) {
         switch (selectedAction) {
             case "Add Flight":
                 addFlight();
@@ -152,7 +103,6 @@ public class SystemAdminGUI {
     private void showError(String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
-
     private String getAdminActionFromUser() {
         // Array of possible admin actions
         String[] actions = {
@@ -427,7 +377,13 @@ public class SystemAdminGUI {
             JOptionPane.showMessageDialog(null, "Error retrieving list of users. Please try again.");
         }
     }
+
+
+
     public static void main(String[] args) {
-        new SystemAdminGUI().createUI();
+        SwingUtilities.invokeLater(() -> {
+            SystemAdminGUI systemAdminGUI = new SystemAdminGUI();
+            systemAdminGUI.createUI();
+        });
     }
 }
