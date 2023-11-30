@@ -91,31 +91,26 @@ public class LoginGUI implements ActionListener {
             String dbUsername = properties.getProperty("db.username");
             String dbPassword = properties.getProperty("db.password");
 
-
             try {
-               
                 Connection connection = DriverManager.getConnection(url, dbUsername, dbPassword);
-
+            
                 PreparedStatement credentials = connection.prepareStatement("SELECT * FROM users WHERE UserName=? AND UserPassword=?");
                 credentials.setString(1, username);
                 credentials.setString(2, password);
-
+            
                 ResultSet resultSet = credentials.executeQuery();
-
+            
                 if (resultSet.next()) {
                     // Valid credentials
+                    String accountType = resultSet.getString("AccountType");
+                    int userID = resultSet.getInt("UserID");
                     success.setText("Login Successful");
+            
                     Timer timer = new Timer(2000, new ActionListener() {
-                    	@Override
-                    	public void actionPerformed(ActionEvent e) {
-                    		try {
-                                String accountType = resultSet.getString("AccountType");
-                                int userID = resultSet.getInt("UserID");
-                                openUserGui(accountType, userID);
-                            } catch (SQLException ex) {
-                                ex.printStackTrace(); // handle the exception appropriately
-                            }
-                    	}
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            openUserGui(accountType, userID);
+                        }
                     });
                     timer.setRepeats(false); // Set to run only once
                     timer.start();
@@ -123,11 +118,12 @@ public class LoginGUI implements ActionListener {
                     // Invalid credentials
                     success.setText("Login Failed");
                 }
-
+            
                 connection.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            
         }
     }
 }

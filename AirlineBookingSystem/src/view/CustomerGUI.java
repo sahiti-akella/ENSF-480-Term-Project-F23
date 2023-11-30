@@ -2,203 +2,58 @@ package view;
 
 import javax.swing.*;
 
-import model.users.Customer;
+import model.*;
+import model.users.*;
 
 import java.awt.event.*;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class CustomerGUI implements ActionListener {
     
-    private JTextField firstNameField;
-    private JTextField lastNameField;
-    private JTextField emailField;
-    private JTextField addressField;
     private int userID;
+    private FlightSystem sys;
 
     public CustomerGUI(int userID) {
         this.userID = userID;
+        this.sys = FlightSystem.getInstance();
     }
 
     private ArrayList<String> getAvailableFlights() {
-    ArrayList<String> flightList = new ArrayList<>();
+        ArrayList<Flight> flightList = sys.getFlightList();
+        ArrayList<String> strFlightList = new ArrayList<String>();
 
-    try {
-        String query = "SELECT FlightID, Origin, Destination, DepartureDate FROM FLIGHTS";
-        PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
+        for (Flight flight : flightList){
+            int flightID = flight.getflightID();
+            String origin = flight.getOrigin();
+            String destination = flight.getDestination();
+            String departureDate = flight.getDepartureDate();
 
-        while (resultSet.next()) {
-            int flightID = resultSet.getInt("FlightID");
-            String origin = resultSet.getString("Origin");
-            String destination = resultSet.getString("Destination");
-            String departureDate = resultSet.getString("DepartureDate");
-
-            String flightInfo = origin + " -> " + destination + " : " + departureDate;
-            flightList.add(flightInfo);
+            String flightInfo = "ID: " + flightID + " | " + origin + " -> " + destination + " : " + departureDate;
+            strFlightList.add(flightInfo);
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+
+        return strFlightList;
     }
-
-    return flightList;
-}
-
-    private Connection connection;
     // public static void main(String[] args) {
     //     CustomerGUI gui = new CustomerGUI();
     //     gui.createUI();
     // }
 
     public void createUI() {
-        initializeDatabase();
-        JFrame frame = new JFrame();
-        frame.setTitle("Customer Welcome Page");
-        JPanel panel = new JPanel();
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(panel);
+        Customer customer = null;
 
-        panel.setLayout(null);
+        ArrayList<Customer> customers = sys.getCustomerList();
 
-        JLabel welcomeLabel = new JLabel("Welcome!");
-        welcomeLabel.setBounds(30, 10, 200, 40);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
-        panel.add(welcomeLabel);
-
-        JLabel promptLabel = new JLabel("Please input your information:");
-        promptLabel.setBounds(30, 50, 250, 25);
-        panel.add(promptLabel);
-
-        collectCustomerInfo(panel);
-
-        JLabel errorLabel = new JLabel("");
-        errorLabel.setBounds(30, 190, 300, 25);
-        errorLabel.setForeground(Color.RED);
-        panel.add(errorLabel);
-
-        JButton continueButton = new JButton("Continue");
-        continueButton.setBounds(80, 220, 180, 40);
-        continueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Validate and create customer object
-                Customer customer = createCustomer();
-
-                if (customer != null) {
-                    openOptionsPanel(customer);
-                }
-            }
-        });
-        panel.add(continueButton);
-
-        frame.setVisible(true);
-    }
-
-    private void collectCustomerInfo(JPanel panel) {
-        
-        JLabel firstNameLabel = new JLabel("First Name:");
-        firstNameLabel.setBounds(30, 80, 80, 25);
-        panel.add(firstNameLabel);
-
-        firstNameField = new JTextField();
-        firstNameField.setBounds(110, 80, 200, 25);
-        panel.add(firstNameField);
-
-        JLabel lastNameLabel = new JLabel("Last Name:");
-        lastNameLabel.setBounds(30, 110, 80, 25);
-        panel.add(lastNameLabel);
-
-        lastNameField = new JTextField();
-        lastNameField.setBounds(110, 110, 200, 25);
-        panel.add(lastNameField);
-
-        JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setBounds(30, 140, 80, 25);
-        panel.add(emailLabel);
-
-        emailField = new JTextField();
-        emailField.setBounds(110, 140, 200, 25);
-        panel.add(emailField);
-
-        JLabel addressLabel = new JLabel("Address:");
-        addressLabel.setBounds(30, 170, 80, 25);
-        panel.add(addressLabel);
-
-        addressField = new JTextField();
-        addressField.setBounds(110, 170, 200, 25);
-        panel.add(addressField);
-    }
-
-     // Validate and create customer object
-    private Customer createCustomer() {
-        String firstName = firstNameField.getText().trim();
-        String lastName = lastNameField.getText().trim();
-        String email = emailField.getText().trim();
-        String address = addressField.getText().trim();
-
-        // Check if any field is empty
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || address.isEmpty()) {
-            showError("Please complete the form.");
-            return null;
-        }
-
-        Customer customer = new Customer(0, "", "", firstName, lastName, email, address, false);
-
-        if (!customer.isValidCustomerInfo()) {
-            showError("Please enter a valid email.");
-            return null;
-        }
-
-        return customer;
-    }
-
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    private void initializeDatabase() {
-
-        // Load database properties
-        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
-        if (properties == null) {
-            // Handle the error appropriately
-            return;
-        }
-
-        String url = properties.getProperty("db.url");
-        String dbUsername = properties.getProperty("db.username");
-        String dbPassword = properties.getProperty("db.password");
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url, dbUsername, dbPassword);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JButton source = (JButton) e.getSource();
-
-        if (source.getText().equals("Continue")) {
-            // Validate and create customer object
-            Customer customer = createCustomer();
-
-            if (customer != null) {
-                openOptionsPanel(customer);
+        for (Customer c : customers){
+            if (c.getUserID() == userID){
+                customer = c;
             }
         }
-    }
 
-    private void openOptionsPanel(Customer customer) {
         JFrame frame = new JFrame();
         frame.setTitle("Options Panel");
         JPanel panel = new JPanel();
@@ -219,37 +74,57 @@ public class CustomerGUI implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current frame
+                //open browse flights
                 openBrowseFlightListFrame();
             }
         });
         panel.add(browseFlightsButton);
-
+        
         JButton cancelFlightButton = new JButton("Cancel Flight");
         cancelFlightButton.setBounds(30, 120, 180, 40);
         cancelFlightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
-                showCancelConfirmation();
+                // Get the user's ticket list
+                ArrayList<Ticket> userTicketList = getTicketsForUser(userID);
+
+                // Check if the list is null or empty
+                if (userTicketList == null || userTicketList.isEmpty()) {
+                    // Display a message to the user
+                    JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "No Flights", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Close the current frame
+                    frame.dispose();
+
+                    // Open the FlightCancellation GUI
+                    new FlightCancellation(userID).createUI();
+                }
             }
         });
+
         panel.add(cancelFlightButton);
 
         frame.setVisible(true);
     }
 
-    private void showCancelConfirmation() {
-        int result = JOptionPane.showConfirmDialog(null,
-                "Are you sure you want to cancel your flight?",
-                "Cancel Confirmation",
-                JOptionPane.YES_NO_OPTION);
+    private ArrayList<Ticket> getTicketsForUser(int userID) {
+        FlightSystem sys = FlightSystem.getInstance();
 
-        if (result == JOptionPane.YES_OPTION) {
-            // Update database or perform cancellation actions
-            // ...
-
-            JOptionPane.showMessageDialog(null, "Flight cancelled successfully.");
+        ArrayList<Ticket> userTicketList = new ArrayList<>();
+        ArrayList<Ticket> ticketList = sys.getTicketList();
+        
+        for (Ticket ticket : ticketList) {
+            if (ticket.getCustomer().getUserID() == userID) {
+                userTicketList.add(ticket);
+            }
         }
+    
+        return userTicketList;
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //empty 
     }
 
     private void openBrowseFlightListFrame() {
@@ -284,8 +159,34 @@ public class CustomerGUI implements ActionListener {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedFlight = (String) dropdown.getSelectedItem();
-                if (!selectedFlight.equals("Select flight..")) {
+                String selectedFlightStr = (String) dropdown.getSelectedItem();
+
+                int flightID = -99; //default value most likely not a flight ID
+
+                // Define the pattern for extracting the ID
+                Pattern pattern = Pattern.compile("ID: (\\d+)");
+
+                Matcher matcher = pattern.matcher(selectedFlightStr);
+
+                // Check if the pattern matches
+                if (matcher.find()) {
+                    // Extract the matched ID as a string
+                    String idString = matcher.group(1);
+
+                    // Convert the string ID to an integer
+                    flightID = Integer.parseInt(idString);
+
+                } 
+                //loop through flight list
+                ArrayList<Flight> flightList = sys.getFlightList();
+                Flight selectedFlight = null;
+                for (Flight flight : flightList){
+                    if (flight.getflightID() == flightID){
+                        selectedFlight = flight;
+                    }
+                }
+
+                if (!selectedFlightStr.equals("Select flight..")) {
                     frame.dispose(); // Close the current frame
                     openBrowseSeatFrame(selectedFlight);
                 } else {
@@ -299,7 +200,7 @@ public class CustomerGUI implements ActionListener {
     }
     
 
-    private void openBrowseSeatFrame(String selectedFlight) {
+    private void openBrowseSeatFrame(Flight selectedFlight) {
         BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight);
         seatGUI.createUI();
     }
