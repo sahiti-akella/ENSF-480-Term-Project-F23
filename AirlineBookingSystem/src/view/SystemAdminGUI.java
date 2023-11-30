@@ -16,10 +16,6 @@ public class SystemAdminGUI {
     private JTextField emailField;
     private JTextField addressField;
 
-    public SystemAdminGUI() {
-        createUI();
-    }
-
     public void createUI() {
         initializeDatabase();
         JFrame frame = new JFrame();
