@@ -30,7 +30,7 @@ public class LoginGUI implements ActionListener {
         	new FlightAttendantGUI().createUI();
         } else if (type.equals("tourism-agent")){
             // Open Tourism Agent GUI
-            new TourismAgentGUI(userID).createUI();
+            new TourismAgentGUI().createUI();
         } else {
         	success.setText("Unknown acount type");
         }

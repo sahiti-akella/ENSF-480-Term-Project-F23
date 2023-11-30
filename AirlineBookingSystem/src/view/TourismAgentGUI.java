@@ -24,11 +24,9 @@ public class TourismAgentGUI implements ActionListener {
     private JTextField addressField;
 
 
-    private int userID;
     private FlightSystem sys;
 
-    public TourismAgentGUI(int userID) {
-        this.userID = userID;
+    public TourismAgentGUI() {
         this.sys = FlightSystem.getInstance();
     }
 
