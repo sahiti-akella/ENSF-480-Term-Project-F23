@@ -79,21 +79,47 @@ public class CustomerGUI implements ActionListener {
             }
         });
         panel.add(browseFlightsButton);
-
+        
         JButton cancelFlightButton = new JButton("Cancel Flight");
         cancelFlightButton.setBounds(30, 120, 180, 40);
         cancelFlightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
-                //Open FLight cancellation gui
-                new FlightCancellation(userID).createUI();
+                // Get the user's ticket list
+                ArrayList<Ticket> userTicketList = getTicketsForUser(userID);
+
+                // Check if the list is null or empty
+                if (userTicketList == null || userTicketList.isEmpty()) {
+                    // Display a message to the user
+                    JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "No Flights", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Close the current frame
+                    frame.dispose();
+
+                    // Open the FlightCancellation GUI
+                    new FlightCancellation(userID).createUI();
+                }
             }
         });
+
         panel.add(cancelFlightButton);
 
         frame.setVisible(true);
+    }
+
+    private ArrayList<Ticket> getTicketsForUser(int userID) {
+        FlightSystem sys = FlightSystem.getInstance();
+
+        ArrayList<Ticket> userTicketList = new ArrayList<>();
+        ArrayList<Ticket> ticketList = sys.getTicketList();
         
+        for (Ticket ticket : ticketList) {
+            if (ticket.getCustomer().getUserID() == userID) {
+                userTicketList.add(ticket);
+            }
+        }
+    
+        return userTicketList;
     }
     
     @Override
