@@ -177,9 +177,11 @@ public class SystemAdminGUI {
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 // Assuming LayoutID 1 for Ordinary seats, 2 for Comfort, 3 for Business-Class
                 for (int layoutID = 1; layoutID <= 3; layoutID++) {
-                    preparedStatement.setInt(1, flightID);
-                    preparedStatement.setInt(2, layoutID);
-                    preparedStatement.addBatch();
+                    for (int i=0; i<4; i++){
+                        preparedStatement.setInt(1, flightID);
+                        preparedStatement.setInt(2, layoutID);
+                        preparedStatement.addBatch();
+                    }   
                 }
                 // Execute the batch update
                 preparedStatement.executeBatch();
