@@ -56,62 +56,36 @@ public class CustomerGUI implements ActionListener {
 
         if (choice == JOptionPane.YES_OPTION) {
             // User wants to register for a membership
-            openMembershipRegistrationFrame(customer);
+            showCreditCardOption(customer);
         } else {
             // User does not want to register for a membership
             openOptionsPanel(customer);
         }
     }
 
-    private void openMembershipRegistrationFrame(Customer customer) {
-        JFrame membershipFrame = new JFrame();
-        membershipFrame.setTitle("Membership Registration");
-        JPanel membershipPanel = new JPanel();
-        membershipFrame.setSize(800, 600); 
-        membershipFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        membershipFrame.add(membershipPanel);
-    
-        // Add an empty border to create space on the left
-        membershipPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-    
-        membershipPanel.setLayout(new BoxLayout(membershipPanel, BoxLayout.Y_AXIS));
-    
-        // Add components for membership registration
-        JLabel membershipLabel = new JLabel("Select Membership Advantages you would like to Opt-In for:");
-        membershipPanel.add(Box.createRigidArea(new Dimension(0, 10))); 
-        membershipPanel.add(membershipLabel);
-        membershipPanel.add(Box.createRigidArea(new Dimension(0, 10))); 
-    
-        JCheckBox promotionCheckBox = new JCheckBox("Receive Monthly Promotion News");
-        promotionCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT); 
-        membershipPanel.add(promotionCheckBox);
-    
-        JCheckBox loungeCheckBox = new JCheckBox("Use Airport Lounges with Discount Price");
-        loungeCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT); 
-        membershipPanel.add(loungeCheckBox);
-    
-        JCheckBox companionTicketCheckBox = new JCheckBox("Receive a Free Companion Ticket Once a Year");
-        companionTicketCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT); 
-        membershipPanel.add(companionTicketCheckBox);
-    
-        JCheckBox creditCardCheckBox = new JCheckBox("Register for Company Credit Card");
-        creditCardCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT); 
-        membershipPanel.add(creditCardCheckBox);
-    
-        JButton continueButton = new JButton("Continue");
-        continueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                membershipFrame.dispose(); 
-                openOptionsPanel(customer);
-            }
-        });
-        membershipPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
-        membershipPanel.add(continueButton);
-    
-        membershipFrame.setVisible(true);
+    private void showCreditCardOption(Customer customer) {
+        int creditCardChoice = JOptionPane.showConfirmDialog(null, "Would you like to register for a company credit card?", "Credit Card Registration", JOptionPane.YES_NO_OPTION);
+
+        if (creditCardChoice == JOptionPane.YES_OPTION) {
+            // User wants to register for a credit card
+            registerCreditCard(customer);
+        } else {
+            // User does not want to register for a credit card
+            openOptionsPanel(customer);
+        }
     }
-    
+
+    private void registerCreditCard(Customer customer) {
+        // Perform credit card registration logic here
+
+        // For demonstration purposes, let's just show a message
+        JOptionPane.showMessageDialog(null, "Successfully registered credit card for "
+                + customer.getFirstName() + " " + customer.getLastName() + "!", "Credit Card Registration",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // Now, proceed to the options panel
+        openOptionsPanel(customer);
+    }
     
 
     private void openOptionsPanel(Customer customer) {
