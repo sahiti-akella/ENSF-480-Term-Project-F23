@@ -3,9 +3,7 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
-import model.*;
 
 public class SystemAdminGUI {
 
@@ -18,18 +16,20 @@ public class SystemAdminGUI {
         initializeDatabase();
 
         JFrame frame = new JFrame();
+
         frame.setTitle("Admin Welcome Page");
         JPanel panel = new JPanel();
-        frame.setSize(400, 200);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
-        panel.setLayout(new GridLayout(0, 1));
-
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(Box.createVerticalStrut(50));
         JLabel welcomeLabel = new JLabel("Welcome to Admin Page!");
+        welcomeLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 250));
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
         panel.add(welcomeLabel);
-
+        panel.add(Box.createVerticalStrut(50));
         String[] adminActions = {
                 "Add Flight",
                 "Add Crew",
@@ -40,10 +40,15 @@ public class SystemAdminGUI {
         };
 
         JComboBox<String> adminActionsDropdown = new JComboBox<>(adminActions);
+        adminActionsDropdown.setBorder(BorderFactory.createEmptyBorder(100, 200, 100, 200));
         panel.add(adminActionsDropdown);
 
+
+        panel.add(Box.createVerticalStrut(50));
         JButton continueButton = new JButton("Continue");
         panel.add(continueButton);
+        continueButton.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
+        panel.add(Box.createVerticalStrut(200));
 
         continueButton.addActionListener(e -> {
             String selectedAction = (String) adminActionsDropdown.getSelectedItem();
@@ -52,7 +57,6 @@ public class SystemAdminGUI {
 
         frame.setVisible(true);
     }
-
 
     private void initializeDatabase() {
         // Load database properties
@@ -106,31 +110,6 @@ public class SystemAdminGUI {
     private void showError(String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
-    private String getAdminActionFromUser() {
-        // Array of possible admin actions
-        String[] actions = {
-                "Add Flight",
-                "Add Crew",
-                "Add Aircraft",
-                "Add Flight Destination",
-                "Modify Flight Information",
-                "Print List of Users"
-        };
-
-        // Display a dialog with a dropdown menu for admin actions
-        String selectedAction = (String) JOptionPane.showInputDialog(
-                null,
-                "Select an action:",
-                "Admin Action",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                actions,
-                actions[0]
-        );
-
-        // Return the selected action
-        return selectedAction;
-    }
 
     private void addFlight() {
         // Display a dialog to get flight information from the admin
@@ -155,12 +134,11 @@ public class SystemAdminGUI {
             String newDestination = destinationField.getText();
             String newDepartureDate = departureDateField.getText();
             int newAircraftID = Integer.parseInt(aircraftIDField.getText());
-            int flightID;
 
             // Use the entered values to insert a new flight into the database
             try {
                 String sql = "INSERT INTO FLIGHTS (Origin, Destination, DepartureDate, AircraftID) VALUES (?, ?, ?, ?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     preparedStatement.setString(1, newOrigin);
                     preparedStatement.setString(2, newDestination);
                     preparedStatement.setString(3, newDepartureDate);
@@ -169,22 +147,48 @@ public class SystemAdminGUI {
                     // Execute the query
                     preparedStatement.executeUpdate();
 
+                    // Get the generated flight ID
+                    ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                    int flightID = -1;
+                    if (generatedKeys.next()) {
+                        flightID = generatedKeys.getInt(1);
+                    }
+
+                    // Insert seat information for the new flight
+                    insertSeatsForFlight(flightID);
+
                     // Display a success message
                     JOptionPane.showMessageDialog(null, "Flight added successfully.");
-                    
+
                     // Reset FlightSys
                     sys.synchronizeFlightSys();
-
-                    ArrayList<Flight> flightList = sys.getFlightList();
-                    flightID = flightList.size(); 
-
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle the exception (e.g., display an error message)
                 JOptionPane.showMessageDialog(null, "Error adding flight. Please check the input and try again.");
             }
-            
+        }
+    }
+
+    private void insertSeatsForFlight(int flightID) {
+        try {
+            String sql = "INSERT INTO SEATS (FlightID, LayoutID, IsAvailable) VALUES (?, ?, 1)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                // Assuming LayoutID 1 for Ordinary seats, 2 for Comfort, 3 for Business-Class
+                for (int layoutID = 1; layoutID <= 3; layoutID++) {
+                    for (int i=0; i<4; i++){
+                        preparedStatement.setInt(1, flightID);
+                        preparedStatement.setInt(2, layoutID);
+                        preparedStatement.addBatch();
+                    }   
+                }
+                // Execute the batch update
+                preparedStatement.executeBatch();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (e.g., log error, display an error message)
         }
     }
 
