@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+
 public class CustomerGUI implements ActionListener {
     
     private int userID;
@@ -38,22 +39,82 @@ public class CustomerGUI implements ActionListener {
 
         return strFlightList;
     }
-    // public static void main(String[] args) {
-    //     CustomerGUI gui = new CustomerGUI();
-    //     gui.createUI();
-    // }
 
     public void createUI() {
         Customer customer = null;
 
         ArrayList<Customer> customers = sys.getCustomerList();
 
-        for (Customer c : customers){
-            if (c.getUserID() == userID){
+        for (Customer c : customers) {
+            if (c.getUserID() == userID) {
                 customer = c;
             }
         }
 
+        // Prompt user for membership registration
+        int choice = JOptionPane.showConfirmDialog(null, "Would you like to register for a membership?", "Membership Registration", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            // User wants to register for a membership
+            openMembershipRegistrationFrame(customer);
+        } else {
+            // User does not want to register for a membership
+            openOptionsPanel(customer);
+        }
+    }
+
+    private void openMembershipRegistrationFrame(Customer customer) {
+        JFrame membershipFrame = new JFrame();
+        membershipFrame.setTitle("Membership Registration");
+        JPanel membershipPanel = new JPanel();
+        membershipFrame.setSize(800, 600); 
+        membershipFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        membershipFrame.add(membershipPanel);
+    
+        // Add an empty border to create space on the left
+        membershipPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+    
+        membershipPanel.setLayout(new BoxLayout(membershipPanel, BoxLayout.Y_AXIS));
+    
+        // Add components for membership registration
+        JLabel membershipLabel = new JLabel("Select Membership Advantages you would like to Opt-In for:");
+        membershipPanel.add(Box.createRigidArea(new Dimension(0, 10))); 
+        membershipPanel.add(membershipLabel);
+        membershipPanel.add(Box.createRigidArea(new Dimension(0, 10))); 
+    
+        JCheckBox promotionCheckBox = new JCheckBox("Receive Monthly Promotion News");
+        promotionCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT); 
+        membershipPanel.add(promotionCheckBox);
+    
+        JCheckBox loungeCheckBox = new JCheckBox("Use Airport Lounges with Discount Price");
+        loungeCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT); 
+        membershipPanel.add(loungeCheckBox);
+    
+        JCheckBox companionTicketCheckBox = new JCheckBox("Receive a Free Companion Ticket Once a Year");
+        companionTicketCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT); 
+        membershipPanel.add(companionTicketCheckBox);
+    
+        JCheckBox creditCardCheckBox = new JCheckBox("Register for Company Credit Card");
+        creditCardCheckBox.setAlignmentX(Component.LEFT_ALIGNMENT); 
+        membershipPanel.add(creditCardCheckBox);
+    
+        JButton continueButton = new JButton("Continue");
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                membershipFrame.dispose(); 
+                openOptionsPanel(customer);
+            }
+        });
+        membershipPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
+        membershipPanel.add(continueButton);
+    
+        membershipFrame.setVisible(true);
+    }
+    
+    
+
+    private void openOptionsPanel(Customer customer) {
         JFrame frame = new JFrame();
         frame.setTitle("Options Panel");
         JPanel panel = new JPanel();
@@ -61,7 +122,7 @@ public class CustomerGUI implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
-        panel.setLayout(null);
+           panel.setLayout(null);
 
         JLabel welcomeLabel = new JLabel("Hello, " + customer.getFirstName() + "!");
         welcomeLabel.setBounds(30, 10, 300, 40);
