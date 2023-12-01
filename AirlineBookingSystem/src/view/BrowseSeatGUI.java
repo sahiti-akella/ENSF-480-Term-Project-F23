@@ -30,17 +30,17 @@ public class BrowseSeatGUI {
         seatPanel.setLayout(new GridLayout(3, 4)); // Change the dimensions as needed
 
         // Calculate the starting seat number based on the flight
-        int startingSeatNumber = (selectedFlight.getflightID() - 1) * SEATS_PER_FLIGHT + 1;
+        int startingSeatNumber = (selectedFlight.getFlightID() - 1) * SEATS_PER_FLIGHT + 1;
 
         // Create seats
         for (int row = 1; row <= 3; row++) {
             String seatType;
             if (row == 1) {
-                seatType = "Ordinary ($800)";
+                seatType = "Ordinary";
             } else if (row == 2) {
-                seatType = "Comfort ($1150)";
+                seatType = "Comfort";
             } else {
-                seatType = "Business ($1600)";
+                seatType = "Business";
             }
 
             for (int col = 1; col <= 4; col++) {

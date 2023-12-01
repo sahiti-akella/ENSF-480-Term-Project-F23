@@ -19,7 +19,7 @@ public class Flight extends Aircraft {
     }
 
     // Flight Getters
-    public int getflightID(){
+    public int getFlightID(){
         return this.flightID;
     }
 
