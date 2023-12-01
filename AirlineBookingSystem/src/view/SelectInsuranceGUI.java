@@ -28,8 +28,8 @@ public class SelectInsuranceGUI {
         seatLabel.setFont(new Font("Arial", Font.BOLD, 15));
         panel.add(seatLabel);
 
-        JLabel promptLabel = new JLabel("Do you want to select insurance?");
-        promptLabel.setBounds(30, 40, 300, 40);
+        JLabel promptLabel = new JLabel("Would you like to Opt-In for Ticket Cancellation Insurance? (+$100)");
+        promptLabel.setBounds(30, 40, 500, 40);
         panel.add(promptLabel);
 
         JButton yesButton = new JButton("Yes");
