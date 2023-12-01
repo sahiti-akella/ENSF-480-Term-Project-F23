@@ -64,6 +64,6 @@ public class Ticket {
     @Override
     public String toString() {
         
-        return "FlightID: " + flight.getflightID(); 
+        return "FlightID: " + flight.getFlightID(); 
     }
 }
