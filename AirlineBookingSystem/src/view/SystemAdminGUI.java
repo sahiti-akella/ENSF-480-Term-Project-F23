@@ -3,9 +3,7 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
-import model.*;
 
 public class SystemAdminGUI {
 
@@ -112,31 +110,6 @@ public class SystemAdminGUI {
     private void showError(String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
-    private String getAdminActionFromUser() {
-        // Array of possible admin actions
-        String[] actions = {
-                "Add Flight",
-                "Add Crew",
-                "Add Aircraft",
-                "Add Flight Destination",
-                "Modify Flight Information",
-                "Print List of Users"
-        };
-
-        // Display a dialog with a dropdown menu for admin actions
-        String selectedAction = (String) JOptionPane.showInputDialog(
-                null,
-                "Select an action:",
-                "Admin Action",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                actions,
-                actions[0]
-        );
-
-        // Return the selected action
-        return selectedAction;
-    }
 
     private void addFlight() {
         // Display a dialog to get flight information from the admin
@@ -161,12 +134,11 @@ public class SystemAdminGUI {
             String newDestination = destinationField.getText();
             String newDepartureDate = departureDateField.getText();
             int newAircraftID = Integer.parseInt(aircraftIDField.getText());
-            int flightID;
 
             // Use the entered values to insert a new flight into the database
             try {
                 String sql = "INSERT INTO FLIGHTS (Origin, Destination, DepartureDate, AircraftID) VALUES (?, ?, ?, ?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     preparedStatement.setString(1, newOrigin);
                     preparedStatement.setString(2, newDestination);
                     preparedStatement.setString(3, newDepartureDate);
@@ -175,22 +147,46 @@ public class SystemAdminGUI {
                     // Execute the query
                     preparedStatement.executeUpdate();
 
+                    // Get the generated flight ID
+                    ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                    int flightID = -1;
+                    if (generatedKeys.next()) {
+                        flightID = generatedKeys.getInt(1);
+                    }
+
+                    // Insert seat information for the new flight
+                    insertSeatsForFlight(flightID);
+
                     // Display a success message
                     JOptionPane.showMessageDialog(null, "Flight added successfully.");
-                    
+
                     // Reset FlightSys
                     sys.synchronizeFlightSys();
-
-                    ArrayList<Flight> flightList = sys.getFlightList();
-                    flightID = flightList.size(); 
-
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle the exception (e.g., display an error message)
                 JOptionPane.showMessageDialog(null, "Error adding flight. Please check the input and try again.");
             }
-            
+        }
+    }
+
+    private void insertSeatsForFlight(int flightID) {
+        try {
+            String sql = "INSERT INTO SEATS (FlightID, LayoutID, IsAvailable) VALUES (?, ?, 1)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                // Assuming LayoutID 1 for Ordinary seats, 2 for Comfort, 3 for Business-Class
+                for (int layoutID = 1; layoutID <= 3; layoutID++) {
+                    preparedStatement.setInt(1, flightID);
+                    preparedStatement.setInt(2, layoutID);
+                    preparedStatement.addBatch();
+                }
+                // Execute the batch update
+                preparedStatement.executeBatch();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception (e.g., log error, display an error message)
         }
     }
 
