@@ -42,10 +42,47 @@ public class TourismAgentGUI implements ActionListener {
 
         return strFlightList;
     }
-    // public static void main(String[] args) {
-    //     TourismAgentGUI gui = new TourismAgentGUI();
-    //     gui.createUI();
-    // }
+
+    public void createInitialScreen() { //change to createUI after other functions are completed
+        JFrame frame = new JFrame();
+        frame.setTitle("Tourism Agent - Initial Screen");
+        JPanel panel = new JPanel();
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(panel);
+
+        panel.setLayout(null);
+
+        JLabel welcomeLabel = new JLabel("Hello, " + agent.getFirstName() + "!");
+        welcomeLabel.setBounds(30, 10, 300, 40);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        panel.add(welcomeLabel);
+
+        JButton selectExistingCustomerButton = new JButton("Select Existing Customer");
+        selectExistingCustomerButton.setBounds(30, 60, 250, 40);
+        selectExistingCustomerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the current frame
+                openCustomerListScreen();
+            }
+        });
+        panel.add(selectExistingCustomerButton);
+
+        JButton createNewCustomerButton = new JButton("Create New Customer");
+        createNewCustomerButton.setBounds(30, 120, 250, 40);
+        createNewCustomerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the current frame
+                openRegisterNewUserScreen();
+            }
+        });
+        panel.add(createNewCustomerButton);
+
+        frame.setVisible(true);
+    }
+
 
     public void createUI() {
         TourismAgent agent = null;
