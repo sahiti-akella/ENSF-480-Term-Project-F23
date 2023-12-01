@@ -30,7 +30,7 @@ public class BrowseSeatGUI {
         seatPanel.setLayout(new GridLayout(3, 4)); // Change the dimensions as needed
 
         // Calculate the starting seat number based on the flight
-        int startingSeatNumber = (selectedFlight.getflightID() - 1) * SEATS_PER_FLIGHT + 1;
+        int startingSeatNumber = (selectedFlight.getFlightID() - 1) * SEATS_PER_FLIGHT + 1;
 
         // Create seats
         for (int row = 1; row <= 3; row++) {

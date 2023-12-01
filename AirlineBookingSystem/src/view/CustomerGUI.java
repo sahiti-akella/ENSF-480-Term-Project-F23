@@ -27,7 +27,7 @@ public class CustomerGUI implements ActionListener {
         ArrayList<String> strFlightList = new ArrayList<String>();
 
         for (Flight flight : flightList){
-            int flightID = flight.getflightID();
+            int flightID = flight.getFlightID();
             String origin = flight.getOrigin();
             String destination = flight.getDestination();
             String departureDate = flight.getDepartureDate();
@@ -181,7 +181,7 @@ public class CustomerGUI implements ActionListener {
                 ArrayList<Flight> flightList = sys.getFlightList();
                 Flight selectedFlight = null;
                 for (Flight flight : flightList){
-                    if (flight.getflightID() == flightID){
+                    if (flight.getFlightID() == flightID){
                         selectedFlight = flight;
                     }
                 }

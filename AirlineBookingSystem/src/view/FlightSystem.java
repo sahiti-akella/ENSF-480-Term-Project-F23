@@ -112,6 +112,34 @@ public class FlightSystem {
         return this.tickets;
     }
 
+    // Helper methods to find objects by ID
+    private Customer findCustomerByID(int userID) {
+        for (Customer customer : customers) {
+            if (customer.getUserID() == userID) {
+                return customer;
+            }
+        }
+        return null; // Handle appropriately if not found
+    }
+
+    private Flight findFlightByID(int flightID) {
+        for (Flight flight : flights) {
+            if (flight.getFlightID() == flightID) {
+                return flight;
+            }
+        }
+        return null; // Handle appropriately if not found
+    }
+
+    private Seat findSeatByID(int seatID) {
+        for (Seat seat : seats) {
+            if (seat.getSeatID() == seatID) {
+                return seat;
+            }
+        }
+        return null; // Handle appropriately if not found
+    }
+
     private void initializeData() {
 
         // List of Users
@@ -293,9 +321,34 @@ public class FlightSystem {
             ex.printStackTrace();
         }
 
-        // List of Payments
+         // List of Tickets
+         try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM TICKETS");
+            results = myStmt.executeQuery();
+    
+            while (results.next()) {
+                int userID = results.getInt("UserID");
+                int flightID = results.getInt("FlightID");
+                int seatID = results.getInt("SeatID");
+                boolean insuranceSelected = results.getBoolean("InsuranceSelected");
+                double total = results.getDouble("Total");
+    
+                // Find corresponding Customer, Flight, and Seat objects
+                Customer customer = findCustomerByID(userID);
+                Flight flight = findFlightByID(flightID);
+                Seat seat = findSeatByID(seatID);
+    
+                // Create Ticket
+                Ticket ticket = new Ticket(customer, flight, seat, insuranceSelected, total);
+                tickets.add(ticket);
+            }
+    
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
 
-        // List of Tickets
+        // List of Payments
   
     }
 
