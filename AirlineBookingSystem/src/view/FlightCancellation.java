@@ -13,8 +13,8 @@ public class FlightCancellation {
     private JFrame frame;
     private JPanel panel;
     private int userID; // User ID for whom we want to display tickets
-    private JList<Ticket> ticketList; // JList to display tickets
-    private DefaultListModel<Ticket> listModel; // DefaultListModel to manage tickets
+    private JList<String> ticketListJL; // JList to display tickets
+    private DefaultListModel<String> listModel; // DefaultListModel to manage tickets
 
     public FlightCancellation(int userID) {
         this.userID = userID;
@@ -22,7 +22,7 @@ public class FlightCancellation {
 
     public void createUI() {
         frame = new JFrame();
-        frame.setTitle("Flight Cancellation Screen");
+        frame.setTitle("Flight Cancellation");
         panel = new JPanel();
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,17 +36,19 @@ public class FlightCancellation {
         panel.add(titleLabel);
 
         // Initialize the DefaultListModel
-        listModel = new DefaultListModel<>();
+        listModel = new DefaultListModel<>();  // Initialize the listModel here
 
         // Retrieve and display the list of tickets for the user
         displayTickets();
 
         // Create the JList
-        ticketList = new JList<>(listModel);
-        ticketList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane scrollPane = new JScrollPane(ticketList);
+        ticketListJL = new JList<String>(listModel);
+        ticketListJL.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(ticketListJL);
         scrollPane.setBounds(30, 60, 500, 400);
         panel.add(scrollPane);
+
+        
 
         JButton cancelSelectedButton = new JButton("Cancel Selected Ticket");
         cancelSelectedButton.setBounds(30, 500, 200, 40);
@@ -62,25 +64,34 @@ public class FlightCancellation {
         frame.setVisible(true);
     }
 
+    //display looks good
     private void displayTickets() {
         ArrayList<Ticket> ticketList = getTicketsForUser(userID);
 
-        int yOffset = 60;
-        for (Ticket ticketInfo : ticketList) {
-            JLabel ticketLabel = new JLabel(ticketInfo.toString()); // display flight ID
-            ticketLabel.setBounds(30, yOffset, 500, 25);
-            panel.add(ticketLabel);
-            yOffset += 30;
+        // Clear the existing items from the model
+         listModel.clear();
+
+        for (Ticket ticket : ticketList) {
+            int ticketID = ticket.getTicketID();
+            String destination = ticket.getFlight().getDestination();
+            String origin = ticket.getFlight().getOrigin(); 
+            String departureDate = ticket.getFlight().getDepartureDate();  
+            
+            String ticketInfo = "ID: " + ticketID + " | " + origin + " -> " + destination + " : " + departureDate;
+
+            listModel.addElement(ticketInfo);
+            
         }
     }
 
+    //getTicketsForUser looks good
     private ArrayList<Ticket> getTicketsForUser(int userID) {
         FlightSystem sys = FlightSystem.getInstance();
 
         ArrayList<Ticket> userTicketList = new ArrayList<>();
-        ArrayList<Ticket> ticketList = sys.getTicketList();
+        ArrayList<Ticket> fullTicketList = sys.getTicketList();
 
-        for (Ticket ticket : ticketList) {
+        for (Ticket ticket : fullTicketList) {
             if (ticket.getCustomer().getUserID() == userID) {
                 userTicketList.add(ticket);
             }
@@ -89,20 +100,23 @@ public class FlightCancellation {
         return userTicketList;
     }
 
-    private Ticket getSelectedTicket() {
-        return ticketList.getSelectedValue();
+    private String getSelectedTicket() {
+        return ticketListJL.getSelectedValue();
     }
 
     private void handleCancellation() {
-        Ticket selectedTicket = getSelectedTicket();
+        String selectedTicket = getSelectedTicket();
 
         if (selectedTicket == null) {
             JOptionPane.showMessageDialog(null, "No ticket selected for cancellation.");
             return;
         }
 
+        System.out.println(selectedTicket); //debugging
+        
+
         FlightSystem sys = FlightSystem.getInstance();
-        String updateQuery = "UPDATE TICKETS SET IsCancelled = TRUE WHERE TicketID = " + selectedTicket.getTicketID();
+        String updateQuery = "UPDATE TICKETS SET IsCancelled = TRUE WHERE TicketID = " + selectedTicket;
 
         // Execute the SQL query to mark the ticket as cancelled
         try {
