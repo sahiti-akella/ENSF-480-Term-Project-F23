@@ -89,11 +89,31 @@ public class TourismAgentGUI implements ActionListener {
         cancelFlightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
-                //Open FLight cancellation gui
-                new FlightCancellation(agentID).createUI();
+                // Get the user's ticket list
+                ArrayList<Ticket> userTicketList = getTicketsForUser(userID);
+
+                // Check if the list is null or empty
+                if (userTicketList == null || userTicketList.isEmpty()) {
+                    // Display a message to the user
+                    JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Check if all tickets are cancelled
+                    boolean allCancelled = userTicketList.stream().allMatch(Ticket::isCancelled);
+
+                    if (allCancelled) {
+                        // Display a message to the user
+                        JOptionPane.showMessageDialog(null, "All your flights are already cancelled.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        // Close the current frame
+                        frame.dispose();
+
+                        // Open the FlightCancellation GUI
+                        new FlightCancellation(userID).createUI();
+                    }
+                }
             }
         });
+
         panel.add(cancelFlightButton);
 
         frame.setVisible(true);
