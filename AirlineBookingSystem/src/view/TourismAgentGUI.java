@@ -14,14 +14,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TourismAgentGUI implements ActionListener {
-    
-    private int userID;
     private FlightSystem sys;
+    private int agentID;
 
-    public TourismAgentGUI(int userID) {
-        this.userID = userID;
+    public TourismAgentGUI(int agentID) {
+        this.agentID = agentID;
         this.sys = FlightSystem.getInstance();
     }
 
@@ -30,7 +31,7 @@ public class TourismAgentGUI implements ActionListener {
         ArrayList<String> strFlightList = new ArrayList<String>();
 
         for (Flight flight : flightList){
-            int flightID = flight.getflightID();
+            int flightID = flight.getFlightID();
             String origin = flight.getOrigin();
             String destination = flight.getDestination();
             String departureDate = flight.getDepartureDate();
@@ -52,8 +53,8 @@ public class TourismAgentGUI implements ActionListener {
         ArrayList<TourismAgent> agents = sys.getTourismAgentList();
 
         for (TourismAgent a : agents){
-            if (c.getUserID() == userID){
-                agent = c;
+            if (a.getUserID() == agentID){
+                agent = a;
             }
         }
 
@@ -90,7 +91,7 @@ public class TourismAgentGUI implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current frame
                 //Open FLight cancellation gui
-                new FlightCancellation(userID).createUI();
+                new FlightCancellation(agentID).createUI();
             }
         });
         panel.add(cancelFlightButton);
@@ -136,8 +137,34 @@ public class TourismAgentGUI implements ActionListener {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedFlight = (String) dropdown.getSelectedItem();
-                if (!selectedFlight.equals("Select flight..")) {
+                String selectedFlightStr = (String) dropdown.getSelectedItem();
+
+                int flightID = -99; //default value most likely not a flight ID
+
+                // Define the pattern for extracting the ID
+                Pattern pattern = Pattern.compile("ID: (\\d+)");
+
+                Matcher matcher = pattern.matcher(selectedFlightStr);
+
+                // Check if the pattern matches
+                if (matcher.find()) {
+                    // Extract the matched ID as a string
+                    String idString = matcher.group(1);
+
+                    // Convert the string ID to an integer
+                    flightID = Integer.parseInt(idString);
+
+                } 
+                //loop through flight list
+                ArrayList<Flight> flightList = sys.getFlightList();
+                Flight selectedFlight = null;
+                for (Flight flight : flightList){
+                    if (flight.getFlightID() == flightID){
+                        selectedFlight = flight;
+                    }
+                }
+
+                if (!selectedFlightStr.equals("Select flight..")) {
                     frame.dispose(); // Close the current frame
                     openBrowseSeatFrame(selectedFlight);
                 } else {
@@ -151,7 +178,7 @@ public class TourismAgentGUI implements ActionListener {
     }
     
 
-    private void openBrowseSeatFrame(String selectedFlight) {
+    private void openBrowseSeatFrame(Flight selectedFlight) {
         BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight);
         seatGUI.createUI();
     }

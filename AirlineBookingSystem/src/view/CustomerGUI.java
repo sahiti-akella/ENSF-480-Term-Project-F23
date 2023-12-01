@@ -126,16 +126,25 @@ public class CustomerGUI implements ActionListener {
                 // Check if the list is null or empty
                 if (userTicketList == null || userTicketList.isEmpty()) {
                     // Display a message to the user
-                    JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "No Flights", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    // Close the current frame
-                    frame.dispose();
+                    // Check if all tickets are cancelled
+                    boolean allCancelled = userTicketList.stream().allMatch(Ticket::isCancelled);
 
-                    // Open the FlightCancellation GUI
-                    new FlightCancellation(userID).createUI();
+                    if (allCancelled) {
+                        // Display a message to the user
+                        JOptionPane.showMessageDialog(null, "All your flights are already cancelled.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        // Close the current frame
+                        frame.dispose();
+
+                        // Open the FlightCancellation GUI
+                        new FlightCancellation(userID).createUI();
+                    }
                 }
             }
         });
+
 
         panel.add(cancelFlightButton);
 
