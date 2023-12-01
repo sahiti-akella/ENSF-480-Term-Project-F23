@@ -332,6 +332,7 @@ public class FlightSystem {
                 int flightID = results.getInt("FlightID");
                 int seatID = results.getInt("SeatID");
                 boolean insuranceSelected = results.getBoolean("InsuranceSelected");
+                boolean isCancelled = results.getBoolean("IsCancelled");
                 //double total = results.getDouble("Total");
     
                 // Find corresponding Customer, Flight, and Seat objects
@@ -340,7 +341,7 @@ public class FlightSystem {
                 Seat seat = findSeatByID(seatID);
     
                 // Create Ticket
-                Ticket ticket = new Ticket(ticketID, customer, flight, seat, insuranceSelected);
+                Ticket ticket = new Ticket(ticketID, customer, flight, seat, insuranceSelected, isCancelled);
                 tickets.add(ticket);
             }
     

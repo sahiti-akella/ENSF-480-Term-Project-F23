@@ -10,14 +10,16 @@ public class Ticket {
     private Flight flight;
     private Seat seat;
     private boolean insuranceSelected;
+    private boolean isCancelled;
 
     // Ticket Constructor
-    public Ticket(int ticketID, Customer customer, Flight flight, Seat seat, boolean insuranceSelected){
+    public Ticket(int ticketID, Customer customer, Flight flight, Seat seat, boolean insuranceSelected, boolean isCancelled){
         this.ticketID = ticketID;
         this.customer = customer;
         this.flight = flight;
         this.seat = seat;
         this.insuranceSelected = insuranceSelected;
+        this.isCancelled = isCancelled;
     }
 
     // Ticket Getters
@@ -38,6 +40,9 @@ public class Ticket {
     }
     public boolean getInsuranceSelection(){
         return this.insuranceSelected;
+    }
+    public boolean isCancelled(){
+        return this.isCancelled;
     }
 
     // public double getTotal(){

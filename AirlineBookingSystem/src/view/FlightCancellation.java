@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import model.*;
 
 public class FlightCancellation {
@@ -75,12 +78,15 @@ public class FlightCancellation {
             int ticketID = ticket.getTicketID();
             String destination = ticket.getFlight().getDestination();
             String origin = ticket.getFlight().getOrigin(); 
-            String departureDate = ticket.getFlight().getDepartureDate();  
+            String departureDate = ticket.getFlight().getDepartureDate(); 
+            
             
             String ticketInfo = "ID: " + ticketID + " | " + origin + " -> " + destination + " : " + departureDate;
 
-            listModel.addElement(ticketInfo);
-            
+            if(!ticket.isCancelled()){
+                //only add to the list is ticket is not cancelled
+                listModel.addElement(ticketInfo);
+            }
         }
     }
 
@@ -100,6 +106,24 @@ public class FlightCancellation {
         return userTicketList;
     }
 
+    // Helper function to extract ticketID from String in format: "ID: XX | Origin -> Destination : Date"
+    private static String extractTicketID(String ticketInfo) {
+        // Define a pattern for extracting the ID
+        Pattern pattern = Pattern.compile("ID: (\\d+)");
+
+        // Create a matcher for the input string
+        Matcher matcher = pattern.matcher(ticketInfo);
+
+        // Check if the pattern is found
+        if (matcher.find()) {
+            // Group 1 contains the matched ID
+            return matcher.group(1);
+        } else {
+            // Return an empty string or handle the case when no match is found
+            return "";
+        }
+    }
+
     private String getSelectedTicket() {
         return ticketListJL.getSelectedValue();
     }
@@ -112,11 +136,11 @@ public class FlightCancellation {
             return;
         }
 
-        System.out.println(selectedTicket); //debugging
+        String ticketID = extractTicketID(selectedTicket);
         
 
         FlightSystem sys = FlightSystem.getInstance();
-        String updateQuery = "UPDATE TICKETS SET IsCancelled = TRUE WHERE TicketID = " + selectedTicket;
+        String updateQuery = "UPDATE TICKETS SET IsCancelled = TRUE WHERE TicketID = " + ticketID;
 
         // Execute the SQL query to mark the ticket as cancelled
         try {
