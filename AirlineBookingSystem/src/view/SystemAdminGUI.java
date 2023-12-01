@@ -18,18 +18,20 @@ public class SystemAdminGUI {
         initializeDatabase();
 
         JFrame frame = new JFrame();
+
         frame.setTitle("Admin Welcome Page");
         JPanel panel = new JPanel();
-        frame.setSize(400, 200);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
-        panel.setLayout(new GridLayout(0, 1));
-
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(Box.createVerticalStrut(50));
         JLabel welcomeLabel = new JLabel("Welcome to Admin Page!");
+        welcomeLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 250));
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
         panel.add(welcomeLabel);
-
+        panel.add(Box.createVerticalStrut(50));
         String[] adminActions = {
                 "Add Flight",
                 "Add Crew",
@@ -40,10 +42,15 @@ public class SystemAdminGUI {
         };
 
         JComboBox<String> adminActionsDropdown = new JComboBox<>(adminActions);
+        adminActionsDropdown.setBorder(BorderFactory.createEmptyBorder(100, 200, 100, 200));
         panel.add(adminActionsDropdown);
 
+
+        panel.add(Box.createVerticalStrut(50));
         JButton continueButton = new JButton("Continue");
         panel.add(continueButton);
+        continueButton.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
+        panel.add(Box.createVerticalStrut(200));
 
         continueButton.addActionListener(e -> {
             String selectedAction = (String) adminActionsDropdown.getSelectedItem();
@@ -52,7 +59,6 @@ public class SystemAdminGUI {
 
         frame.setVisible(true);
     }
-
 
     private void initializeDatabase() {
         // Load database properties
