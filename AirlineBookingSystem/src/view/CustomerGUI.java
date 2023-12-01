@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+
 public class CustomerGUI implements ActionListener {
     
     private int userID;
@@ -38,22 +39,56 @@ public class CustomerGUI implements ActionListener {
 
         return strFlightList;
     }
-    // public static void main(String[] args) {
-    //     CustomerGUI gui = new CustomerGUI();
-    //     gui.createUI();
-    // }
 
     public void createUI() {
         Customer customer = null;
 
         ArrayList<Customer> customers = sys.getCustomerList();
 
-        for (Customer c : customers){
-            if (c.getUserID() == userID){
+        for (Customer c : customers) {
+            if (c.getUserID() == userID) {
                 customer = c;
             }
         }
 
+        // Prompt user for membership registration
+        int choice = JOptionPane.showConfirmDialog(null, "Would you like to register for a membership?", "Membership Registration", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            // User wants to register for a membership
+            showCreditCardOption(customer);
+        } else {
+            // User does not want to register for a membership
+            openOptionsPanel(customer);
+        }
+    }
+
+    private void showCreditCardOption(Customer customer) {
+        int creditCardChoice = JOptionPane.showConfirmDialog(null, "Would you like to register for a company credit card?", "Credit Card Registration", JOptionPane.YES_NO_OPTION);
+
+        if (creditCardChoice == JOptionPane.YES_OPTION) {
+            // User wants to register for a credit card
+            registerCreditCard(customer);
+        } else {
+            // User does not want to register for a credit card
+            openOptionsPanel(customer);
+        }
+    }
+
+    private void registerCreditCard(Customer customer) {
+        // Perform credit card registration logic here
+
+        // For demonstration purposes, let's just show a message
+        JOptionPane.showMessageDialog(null, "Successfully registered credit card for "
+                + customer.getFirstName() + " " + customer.getLastName() + "!", "Credit Card Registration",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // Now, proceed to the options panel
+        openOptionsPanel(customer);
+    }
+    
+
+    private void openOptionsPanel(Customer customer) {
         JFrame frame = new JFrame();
         frame.setTitle("Options Panel");
         JPanel panel = new JPanel();
@@ -61,7 +96,7 @@ public class CustomerGUI implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
-        panel.setLayout(null);
+           panel.setLayout(null);
 
         JLabel welcomeLabel = new JLabel("Hello, " + customer.getFirstName() + "!");
         welcomeLabel.setBounds(30, 10, 300, 40);

@@ -36,11 +36,11 @@ public class BrowseSeatGUI {
         for (int row = 1; row <= 3; row++) {
             String seatType;
             if (row == 1) {
-                seatType = "Ordinary ($800)";
+                seatType = "Ordinary";
             } else if (row == 2) {
-                seatType = "Comfort ($1150)";
+                seatType = "Comfort";
             } else {
-                seatType = "Business ($1600)";
+                seatType = "Business";
             }
 
             for (int col = 1; col <= 4; col++) {

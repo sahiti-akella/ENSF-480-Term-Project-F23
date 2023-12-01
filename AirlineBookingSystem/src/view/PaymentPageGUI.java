@@ -5,9 +5,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import model.Payment;
+import model.Receipt;
 
 public class PaymentPageGUI {
     private JFrame frame;
+    private Receipt receipt;
+
+    public PaymentPageGUI(Receipt receipt) {
+        this.receipt = receipt;
+    }
 
     public void createUI() {
         frame = new JFrame();
@@ -108,12 +114,19 @@ public class PaymentPageGUI {
                     JOptionPane.showMessageDialog(frame, "Invalid payment information. Please check and try again.\n" +
                             "Please enter a valid expiry date in the format dd/mm/yyyy, a 16-digit Card Number, and a 3-digit CVV.");
                 }
+
             }
         });
         
         panel.add(proceedButton);
 
         frame.setVisible(true);
+    }
+
+    private void displayReceipt(Receipt receipt) {
+        // Create an instance of ReceiptGUI and show it
+        ReceiptGUI receiptFrame = new ReceiptGUI(receipt);
+        receiptFrame.setVisible(true);
     }
 
     private void openSuccessMessageFrame() {
@@ -130,9 +143,16 @@ public class PaymentPageGUI {
         successLabel.setBounds(30, 10, 400, 40);
         successPanel.add(successLabel);
 
-        JLabel emailLabel = new JLabel("Please check your email for ticket and receipt details.");
-        emailLabel.setBounds(30, 50, 400, 40);
-        successPanel.add(emailLabel);
+        JButton proceedToReceiptButton = new JButton("Proceed to Receipt");
+        proceedToReceiptButton.setBounds(30, 100, 200, 40);
+        proceedToReceiptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displayReceipt(receipt);
+                successFrame.dispose(); 
+            }
+        });
+        successPanel.add(proceedToReceiptButton);
 
         successFrame.setVisible(true);
     }
