@@ -4,12 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 import java.util.ArrayList;
-import java.util.Properties;
 import model.*;
-import model.users.*;
-
 public class FlightCancellation {
     private JFrame frame;
     private JPanel panel;

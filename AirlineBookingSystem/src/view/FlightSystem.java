@@ -51,7 +51,7 @@ public class FlightSystem {
         }
         return onlyInstance;
     }
-    
+
     /**
      * This method creates a connection to the SQL database.
      */
@@ -297,5 +297,27 @@ public class FlightSystem {
 
         // List of Tickets
   
+    }
+
+    // Simple function to reset the singleton instance
+    public void resetInstance() {
+        onlyInstance = null;
+    }
+    
+    public void synchronizeFlightSys() {
+        // Close the existing database connection
+        try {
+            if (dbConnect != null && !dbConnect.isClosed()) {
+                dbConnect.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Reset the singleton instance
+        resetInstance();
+
+        // Create new instance
+        FlightSystem.getInstance();  
     }
 }
