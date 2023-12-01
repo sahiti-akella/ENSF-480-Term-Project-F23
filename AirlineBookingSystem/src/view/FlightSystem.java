@@ -327,11 +327,12 @@ public class FlightSystem {
             results = myStmt.executeQuery();
     
             while (results.next()) {
+                int ticketID = results.getInt("TicketID");
                 int userID = results.getInt("UserID");
                 int flightID = results.getInt("FlightID");
                 int seatID = results.getInt("SeatID");
                 boolean insuranceSelected = results.getBoolean("InsuranceSelected");
-                double total = results.getDouble("Total");
+                //double total = results.getDouble("Total");
     
                 // Find corresponding Customer, Flight, and Seat objects
                 Customer customer = findCustomerByID(userID);
@@ -339,7 +340,7 @@ public class FlightSystem {
                 Seat seat = findSeatByID(seatID);
     
                 // Create Ticket
-                Ticket ticket = new Ticket(customer, flight, seat, insuranceSelected, total);
+                Ticket ticket = new Ticket(ticketID, customer, flight, seat, insuranceSelected);
                 tickets.add(ticket);
             }
     
@@ -353,7 +354,7 @@ public class FlightSystem {
     }
 
     // Simple function to reset the singleton instance
-    public void resetInstance() {
+    private void resetInstance() {
         onlyInstance = null;
     }
     
