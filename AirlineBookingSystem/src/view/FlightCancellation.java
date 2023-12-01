@@ -91,7 +91,7 @@ public class FlightCancellation {
         }
     }
 
-    //getTicketsForUser looks good
+    
     private ArrayList<Ticket> getTicketsForUser(int userID) {
         FlightSystem sys = FlightSystem.getInstance();
 

@@ -44,6 +44,16 @@ public class TourismAgentGUI implements ActionListener {
     }
 
     public void createInitialScreen() { //change to createUI after other functions are completed
+        TourismAgent agent = null;
+
+        ArrayList<TourismAgent> agents = sys.getTourismAgentList();
+
+        for (TourismAgent a : agents){
+            if (a.getUserID() == agentID){
+                agent = a;
+            }
+        }
+
         JFrame frame = new JFrame();
         frame.setTitle("Tourism Agent - Initial Screen");
         JPanel panel = new JPanel();
@@ -75,7 +85,7 @@ public class TourismAgentGUI implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current frame
-                openRegisterNewUserScreen();
+                new RegisterNewUser("customer").createUI();
             }
         });
         panel.add(createNewCustomerButton);
