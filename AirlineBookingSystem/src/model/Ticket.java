@@ -5,22 +5,28 @@ import model.users.Customer;
 public class Ticket {
 
     // Ticket Class Attributes
+    private int ticketID;
     private Customer customer;
     private Flight flight;
     private Seat seat;
     private boolean insuranceSelected;
-    private double total;
+    private boolean isCancelled;
 
     // Ticket Constructor
-    public Ticket(Customer customer, Flight flight, Seat seat, boolean insuranceSelected, double total){
+    public Ticket(int ticketID, Customer customer, Flight flight, Seat seat, boolean insuranceSelected, boolean isCancelled){
+        this.ticketID = ticketID;
         this.customer = customer;
         this.flight = flight;
         this.seat = seat;
         this.insuranceSelected = insuranceSelected;
-        this.total = total;
+        this.isCancelled = isCancelled;
     }
 
     // Ticket Getters
+    public int getTicketID(){
+        return this.ticketID;
+    }
+
     public Customer getCustomer(){
         return this.customer;
     }
@@ -35,10 +41,13 @@ public class Ticket {
     public boolean getInsuranceSelection(){
         return this.insuranceSelected;
     }
-
-    public double getTotal(){
-        return this.total;
+    public boolean isCancelled(){
+        return this.isCancelled;
     }
+
+    // public double getTotal(){
+    //     return this.total;
+    // }
 
     // Ticket Setters
     public void setCustomer(Customer customer){
@@ -57,13 +66,13 @@ public class Ticket {
         this.insuranceSelected = insuranceSelected;
     }
 
-    public void setTotal(double total){
-        this.total = total;
-    }
+    // public void setTotal(double total){
+    //     this.total = total;
+    // }
 
     @Override
     public String toString() {
         
-        return "FlightID: " + flight.getflightID(); 
+        return "FlightID: " + flight.getFlightID(); 
     }
 }

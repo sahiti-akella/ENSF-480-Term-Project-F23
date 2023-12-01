@@ -309,7 +309,7 @@ public class TourismAgentGUI implements ActionListener {
                 ArrayList<Flight> flightList = sys.getFlightList();
                 Flight selectedFlight = null;
                 for (Flight flight : flightList){
-                    if (flight.getflightID() == flightID){
+                    if (flight.getFlightID() == flightID){
                         selectedFlight = flight;
                     }
                 }
