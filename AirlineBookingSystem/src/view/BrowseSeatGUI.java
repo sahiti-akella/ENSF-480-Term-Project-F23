@@ -22,12 +22,12 @@ public class BrowseSeatGUI {
 
     public void createUI() { 
         frame = new JFrame();
-        frame.setTitle("Browse Seats - " + selectedFlight);
+        frame.setTitle("Browse Seats - " + selectedFlight.getOrigin() + " -> "+ selectedFlight.getDestination() + " : "+ selectedFlight.getDepartureDate());
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         seatPanel = new JPanel();
-        seatPanel.setLayout(new GridLayout(3, 4)); // Change the dimensions as needed
+        seatPanel.setLayout(new GridLayout(3, 4)); 
 
         // Calculate the starting seat number based on the flight
         int startingSeatNumber = (selectedFlight.getFlightID() - 1) * SEATS_PER_FLIGHT + 1;
@@ -59,7 +59,7 @@ public class BrowseSeatGUI {
         JButton seatButton = new JButton(seatType + " - Seat " + seatNumber);
         seatButton.addActionListener(new SeatClickListener());
 
-        // Check seat availability and enable/disable the button accordingly
+        // Check seat availability and enable/disable the seat accordingly
         if (!isSeatAvailable(seatNumber)) {
             seatButton.setEnabled(false);
         }
@@ -83,19 +83,18 @@ public class BrowseSeatGUI {
         return false; //in case of error
     }
 
-
     private class SeatClickListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton seatButton = (JButton) e.getSource();
             String seatName = seatButton.getText();
-            frame.dispose(); // Close the seat selection frame
-            openInsuranceSelectionFrame(seatName);
+            frame.dispose();
+            openInsuranceSelectionFrame(seatName, selectedFlight);
         }
     }
 
-    private void openInsuranceSelectionFrame(String selectedSeat) {
-        SelectInsuranceGUI insuranceGUI = new SelectInsuranceGUI(selectedSeat);
+    private void openInsuranceSelectionFrame(String selectedSeat, Flight selectedFlight) {
+        SelectInsuranceGUI insuranceGUI = new SelectInsuranceGUI(selectedSeat, selectedFlight);
         insuranceGUI.createUI();
     }
 }
