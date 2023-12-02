@@ -23,7 +23,7 @@ public class FlightSystem {
     private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>();
     private ArrayList<Flight> flights = new ArrayList<Flight>();
     private ArrayList<Seat> seats = new ArrayList<Seat>();
-    private ArrayList<Payment> payments = new ArrayList<Payment>();
+    private ArrayList<Booking> bookings = new ArrayList<Booking>();
     private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
     //Singleton instance
@@ -116,8 +116,8 @@ public class FlightSystem {
         return this.seats;
     }
 
-    public ArrayList<Payment> getPaymentList() {
-        return this.payments;
+    public ArrayList<Booking> getBookingList() {
+        return this.bookings;
     }
 
     public ArrayList<Ticket> getTicketList() {
@@ -362,7 +362,28 @@ public class FlightSystem {
             ex.printStackTrace();
         }
 
-        // List of Payments
+          // List of Bookings
+
+          try {
+            PreparedStatement myStmt = dbConnect.prepareStatement("SELECT * FROM BOOKINGS");
+            results = myStmt.executeQuery();
+    
+            while (results.next()) {
+                String selectedSeat = results.getString("SelectedString");
+                boolean insuranceSelected = results.getBoolean("InsuranceSelected");
+                double seatPrice = results.getDouble("SeatPrice");
+                String origin = results.getString("Origin");
+                String destination = results.getString("Destination");
+                String departureDate = results.getString("DepartureDate");
+    
+                Booking booking = new Booking(selectedSeat, insuranceSelected, seatPrice, origin, destination, departureDate);
+                bookings.add(booking);
+            }
+    
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
   
     }
 

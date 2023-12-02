@@ -258,18 +258,18 @@ INSERT INTO SEATS (SeatID, FlightID, LayoutID, IsAvailable) VALUES
 (113, 10, 2, 1), (114, 10, 2, 1), (115, 10, 2, 0), (116, 10, 2, 1),
 (117, 10, 3, 1), (118, 10, 3, 0), (119, 10, 3, 0), (120, 10, 3, 1);
 
-# PAYMENTS TABLE
-DROP TABLE IF EXISTS PAYMENTS;
-CREATE TABLE PAYMENTS (
-    PaymentID 			INT NOT NULL AUTO_INCREMENT,
-    UserID 				INT,
-    FlightID 			INT,
-    Amount 				DECIMAL(10, 2) NOT NULL,
-    PaymentStatus 		ENUM('Pending', 'Completed', 'Failed') DEFAULT 'Pending',
-    
-    PRIMARY KEY (PaymentID),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (FlightID) REFERENCES Flights(FlightID)
+# BOOKINGS TABLE
+DROP TABLE IF EXISTS BOOKINGS;
+CREATE TABLE BOOKINGS (
+    BookingID           INT NOT NULL AUTO_INCREMENT,
+    SelectedSeat        VARCHAR(50) NOT NULL,
+    InsuranceSelected   BOOLEAN NOT NULL,
+    SeatPrice           DECIMAL(10, 2) NOT NULL,
+    Origin              VARCHAR(50) NOT NULL,
+    Destination         VARCHAR(50) NOT NULL,
+    DepartureDate       VARCHAR(50) NOT NULL,
+
+    PRIMARY KEY (BookingID)
 );
 
 # TICKETS TABLE
