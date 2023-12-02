@@ -12,7 +12,6 @@ public class FlightAttendantGUI implements ActionListener {
     private int userID;
     private ArrayList<Flight> flightList;
     private ArrayList<Ticket> ticketList;
-    private JComboBox<String> flightDropdown;
     private JFrame frame;
     private JPanel panel;
     private JComboBox<String> dropdown;

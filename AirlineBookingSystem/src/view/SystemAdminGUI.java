@@ -103,13 +103,6 @@ public class SystemAdminGUI {
                 JOptionPane.showMessageDialog(null, "Invalid action selected.");
         }
     }
-    private boolean isEmpty(String value) {
-        return value.trim().isEmpty();
-    }
-
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
 
     private void addFlight() {
         // Display a dialog to get flight information from the admin

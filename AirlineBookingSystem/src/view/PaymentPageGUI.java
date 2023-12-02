@@ -1,26 +1,26 @@
 package view;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Properties;
+import java.sql.Date;
 
-import model.Payment;
-import model.Booking;
+import model.*;
 
 public class PaymentPageGUI {
     private JFrame frame;
-    private Booking booking;
+    private Ticket ticket;
     private Connection connection;
     private FlightSystem sys;
 
-    public PaymentPageGUI(Booking booking) {
-        this.booking = booking;
+    public PaymentPageGUI(Ticket ticket) {
+        this.ticket = ticket;
         this.sys = FlightSystem.getInstance();
     }
 
@@ -109,8 +109,8 @@ public class PaymentPageGUI {
                     JOptionPane.showMessageDialog(frame, "Payment Successful!");
                     frame.dispose(); 
 
-                    saveToDatabase(booking);
-                    updateSeatAvailability(booking.getSelectedSeat());
+                    saveToDatabase(ticket);
+                    updateSeatAvailability(ticket.getSeat());
                     
                     // synchronize flight system with database
                     sys.synchronizeFlightSys();
@@ -129,8 +129,8 @@ public class PaymentPageGUI {
         frame.setVisible(true);
     }
 
-    private void displayBooking(Booking booking) {
-        BookingGUI bookingFrame = new BookingGUI(booking);
+    private void displayBooking(Ticket ticket) {
+        BookingGUI bookingFrame = new BookingGUI(ticket);
         bookingFrame.setVisible(true);
     }
 
@@ -153,7 +153,7 @@ public class PaymentPageGUI {
         viewBookingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                displayBooking(booking);
+                displayBooking(ticket);
                 successFrame.dispose(); 
             }
         });
@@ -182,7 +182,7 @@ public class PaymentPageGUI {
         }
     }
 
-       private void saveToDatabase(Booking booking) {
+    private void saveToDatabase(Ticket ticket) {
         initializeDatabase();
         if (connection == null) {
             // Handle the error appropriately
@@ -191,34 +191,41 @@ public class PaymentPageGUI {
 
         try {
             // Insert into BOOKINGS table
-            String insertQuery = "INSERT INTO BOOKINGS (SelectedSeat, InsuranceSelected, SeatPrice, Origin, Destination, DepartureDate) " +
+            String insertQuery = "INSERT INTO TICKETS (UserID, FlightID, SeatID, InsuranceSelected, TicketDate, IsCancelled) " +
                                 "VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
-                preparedStatement.setString(1, booking.getSelectedSeat());
-                preparedStatement.setBoolean(2, booking.hasInsurance());
-                preparedStatement.setDouble(3, booking.getSeatPrice());
-                preparedStatement.setString(4, booking.getOrigin());
-                preparedStatement.setString(5, booking.getDestination());
-                preparedStatement.setString(6, booking.getDepartureDate()); 
+                preparedStatement.setInt(1, ticket.getCustomer().getUserID());
+                preparedStatement.setInt(2, ticket.getFlight().getFlightID());
+                preparedStatement.setInt(3, ticket.getSeat().getSeatID());
+                preparedStatement.setBoolean(4,ticket.getInsuranceSelection());
+                // Set the current date
+                LocalDate currentDate = LocalDate.now();
+                preparedStatement.setDate(5, Date.valueOf(currentDate));
+                preparedStatement.setBoolean(6, false); 
+
+                // Execute the query
+                preparedStatement.executeUpdate();
             }     
         } catch (SQLException e) {
             e.printStackTrace();
         } 
     }
 
-    private void updateSeatAvailability(String selectedSeat) {
+    private void updateSeatAvailability(Seat selectedSeat) {
         initializeDatabase();
         if (connection == null) {
             return;
         }
     
         try {
-            String seatNumberString = selectedSeat.replaceAll("[^0-9]", "");
-            int seatID = Integer.parseInt(seatNumberString);
+            int seatID = selectedSeat.getSeatID();
     
             String updateQuery = "UPDATE SEATS SET IsAvailable = false WHERE SeatID = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
                 preparedStatement.setInt(1, seatID);
+
+                // Execute the query
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
