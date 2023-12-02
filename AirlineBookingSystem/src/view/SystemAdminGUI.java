@@ -32,9 +32,7 @@ public class SystemAdminGUI {
         panel.add(Box.createVerticalStrut(50));
         String[] adminActions = {
                 "Add Flight",
-                "Add Crew",
                 "Add Aircraft",
-                "Add Flight Destination",
                 "Modify Flight Information",
                 "Print List of Users"
         };
@@ -83,15 +81,11 @@ public class SystemAdminGUI {
             case "Add Flight":
                 addFlight();
                 break;
-            case "Add Crew":
-                addCrew();
-                break;
+
             case "Add Aircraft":
                 addAircraft();
                 break;
-            case "Add Flight Destination":
-                addFlightDestination();
-                break;
+
             case "Modify Flight Information":
                 modifyFlightInformation();
                 break;
@@ -102,13 +96,6 @@ public class SystemAdminGUI {
                 // Handle the case where an unknown action is selected
                 JOptionPane.showMessageDialog(null, "Invalid action selected.");
         }
-    }
-    private boolean isEmpty(String value) {
-        return value.trim().isEmpty();
-    }
-
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void addFlight() {
@@ -181,7 +168,7 @@ public class SystemAdminGUI {
                         preparedStatement.setInt(1, flightID);
                         preparedStatement.setInt(2, layoutID);
                         preparedStatement.addBatch();
-                    }   
+                    }
                 }
                 // Execute the batch update
                 preparedStatement.executeBatch();
@@ -189,50 +176,6 @@ public class SystemAdminGUI {
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle the exception (e.g., log error, display an error message)
-        }
-    }
-
-    private void addCrew() {
-        // Display a dialog to get crew information from the admin
-        JTextField crewNameField = new JTextField();
-        JTextField crewRoleField = new JTextField();
-
-        Object[] message = {
-                "Crew Name:", crewNameField,
-                "Crew Role:", crewRoleField
-        };
-
-        int option = JOptionPane.showConfirmDialog(null, message, "Enter Crew Information", JOptionPane.OK_CANCEL_OPTION);
-
-        // Check if the admin clicked "OK"
-        if (option == JOptionPane.OK_OPTION) {
-            // Get the entered values
-            String newCrewName = crewNameField.getText();
-            String newCrewRole = crewRoleField.getText();
-
-            // Use the entered values to insert a new crew member into the database
-            try {
-                String sql = "INSERT INTO CREW_MEMBERS (CrewName, CrewRole) VALUES (?, ?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                    preparedStatement.setString(1, newCrewName);
-                    preparedStatement.setString(2, newCrewRole);
-
-                    // Execute the update
-                    int rowsAffected = preparedStatement.executeUpdate();
-
-                    if (rowsAffected > 0) {
-                        // Display a success message
-                        JOptionPane.showMessageDialog(null, "Crew member added successfully.");
-                    } else {
-                        // Display a message if no rows were affected (insert failed)
-                        JOptionPane.showMessageDialog(null, "Failed to add crew member. Please try again.");
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle any SQL exceptions
-                JOptionPane.showMessageDialog(null, "Error adding crew member. Please check the input and try again.");
-            }
         }
     }
 
@@ -272,46 +215,6 @@ public class SystemAdminGUI {
                 e.printStackTrace();
                 // Handle any SQL exceptions
                 JOptionPane.showMessageDialog(null, "Error adding aircraft. Please check the input and try again.");
-            }
-        }
-    }
-
-    private void addFlightDestination() {
-        // Display a dialog to get flight destination information from the admin
-        JTextField destinationField = new JTextField();
-
-        Object[] message = {
-                "Flight Destination:", destinationField
-        };
-
-        int option = JOptionPane.showConfirmDialog(null, message, "Enter Flight Destination Information", JOptionPane.OK_CANCEL_OPTION);
-
-        // Check if the admin clicked "OK"
-        if (option == JOptionPane.OK_OPTION) {
-            // Get the entered values
-            String newDestination = destinationField.getText();
-
-            // Use the entered values to insert a new flight destination into the database
-            try {
-                String sql = "INSERT INTO FLIGHT_DESTINATIONS (Destination) VALUES (?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                    preparedStatement.setString(1, newDestination);
-
-                    // Execute the update
-                    int rowsAffected = preparedStatement.executeUpdate();
-
-                    if (rowsAffected > 0) {
-                        // Display a success message
-                        JOptionPane.showMessageDialog(null, "Flight destination added successfully.");
-                    } else {
-                        // Display a message if no rows were affected (insert failed)
-                        JOptionPane.showMessageDialog(null, "Failed to add flight destination. Please try again.");
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle any SQL exceptions
-                JOptionPane.showMessageDialog(null, "Error adding flight destination. Please check the input and try again.");
             }
         }
     }
