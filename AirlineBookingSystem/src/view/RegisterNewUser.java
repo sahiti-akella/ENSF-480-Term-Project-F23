@@ -30,7 +30,7 @@ public class RegisterNewUser {
         frame = new JFrame();
         frame.setTitle("Register New User");
         panel = new JPanel();
-        frame.setSize(400, 300);
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 

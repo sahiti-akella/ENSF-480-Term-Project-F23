@@ -102,7 +102,7 @@ public class LoginGUI implements ActionListener {
         JFrame dialogFrame = new JFrame();
         dialogFrame.setTitle("User Registration");
         JPanel panel = new JPanel();
-        dialogFrame.setSize(300, 150);
+        dialogFrame.setSize(800, 600);
 
         panel.setLayout(null);
 
@@ -138,8 +138,18 @@ public class LoginGUI implements ActionListener {
         });
         panel.add(cancelButton);
 
+        JLabel noteLabel = new JLabel("<html><div style='text-align: left;'>Note for Customers:<br><br>" +
+        "Registered customers will be able to: <br><br> " + 
+        "* Sign up for company credit card<br>" +
+        "* Receive monthly promotion news<br>" +
+        "* Receive an annual free companion ticket<br>" +
+        "* Use airport lounges with a discount price</div></html>");
+        noteLabel.setBounds(20, 100, 300, 300);
+        panel.add(noteLabel);
+
         dialogFrame.add(panel);
         dialogFrame.setVisible(true);
+
     }
 
 
