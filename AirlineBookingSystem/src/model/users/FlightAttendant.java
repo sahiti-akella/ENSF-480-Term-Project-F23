@@ -6,8 +6,6 @@ public class FlightAttendant extends User {
         super(userID, username, password, firstName, lastName);
     }
 
-    public void browsePassengers(String flightID){
-
-    }
+    
     
 }

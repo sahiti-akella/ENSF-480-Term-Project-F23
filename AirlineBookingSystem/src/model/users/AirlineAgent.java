@@ -6,7 +6,5 @@ public class AirlineAgent extends User {
         super(userID, username, password, firstName, lastName);
     }
 
-    public void browsePassengers(String flightID){
-
-    }
+    
 }

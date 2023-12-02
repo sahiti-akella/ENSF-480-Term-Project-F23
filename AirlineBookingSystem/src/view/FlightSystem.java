@@ -100,6 +100,10 @@ public class FlightSystem {
         return this.airlineAgents;
     }
 
+    public ArrayList<FlightAttendant> getFlightAttendantList(){
+        return this.flightAttendants;
+    }
+
     public ArrayList<Aircraft> getAircraftList() {
         return this.aircrafts;
     }
