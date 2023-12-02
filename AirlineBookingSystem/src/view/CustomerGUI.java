@@ -140,7 +140,7 @@ public class CustomerGUI implements ActionListener {
                         frame.dispose();
 
                         // Open the FlightCancellation GUI
-                        new FlightCancellation(userID).createUI();
+                        new FlightCancellationFrame(userID).createUI();
                     }
                 }
             }
@@ -267,7 +267,7 @@ public class CustomerGUI implements ActionListener {
     
 
     private void openBrowseSeatFrame(Flight selectedFlight, int userID) {
-        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight, userID);
+        BrowseSeatFrame seatGUI = new BrowseSeatFrame(selectedFlight, userID);
         seatGUI.createUI();
     }
 }

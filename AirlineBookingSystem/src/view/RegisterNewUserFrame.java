@@ -13,7 +13,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegisterNewUser {
+public class RegisterNewUserFrame {
     private JFrame frame;
     private JPanel panel;
     private String userType;
@@ -22,7 +22,7 @@ public class RegisterNewUser {
     // MySQL Connection Variables
     private Connection dbConnect;
 
-    public RegisterNewUser(String userType) {
+    public RegisterNewUserFrame(String userType) {
         this.userType = userType;
         this.sys = FlightSystem.getInstance();
         createConnection();

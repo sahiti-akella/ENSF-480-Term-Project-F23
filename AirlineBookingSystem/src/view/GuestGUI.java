@@ -117,7 +117,7 @@ public class GuestGUI implements ActionListener {
                         frame.dispose();
 
                         // Open the FlightCancellation GUI
-                        new FlightCancellation(guestID).createUI();
+                        new FlightCancellationFrame(guestID).createUI();
                     }
                 }
             }
@@ -239,7 +239,7 @@ public class GuestGUI implements ActionListener {
     
 
     private void openBrowseSeatFrame(Flight selectedFlight, int guestID) {
-        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight, guestID);
+        BrowseSeatFrame seatGUI = new BrowseSeatFrame(selectedFlight, guestID);
         seatGUI.createUI();
     }
 }

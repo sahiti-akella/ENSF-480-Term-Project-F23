@@ -7,8 +7,8 @@ import model.Ticket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class BookingGUI extends JFrame {
-    public BookingGUI(Ticket ticket) {
+public class BookingFrame extends JFrame {
+    public BookingFrame(Ticket ticket) {
         setTitle("Booking");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

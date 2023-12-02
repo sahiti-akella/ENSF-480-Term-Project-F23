@@ -12,14 +12,14 @@ import java.util.regex.Pattern;
 
 import model.*;
 
-public class FlightCancellation {
+public class FlightCancellationFrame {
     private JFrame frame;
     private JPanel panel;
     private int userID; // User ID for whom we want to display tickets
     private JList<String> ticketListJL; // JList to display tickets
     private DefaultListModel<String> listModel; // DefaultListModel to manage tickets
 
-    public FlightCancellation(int userID) {
+    public FlightCancellationFrame(int userID) {
         this.userID = userID;
     }
 
