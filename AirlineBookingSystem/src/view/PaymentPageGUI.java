@@ -5,14 +5,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import model.Payment;
-import model.Receipt;
+import model.Booking;
 
 public class PaymentPageGUI {
     private JFrame frame;
-    private Receipt receipt;
+    private Booking booking;
 
-    public PaymentPageGUI(Receipt receipt) {
-        this.receipt = receipt;
+    public PaymentPageGUI(Booking booking) {
+        this.booking = booking;
     }
 
     public void createUI() {
@@ -74,43 +74,34 @@ public class PaymentPageGUI {
         proceedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get entered information
                 String cardHolderFirstName = firstNameField.getText();
                 String cardHolderLastName = lastNameField.getText();
                 String cardNumber = numberField.getText();
                 String expiryDate = expiryField.getText();
                 String cvvString = cvvField.getText();
         
-                // Check if any of the required fields are empty
                 if (cardHolderFirstName.isEmpty() || cardHolderLastName.isEmpty() ||
                     cardNumber.isEmpty() || expiryDate.isEmpty() || cvvString.isEmpty()) {
-                    // Show an error message for incomplete form
                     JOptionPane.showMessageDialog(frame, "Please complete the payment form.");
-                    return; // Stop processing further
+                    return; 
                 }
         
                 int cvv;
                 try {
                     cvv = Integer.parseInt(cvvString);
                 } catch (NumberFormatException ex) {
-                    // Show error message for invalid CVV format
                     JOptionPane.showMessageDialog(frame, "Invalid CVV format. Please enter a 3-digit CVV.");
-                    return; // Stop processing further
+                    return; 
                 }
-        
-                // Create Payment object
+    
                 Payment payment = new Payment(cardHolderFirstName, cardHolderLastName, cardNumber, expiryDate, cvv);
         
-                // Check if payment is valid
                 if (payment.isValid()) {
-                    // Perform actions on payment confirmation, e.g., show confirmation message
                     JOptionPane.showMessageDialog(frame, "Payment Successful!");
-                    frame.dispose(); // Close the payment frame
-        
-                    // Open a new frame for success message
+                    frame.dispose(); 
+    
                     openSuccessMessageFrame();
                 } else {
-                    // Show an error message if the payment is not valid
                     JOptionPane.showMessageDialog(frame, "Invalid payment information. Please check and try again.\n" +
                             "Please enter a valid expiry date in the format dd/mm/yyyy, a 16-digit Card Number, and a 3-digit CVV.");
                 }
@@ -123,10 +114,9 @@ public class PaymentPageGUI {
         frame.setVisible(true);
     }
 
-    private void displayReceipt(Receipt receipt) {
-        // Create an instance of ReceiptGUI and show it
-        ReceiptGUI receiptFrame = new ReceiptGUI(receipt);
-        receiptFrame.setVisible(true);
+    private void displayBooking(Booking booking) {
+        BookingGUI bookingFrame = new BookingGUI(booking);
+        bookingFrame.setVisible(true);
     }
 
     private void openSuccessMessageFrame() {
@@ -143,16 +133,16 @@ public class PaymentPageGUI {
         successLabel.setBounds(30, 10, 400, 40);
         successPanel.add(successLabel);
 
-        JButton proceedToReceiptButton = new JButton("Proceed to Receipt");
-        proceedToReceiptButton.setBounds(30, 100, 200, 40);
-        proceedToReceiptButton.addActionListener(new ActionListener() {
+        JButton viewBookingButton = new JButton("View Booking Details");
+        viewBookingButton.setBounds(30, 100, 200, 40);
+        viewBookingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                displayReceipt(receipt);
+                displayBooking(booking);
                 successFrame.dispose(); 
             }
         });
-        successPanel.add(proceedToReceiptButton);
+        successPanel.add(viewBookingButton);
 
         successFrame.setVisible(true);
     }
