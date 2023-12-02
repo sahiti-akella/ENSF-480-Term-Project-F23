@@ -182,7 +182,7 @@ public class PaymentPageGUI {
         }
     }
 
-       private void saveToDatabase(Booking booking) {
+    private void saveToDatabase(Booking booking) {
         initializeDatabase();
         if (connection == null) {
             // Handle the error appropriately
@@ -200,6 +200,9 @@ public class PaymentPageGUI {
                 preparedStatement.setString(4, booking.getOrigin());
                 preparedStatement.setString(5, booking.getDestination());
                 preparedStatement.setString(6, booking.getDepartureDate()); 
+
+                // Execute the query
+                preparedStatement.executeUpdate();
             }     
         } catch (SQLException e) {
             e.printStackTrace();
@@ -219,6 +222,9 @@ public class PaymentPageGUI {
             String updateQuery = "UPDATE SEATS SET IsAvailable = false WHERE SeatID = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
                 preparedStatement.setInt(1, seatID);
+
+                // Execute the query
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
