@@ -181,7 +181,8 @@ public class FlightSystem {
                 results.getString("LastName"),
                 results.getString("Email"),
                 results.getString("Address"),
-                results.getBoolean("isRegistered"));
+                results.getBoolean("isRegistered"),
+                results.getString("CreditCardNumber"));
                 customers.add(customer);
             }
 

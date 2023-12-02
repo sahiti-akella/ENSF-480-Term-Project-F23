@@ -9,13 +9,15 @@ public class Customer extends User {
     private String email;
     private String address;
     private boolean isRegistered;
+    private String creditCard;
 
     // Customer Constructor
-    public Customer (int userID, String username, String password, String firstName, String lastName, String email, String address, boolean isRegistered){
+    public Customer (int userID, String username, String password, String firstName, String lastName, String email, String address, boolean isRegistered, String creditCard){
         super(userID, username, password, firstName, lastName);
         this.email = email;
         this.address = address;
         this.isRegistered = isRegistered;
+        this.creditCard = creditCard;
     }
 
     // Customer Constructor for guest
@@ -35,9 +37,12 @@ public class Customer extends User {
     public String getAddress(){
         return this.address;
     }
-     
+    
+    public String getCreditCardNumber(){
+        return this.creditCard;
+    }
 
-    public boolean getRegistered(){
+    public boolean getIsRegistered(){
         return this.isRegistered;
     }
 

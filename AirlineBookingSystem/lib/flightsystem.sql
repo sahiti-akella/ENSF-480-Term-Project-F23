@@ -16,24 +16,23 @@ CREATE TABLE USERS (
     Email               VARCHAR(100) NOT NULL,
     AccountType         VARCHAR(50) NOT NULL,
     isRegistered        BOOLEAN,
-    CreditCardNumber 	VARCHAR(16),
     
     PRIMARY KEY (UserID)
 );
 
-INSERT INTO USERS (UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered, CreditCardNumber) VALUES
-('johndoe', 'password', 'John', 'Doe', '123 Main St', 'john@gmail.com', 'admin', NULL, NULL),
-('alicejohnson', 'password', 'Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', 'airline-agent', NULL, NULL),
-('bobsmith', 'password', 'Bob', 'Smith', '789 Pine St', 'bob@gmail.com', 'flight-attendant', NULL, NULL),
-('evadavis', 'password', 'Eva', 'Davis', '101 Elm St', 'eva@gmail.com', 'tourism-agent', NULL, NULL),
-('lucywang', 'password', 'Lucy', 'Wang', '876 Cedar St', 'lucy@gmail.com', 'tourism-agent', NULL, NULL),
-('janesmith', 'password', 'Jane', 'Smith', '765 Birch St', 'jane@gmail.com', 'tourism-agent', NULL, NULL),
-('jackwilson', 'password', 'Jack', 'Wilson', '654 Pine St', 'jack@gmail.com', 'flight-attendant', NULL, NULL),
-('emmamiller', 'password', 'Emma', 'Miller', '543 Oak St', 'emma@gmail.com', 'flight-attendant', NULL, NULL),
-('hellenpotter', 'password', 'Helen', 'Potter', '432 Main St', 'helen@gmail.com', 'airline-agent', NULL, NULL),
-('adamjohnson', 'password', 'Adam', 'Johnson', '321 Elm St', 'adam@gmail.com', 'airline-agent', NULL, NULL),
-('gracedavis', 'password', 'Grace', 'Davis', '210 Oak St', 'grace@gmail.com', 'admin', NULL, NULL),
-('robertwhite', 'password', 'Robert', 'White', '109 Pine St', 'robert@gmail.com', 'admin', NULL, NULL);
+INSERT INTO USERS (UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered) VALUES
+('johndoe', 'password', 'John', 'Doe', '123 Main St', 'john@gmail.com', 'admin', NULL),
+('alicejohnson', 'password', 'Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', 'airline-agent', NULL),
+('bobsmith', 'password', 'Bob', 'Smith', '789 Pine St', 'bob@gmail.com', 'flight-attendant', NULL),
+('evadavis', 'password', 'Eva', 'Davis', '101 Elm St', 'eva@gmail.com', 'tourism-agent', NULL),
+('lucywang', 'password', 'Lucy', 'Wang', '876 Cedar St', 'lucy@gmail.com', 'tourism-agent', NULL),
+('janesmith', 'password', 'Jane', 'Smith', '765 Birch St', 'jane@gmail.com', 'tourism-agent', NULL),
+('jackwilson', 'password', 'Jack', 'Wilson', '654 Pine St', 'jack@gmail.com', 'flight-attendant', NULL),
+('emmamiller', 'password', 'Emma', 'Miller', '543 Oak St', 'emma@gmail.com', 'flight-attendant', NULL),
+('hellenpotter', 'password', 'Helen', 'Potter', '432 Main St', 'helen@gmail.com', 'airline-agent', NULL),
+('adamjohnson', 'password', 'Adam', 'Johnson', '321 Elm St', 'adam@gmail.com', 'airline-agent', NULL),
+('gracedavis', 'password', 'Grace', 'Davis', '210 Oak St', 'grace@gmail.com', 'admin', NULL),
+('robertwhite', 'password', 'Robert', 'White', '109 Pine St', 'robert@gmail.com', 'admin', NULL);
 
 
 # CUSTOMERS TABLE
@@ -47,7 +46,7 @@ CREATE TABLE CUSTOMERS (
     Address 			VARCHAR(100) NOT NULL,
     Email 				VARCHAR(100) NOT NULL,
     isRegistered		BOOLEAN,
-    CreditCardNumber 	INT,
+    CreditCardNumber 	VARCHAR(50),
     
    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
 );

@@ -48,10 +48,16 @@ public class CustomerGUI implements ActionListener {
             if (c.getUserID() == userID) {
                 customer = c;
             }
-        }
+        } 
 
+        System.out.println(customer.getCreditCardNumber());
+
+        if(customer.getCreditCardNumber() == null){
             showCreditCardOption(customer);
-        
+        }
+        else{
+            showCreditCardUpdateOption(customer);
+        }  
     }
     
     private void showCreditCardOption(Customer customer) {
@@ -76,12 +82,49 @@ public class CustomerGUI implements ActionListener {
         }
     }
 
+    private void showCreditCardUpdateOption(Customer customer) {
+        int creditCardChoice = JOptionPane.showConfirmDialog(null, "Would you like to change your company card?", "Credit Card Update", JOptionPane.YES_NO_OPTION);
+
+        if (creditCardChoice == JOptionPane.YES_OPTION) {
+            String creditCardNumber = JOptionPane.showInputDialog(null, "Please enter a new 16-digit credit card number:");
+
+            if (isValidCreditCardNumber(creditCardNumber)) {
+                // Credit card number is valid
+                registerCreditCard(customer, creditCardNumber);
+                updateUserCreditCard(userID, creditCardNumber);
+               
+            } else {
+                // Credit card number is invalid
+                JOptionPane.showMessageDialog(null, "Invalid credit card number. Please enter a valid 16-digit number.");
+                showCreditCardOption(customer); 
+            }
+        } else {
+            // User does not want to register for a credit card
+            openOptionsPanel(customer);
+        }
+    }
+
 
     private boolean isValidCreditCardNumber(String creditCardNumber) {
         return creditCardNumber != null && creditCardNumber.matches("\\d{16}");
     }
 
    private void registerCreditCard(Customer customer, String creditCardNumber) {
+
+        FlightSystem sys = FlightSystem.getInstance();
+        String updateCreditCardQuery = "UPDATE CUSTOMERS SET isRegistered = TRUE WHERE UserID = ?";
+
+        // Execute the SQL query to mark the ticket as cancelled
+        try {
+            PreparedStatement updateCreditCardStmt = sys.getConnection().prepareStatement(updateCreditCardQuery);
+            updateCreditCardStmt.setInt(1, userID);
+            updateCreditCardStmt.executeUpdate();
+            // Update flight system
+            sys.synchronizeFlightSys();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error updating user credit card information. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         JOptionPane.showMessageDialog(null, "Successfully registered credit card for "
                 + customer.getFirstName() + " " + customer.getLastName() + "!", "Credit Card Registration",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -155,21 +198,20 @@ public class CustomerGUI implements ActionListener {
      private void updateUserCreditCard(int userID, String creditCardNumber) {
         
         FlightSystem sys = FlightSystem.getInstance();
-        String updateCreditCardQuery = "UPDATE USERS SET CreditCardNumber = ? WHERE UserID = ?";
+        String updateCreditCardQuery = "UPDATE CUSTOMERS SET CreditCardNumber = ? WHERE UserID = ?";
 
         // Execute the SQL query to mark the ticket as cancelled
         try {
             PreparedStatement updateCreditCardStmt = sys.getConnection().prepareStatement(updateCreditCardQuery);
-             updateCreditCardStmt.setString(1, creditCardNumber);
-             updateCreditCardStmt.setInt(2, userID);
+            updateCreditCardStmt.setString(1, creditCardNumber);
+            updateCreditCardStmt.setInt(2, userID);
             updateCreditCardStmt.executeUpdate();
+            // Update flight system
+            sys.synchronizeFlightSys();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error updating user credit card information. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        // Update flight system
-        sys.synchronizeFlightSys();
     }
 
 
