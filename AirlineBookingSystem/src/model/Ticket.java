@@ -27,6 +27,14 @@ public class Ticket {
         return this.ticketID;
     }
 
+    public double getTotalPrice(){
+        double insurancePrice = 100;
+        if (this.insuranceSelected == false){
+            insurancePrice = 0;
+        }
+        return this.seat.getPrice() + insurancePrice;
+    }
+
     public Customer getCustomer(){
         return this.customer;
     }

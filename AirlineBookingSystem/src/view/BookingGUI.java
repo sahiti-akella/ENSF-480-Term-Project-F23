@@ -2,12 +2,13 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import model.Booking;
+import model.Ticket;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class BookingGUI extends JFrame {
-    public BookingGUI(Booking booking) {
+    public BookingGUI(Ticket ticket) {
         setTitle("Booking");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -24,13 +25,13 @@ public class BookingGUI extends JFrame {
         panel.add(createBoldLabel("Booking Details:", boldFont));
         panel.add(createLabelWithSpacing(""));
         panel.add(createLabelWithSpacing("Booking Date: " + getCurrentDate())); 
-        panel.add(createLabelWithSpacing("Flight Origin: " + booking.getOrigin()));
-        panel.add(createLabelWithSpacing("Flight Destination: " + booking.getDestination()));
-        panel.add(createLabelWithSpacing("Flight Departure Date: " + booking.getDepartureDate()));
-        panel.add(createLabelWithSpacing("Selected Seat: " + booking.getSelectedSeat()));
-        panel.add(createLabelWithSpacing("Seat Price: $" + booking.getSeatPrice()));
-        panel.add(createLabelWithSpacing("Ticket Cancellation Insurance ($100) Selected: " + (booking.hasInsurance() ? "Yes" : "No")));
-        panel.add(createLabelWithSpacing("Total Price: $" + booking.getTotalPrice()));
+        panel.add(createLabelWithSpacing("Flight Origin: " + ticket.getFlight().getOrigin()));
+        panel.add(createLabelWithSpacing("Flight Destination: " + ticket.getFlight().getDestination()));
+        panel.add(createLabelWithSpacing("Flight Departure Date: " + ticket.getFlight().getDepartureDate()));
+        panel.add(createLabelWithSpacing("Selected Seat: " + ticket.getSeat().getSeatID() + " - " + ticket.getSeat().getSeatType()));
+        panel.add(createLabelWithSpacing("Seat Price: $" + ticket.getSeat().getPrice()));
+        panel.add(createLabelWithSpacing("Ticket Cancellation Insurance ($100) Selected: " + (ticket.getInsuranceSelection() ? "Yes" : "No")));
+        panel.add(createLabelWithSpacing("Total Price: $" + ticket.getTotalPrice()));
     }
 
     private JLabel createBoldLabel(String text, Font font) {

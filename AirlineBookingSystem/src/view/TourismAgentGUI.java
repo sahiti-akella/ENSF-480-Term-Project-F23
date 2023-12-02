@@ -7,24 +7,16 @@ import model.users.*;
 
 import java.awt.event.*;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TourismAgentGUI implements ActionListener {
     private FlightSystem sys;
-    private int agentID;
     private TourismAgent agent;
     private DefaultListModel<String> listModel; // DefaultListModel to manage tickets
 
     public TourismAgentGUI(int agentID) {
-        this.agentID = agentID;
         this.sys = FlightSystem.getInstance();
 
         ArrayList<TourismAgent> agents = sys.getTourismAgentList();
@@ -158,7 +150,7 @@ public class TourismAgentGUI implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current frame
                 //open browse flights
-                openBrowseFlightListFrame();
+                openBrowseFlightListFrame(userID);
             }
         });
         panel.add(browseFlightsButton);
@@ -238,7 +230,7 @@ public class TourismAgentGUI implements ActionListener {
         }
     }
 
-    private void openBrowseFlightListFrame() {
+    private void openBrowseFlightListFrame(int userID) {
         JFrame frame = new JFrame();
         frame.setTitle("Browse Flight List");
         JPanel panel = new JPanel();
@@ -299,7 +291,7 @@ public class TourismAgentGUI implements ActionListener {
 
                 if (!selectedFlightStr.equals("Select flight..")) {
                     frame.dispose(); // Close the current frame
-                    openBrowseSeatFrame(selectedFlight);
+                    openBrowseSeatFrame(selectedFlight, userID);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid flight.");
                 }
@@ -311,8 +303,8 @@ public class TourismAgentGUI implements ActionListener {
     }
     
 
-    private void openBrowseSeatFrame(Flight selectedFlight) {
-        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight);
+    private void openBrowseSeatFrame(Flight selectedFlight, int userID) {
+        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight, userID);
         seatGUI.createUI();
     }
 }

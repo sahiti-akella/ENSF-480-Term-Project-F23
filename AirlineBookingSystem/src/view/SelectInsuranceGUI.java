@@ -5,21 +5,45 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import model.Flight;
-import model.Booking;
-import model.Seat;
+import model.*;
+import model.users.*;
+
 
 public class SelectInsuranceGUI {
     private JFrame frame;
     private Flight selectedFlight; 
     private String selectedSeat;
     private FlightSystem sys;
+    private Seat seat;
+    private Customer customer;
 
-    public SelectInsuranceGUI(String selectedSeat, Flight selectedFlight) {
+    public SelectInsuranceGUI(String selectedSeat, Flight selectedFlight, int userID) {
         this.selectedSeat = selectedSeat;
         this.selectedFlight = selectedFlight;
-        this.sys = FlightSystem.getInstance(); 
+        this.sys = FlightSystem.getInstance();
+
+        int seatID = extractSeatNumber(selectedSeat);
+        
+        ArrayList<Seat> seatList = sys.getSeatList();
+        //get seat object
+        for(Seat s : seatList){
+            if (s.getSeatID() == seatID){
+                this.seat = s;   
+            }
+        }
+
+        ArrayList<Customer> customerList = sys.getCustomerList();
+        //get customer object
+        for(Customer c : customerList){
+            if (c.getUserID() == userID){
+                this.customer = c;
+            }
+        }
+        
+
     }
 
     public void createUI() {
@@ -67,34 +91,34 @@ public class SelectInsuranceGUI {
     }
 
     private void openPaymentPage(boolean hasInsurance) {
-        double seatPrice = getSeatPrice(selectedSeat);
 
         if (selectedFlight != null) {
-            String origin = selectedFlight.getOrigin();
-            String destination = selectedFlight.getDestination();
-            String departureDate = selectedFlight.getDepartureDate();
-
-            Booking booking = new Booking(selectedSeat, hasInsurance, seatPrice, origin, destination, departureDate);
-            PaymentPageGUI paymentPageGUI = new PaymentPageGUI(booking);
+            Ticket ticket = new Ticket(-1, customer, selectedFlight, seat, hasInsurance, false);
+            // We need to pass in Ticket Object
+            PaymentPageGUI paymentPageGUI = new PaymentPageGUI(ticket);
             paymentPageGUI.createUI();
         } else {
             System.out.println("ERROR: selectedFlight is null");
         }
     }
 
-    private double getSeatPrice(String selectedSeat) {
-        ArrayList<Seat> seatsList = sys.getSeatList();
-    
-        String numericPart = selectedSeat.replaceAll("\\D+", "");
-    
-        for (Seat seat : seatsList) {
-            if (seat.getSeatID() == Integer.parseInt(numericPart)) {
-                return seat.getPrice();
-            }
+    // helper to extract seatID
+    private static int extractSeatNumber(String seatString) {
+        // Define the pattern for extracting the seat number
+        Pattern pattern = Pattern.compile("Seat (\\d+)");
+        Matcher matcher = pattern.matcher(seatString);
+
+        // Check if the pattern matches
+        if (matcher.find()) {
+            // Extract the matched seat number as a string
+            String seatNumberStr = matcher.group(1);
+
+            // Convert the string seat number to an integer
+            return Integer.parseInt(seatNumberStr);
         }
-    
-        System.out.println("ERROR: Seat ID " + numericPart + " not found in seat list");
-        return 0.0; 
+
+        // Return a default value or handle the case where no match is found
+        return -1;
     }
     
 }

@@ -12,11 +12,13 @@ public class BrowseSeatGUI {
     private JPanel seatPanel;
     private Flight selectedFlight;
     private FlightSystem sys;
+    private int userID;
     private static final int SEATS_PER_FLIGHT = 12;
 
 
-    public BrowseSeatGUI(Flight selectedFlight) {
+    public BrowseSeatGUI(Flight selectedFlight, int userID) {
         this.selectedFlight = selectedFlight;
+        this.userID = userID;
         this.sys = FlightSystem.getInstance();
     }
 
@@ -89,12 +91,12 @@ public class BrowseSeatGUI {
             JButton seatButton = (JButton) e.getSource();
             String seatName = seatButton.getText();
             frame.dispose();
-            openInsuranceSelectionFrame(seatName, selectedFlight);
+            openInsuranceSelectionFrame(seatName, selectedFlight, userID);
         }
     }
 
-    private void openInsuranceSelectionFrame(String selectedSeat, Flight selectedFlight) {
-        SelectInsuranceGUI insuranceGUI = new SelectInsuranceGUI(selectedSeat, selectedFlight);
+    private void openInsuranceSelectionFrame(String selectedSeat, Flight selectedFlight, int userID) {
+        SelectInsuranceGUI insuranceGUI = new SelectInsuranceGUI(selectedSeat, selectedFlight, userID);
         insuranceGUI.createUI();
     }
 }
