@@ -47,7 +47,7 @@ public class RegisterNewUser {
         createLabelAndTextField("Last Name:", 120);
         createLabelAndTextField("Address:", 150);
         createLabelAndTextField("Email:", 180);
-        createLabelAndTextField("Credit Card Number:", 210);
+        //createLabelAndTextField("Credit Card Number:", 210);
 
         // Create Register button
         JButton registerButton = new JButton("Register");
@@ -63,12 +63,12 @@ public class RegisterNewUser {
                 String lastName = getFieldText("Last Name:");
                 String address = getFieldText("Address:");
                 String email = getFieldText("Email:");
-                int creditCardNumber = Integer.parseInt(getFieldText("Credit Card Number:"));
+                //int creditCardNumber = Integer.parseInt(getFieldText("Credit Card Number:"));
 
                 // Validate the input fields (add your validation logic)
 
                 // Create the user in the database (add your database logic)
-                // insertUser(username, password, firstName, lastName, address, email, userType, false, creditCardNumber);
+                insertUser(username, password, firstName, lastName, address, email, userType, false);
 
                 // Close the registration window
                 frame.dispose();
@@ -129,11 +129,11 @@ public class RegisterNewUser {
 
     public void insertUser(String userName, String password, String firstName,
                                   String lastName, String address, String email,
-                                  String accountType, boolean isRegistered, int creditCardNumber) {
+                                  String accountType, boolean isRegistered) {
 
         try {
             // Insert into USERS table
-            String userInsertQuery = "INSERT INTO USERS (UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered, CreditCardNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String userInsertQuery = "INSERT INTO USERS (UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement userInsertStmt = dbConnect.prepareStatement(userInsertQuery)) {
                 userInsertStmt.setString(1, userName);
                 userInsertStmt.setString(2, password);
@@ -143,7 +143,7 @@ public class RegisterNewUser {
                 userInsertStmt.setString(6, email);
                 userInsertStmt.setString(7, accountType);
                 userInsertStmt.setBoolean(8, isRegistered);
-                userInsertStmt.setInt(9, creditCardNumber);
+                //userInsertStmt.setInt(9, creditCardNumber);
     
                 userInsertStmt.executeUpdate();
             }
