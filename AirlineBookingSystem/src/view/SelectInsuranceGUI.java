@@ -6,16 +6,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import model.Receipt;
+import model.Flight;
+import model.Booking;
 import model.Seat;
 
 public class SelectInsuranceGUI {
     private JFrame frame;
+    private Flight selectedFlight; 
     private String selectedSeat;
     private FlightSystem sys;
 
-    public SelectInsuranceGUI(String selectedSeat) {
+    public SelectInsuranceGUI(String selectedSeat, Flight selectedFlight) {
         this.selectedSeat = selectedSeat;
+        this.selectedFlight = selectedFlight;
         this.sys = FlightSystem.getInstance(); 
     }
 
@@ -43,7 +46,7 @@ public class SelectInsuranceGUI {
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the insurance selection frame
+                frame.dispose(); 
                 openPaymentPage(true);
             }
         });
@@ -54,7 +57,7 @@ public class SelectInsuranceGUI {
         noButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the insurance selection frame
+                frame.dispose(); 
                 openPaymentPage(false);
             }
         });
@@ -64,16 +67,23 @@ public class SelectInsuranceGUI {
     }
 
     private void openPaymentPage(boolean hasInsurance) {
-        double seatPrice = getSeatPrice(selectedSeat); 
-        Receipt receipt = new Receipt(selectedSeat, hasInsurance, seatPrice);
-        PaymentPageGUI paymentPageGUI = new PaymentPageGUI(receipt);
-        paymentPageGUI.createUI();
+        double seatPrice = getSeatPrice(selectedSeat);
+
+        if (selectedFlight != null) {
+            String origin = selectedFlight.getOrigin();
+            String destination = selectedFlight.getDestination();
+
+            Booking booking = new Booking(selectedSeat, hasInsurance, seatPrice, origin, destination);
+            PaymentPageGUI paymentPageGUI = new PaymentPageGUI(booking);
+            paymentPageGUI.createUI();
+        } else {
+            System.out.println("ERROR: selectedFlight is null");
+        }
     }
 
     private double getSeatPrice(String selectedSeat) {
         ArrayList<Seat> seatsList = sys.getSeatList();
     
-        // Extract the numeric part from the selectedSeat string
         String numericPart = selectedSeat.replaceAll("\\D+", "");
     
         for (Seat seat : seatsList) {
@@ -85,6 +95,5 @@ public class SelectInsuranceGUI {
         System.out.println("ERROR: Seat ID " + numericPart + " not found in seat list");
         return 0.0; 
     }
-    
     
 }

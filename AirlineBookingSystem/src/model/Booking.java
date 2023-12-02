@@ -1,16 +1,20 @@
 package model;
 
-public class Receipt {
+public class Booking {
     private String selectedSeat;
     private boolean hasInsurance;
     private double seatPrice;
     private static final double INSURANCE_PRICE = 100.00;
     private double totalPrice;
+    private String origin;  
+    private String destination;
 
-    public Receipt(String selectedSeat, boolean hasInsurance, double seatPrice) {
+    public Booking(String selectedSeat, boolean hasInsurance, double seatPrice, String origin, String destination) {
         this.selectedSeat = selectedSeat;
         this.hasInsurance = hasInsurance;
         this.seatPrice = seatPrice;
+        this.origin = origin;
+        this.destination = destination;
         calculateTotalPrice();
     }
 
@@ -28,6 +32,14 @@ public class Receipt {
 
     public double getSeatPrice() {
         return seatPrice;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public String getDestination() {
+        return destination;
     }
 
     public double getTotalPrice() {
