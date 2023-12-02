@@ -83,8 +83,8 @@ public class LoginGUI implements ActionListener {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement create new user logic here
-                success.setText("Create New User Clicked");
+                // Open a dialog for selecting user type
+                openUserTypeDialog();
             }
         });
         login.add(createButton);
@@ -95,6 +95,51 @@ public class LoginGUI implements ActionListener {
 
         frame.setVisible(true);
     }
+
+    private void openUserTypeDialog() {
+        JFrame dialogFrame = new JFrame();
+        dialogFrame.setTitle("User Registration");
+        JPanel panel = new JPanel();
+        dialogFrame.setSize(300, 150);
+
+        panel.setLayout(null);
+
+        JLabel label = new JLabel("Select User Type:");
+        label.setBounds(20, 20, 150, 25);
+        panel.add(label);
+
+        String[] userTypes = {"Customer", "Administrator", "Tourism-Agent", "Flight-Attendant", "Airline-Agent"};
+        JComboBox<String> typeDropdown = new JComboBox<>(userTypes);
+        typeDropdown.setBounds(150, 20, 120, 25);
+        panel.add(typeDropdown);
+
+        JButton okButton = new JButton("OK");
+        okButton.setBounds(20, 60, 80, 25);
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialogFrame.dispose(); // Close the dialog
+                String selectedType = (String) typeDropdown.getSelectedItem();
+                // Open the RegisterNewUserGUI with the selected user type
+                new RegisterNewUser(selectedType.toLowerCase()).createUI();
+            }
+        });
+        panel.add(okButton);
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBounds(120, 60, 80, 25);
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialogFrame.dispose(); // Close the dialog
+            }
+        });
+        panel.add(cancelButton);
+
+        dialogFrame.add(panel);
+        dialogFrame.setVisible(true);
+    }
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
