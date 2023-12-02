@@ -1,5 +1,8 @@
-package view;
+package controller;
 import javax.swing.*;
+
+import view.*;
+
 import java.awt.event.*;
 import java.sql.*;
 import java.util.Properties;
