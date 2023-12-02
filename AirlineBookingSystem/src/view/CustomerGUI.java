@@ -67,26 +67,34 @@ public class CustomerGUI implements ActionListener {
         int creditCardChoice = JOptionPane.showConfirmDialog(null, "Would you like to register for a company credit card?", "Credit Card Registration", JOptionPane.YES_NO_OPTION);
 
         if (creditCardChoice == JOptionPane.YES_OPTION) {
-            // User wants to register for a credit card
-            registerCreditCard(customer);
+            String creditCardNumber = JOptionPane.showInputDialog(null, "Please enter a 16-digit credit card number:");
+
+            if (isValidCreditCardNumber(creditCardNumber)) {
+                // Credit card number is valid
+                registerCreditCard(customer, creditCardNumber);
+            } else {
+                // Credit card number is invalid
+                JOptionPane.showMessageDialog(null, "Invalid credit card number. Please enter a valid 16-digit number.");
+                showCreditCardOption(customer); 
+            }
         } else {
             // User does not want to register for a credit card
             openOptionsPanel(customer);
         }
     }
 
-    private void registerCreditCard(Customer customer) {
-        // Perform credit card registration logic here
 
-        // For demonstration purposes, let's just show a message
+    private boolean isValidCreditCardNumber(String creditCardNumber) {
+        return creditCardNumber != null && creditCardNumber.matches("\\d{16}");
+    }
+
+   private void registerCreditCard(Customer customer, String creditCardNumber) {
         JOptionPane.showMessageDialog(null, "Successfully registered credit card for "
                 + customer.getFirstName() + " " + customer.getLastName() + "!", "Credit Card Registration",
                 JOptionPane.INFORMATION_MESSAGE);
 
-        // Now, proceed to the options panel
         openOptionsPanel(customer);
     }
-    
 
     private void openOptionsPanel(Customer customer) {
         JFrame frame = new JFrame();
