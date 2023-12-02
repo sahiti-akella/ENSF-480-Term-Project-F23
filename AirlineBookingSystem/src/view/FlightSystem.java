@@ -92,6 +92,10 @@ public class FlightSystem {
         return this.customers;
     }
 
+    public ArrayList<TourismAgent> getTourismAgentList(){
+        return this.tourismAgents;
+    }
+
     public ArrayList<Aircraft> getAircraftList() {
         return this.aircrafts;
     }

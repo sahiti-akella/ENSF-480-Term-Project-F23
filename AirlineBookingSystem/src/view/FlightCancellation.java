@@ -79,9 +79,10 @@ public class FlightCancellation {
             String destination = ticket.getFlight().getDestination();
             String origin = ticket.getFlight().getOrigin(); 
             String departureDate = ticket.getFlight().getDepartureDate(); 
+            String seatType = ticket.getSeat().getSeatType(); 
             
             
-            String ticketInfo = "ID: " + ticketID + " | " + origin + " -> " + destination + " : " + departureDate;
+            String ticketInfo = "ID: " + ticketID + " | " + origin + " -> " + destination + " : " + departureDate + " | Seat Class: " + seatType;
 
             if(!ticket.isCancelled()){
                 //only add to the list is ticket is not cancelled
@@ -90,7 +91,7 @@ public class FlightCancellation {
         }
     }
 
-    //getTicketsForUser looks good
+    
     private ArrayList<Ticket> getTicketsForUser(int userID) {
         FlightSystem sys = FlightSystem.getInstance();
 
