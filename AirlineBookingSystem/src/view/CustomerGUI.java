@@ -49,8 +49,15 @@ public class CustomerGUI implements ActionListener {
             }
         }
 
+        String message = "<html>Would you like to register for a membership?<br><br>" +
+        "Registered members will be able to:<br><br>" +
+        "&bull; Receive monthly promotion news<br>" +
+        "&bull; Receive an annual free companion ticket<br>" +
+        "&bull; Use airport lounges with a discount price</html>";
+
+
         // Prompt user for membership registration
-        int choice = JOptionPane.showConfirmDialog(null, "Would you like to register for a membership?", "Membership Registration", JOptionPane.YES_NO_OPTION);
+        int choice = JOptionPane.showConfirmDialog(null, message, "Membership Registration", JOptionPane.YES_NO_OPTION);
 
         if (choice == JOptionPane.YES_OPTION) {
             // User wants to register for a membership
