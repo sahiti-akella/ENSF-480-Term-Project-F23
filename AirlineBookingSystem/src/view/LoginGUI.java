@@ -24,10 +24,10 @@ public class LoginGUI implements ActionListener {
             new CustomerGUI(userID).createUI();
         } else if (type.equals("airline-agent")){
             // Open Airline Agent GUI
-        	new AirlineAgentGUI().createUI();
+        	new AirlineAgentGUI(userID).createUI();
         } else if (type.equals("flight-attendant")){
         	// Open Flight Attendant GUI
-        	new FlightAttendantGUI().createUI();
+        	new FlightAttendantGUI(userID).createUI();
         } else if (type.equals("tourism-agent")){
             // Open Tourism Agent GUI
             new TourismAgentGUI(userID).createUI();
