@@ -4,18 +4,19 @@ import javax.swing.*;
 import model.*;
 import model.users.*;
 import java.awt.event.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 public class CustomerGUI implements ActionListener {
     
     private int userID;
     private FlightSystem sys;
-
+    
+    
     public CustomerGUI(int userID) {
         this.userID = userID;
         this.sys = FlightSystem.getInstance();
@@ -62,6 +63,8 @@ public class CustomerGUI implements ActionListener {
             if (isValidCreditCardNumber(creditCardNumber)) {
                 // Credit card number is valid
                 registerCreditCard(customer, creditCardNumber);
+                updateUserCreditCard(userID, creditCardNumber);
+               
             } else {
                 // Credit card number is invalid
                 JOptionPane.showMessageDialog(null, "Invalid credit card number. Please enter a valid 16-digit number.");
@@ -148,6 +151,27 @@ public class CustomerGUI implements ActionListener {
 
         frame.setVisible(true);
     }
+
+     private void updateUserCreditCard(int userID, String creditCardNumber) {
+        
+        FlightSystem sys = FlightSystem.getInstance();
+        String updateCreditCardQuery = "UPDATE USERS SET CreditCardNumber = ? WHERE UserID = ?";
+
+        // Execute the SQL query to mark the ticket as cancelled
+        try {
+            PreparedStatement updateCreditCardStmt = sys.getConnection().prepareStatement(updateCreditCardQuery);
+             updateCreditCardStmt.setString(1, creditCardNumber);
+             updateCreditCardStmt.setInt(2, userID);
+            updateCreditCardStmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error updating user credit card information. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Update flight system
+        sys.synchronizeFlightSys();
+    }
+
 
     private ArrayList<Ticket> getTicketsForUser(int userID) {
         FlightSystem sys = FlightSystem.getInstance();

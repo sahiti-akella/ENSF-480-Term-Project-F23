@@ -68,7 +68,7 @@ public class RegisterNewUser {
                 // Validate the input fields (add your validation logic)
 
                 // Create the user in the database (add your database logic)
-                insertUser(username, password, firstName, lastName, address, email, userType, false);
+                insertUser(username, password, firstName, lastName, address, email, userType, true);
 
                 // Close the registration window
                 frame.dispose();
