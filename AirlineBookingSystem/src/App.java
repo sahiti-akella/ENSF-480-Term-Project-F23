@@ -1,5 +1,4 @@
-import view.FlightSystem;
-import view.LoginGUI;
+import controller.LoginGUI;
 
 public class App {
     public static void main(String[] args) throws Exception {

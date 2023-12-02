@@ -369,7 +369,7 @@ public class FlightSystem {
             results = myStmt.executeQuery();
     
             while (results.next()) {
-                String selectedSeat = results.getString("SelectedString");
+                String selectedSeat = results.getString("SelectedSeat");
                 boolean insuranceSelected = results.getBoolean("InsuranceSelected");
                 double seatPrice = results.getDouble("SeatPrice");
                 String origin = results.getString("Origin");
