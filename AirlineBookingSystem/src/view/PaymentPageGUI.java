@@ -108,6 +108,7 @@ public class PaymentPageGUI {
                     frame.dispose(); 
 
                     saveToDatabase(booking);
+                    updateSeatAvailability(booking.getSelectedSeat());
     
                     openSuccessMessageFrame();
                 } else {
@@ -193,23 +194,30 @@ public class PaymentPageGUI {
                 preparedStatement.setDouble(3, booking.getSeatPrice());
                 preparedStatement.setString(4, booking.getOrigin());
                 preparedStatement.setString(5, booking.getDestination());
-                preparedStatement.setString(6, booking.getDepartureDate());
-
-                int affectedRows = preparedStatement.executeUpdate();
-
-                if (affectedRows > 0) {
-                    JOptionPane.showMessageDialog(frame, "Booking information saved successfully!");
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Failed to save booking information.");
-                }
+                preparedStatement.setString(6, booking.getDepartureDate()); 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } 
     }
 
+    private void updateSeatAvailability(String selectedSeat) {
+        initializeDatabase();
+        if (connection == null) {
+            return;
+        }
     
-
-
-
+        try {
+            String seatNumberString = selectedSeat.replaceAll("[^0-9]", "");
+            int seatID = Integer.parseInt(seatNumberString);
+    
+            String updateQuery = "UPDATE SEATS SET IsAvailable = false WHERE SeatID = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                preparedStatement.setInt(1, seatID);
+            }
+        } catch (SQLException | NumberFormatException e) {
+            e.printStackTrace();
+        } 
+    }
+    
 }
