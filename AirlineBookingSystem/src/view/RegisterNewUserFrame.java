@@ -65,6 +65,12 @@ public class RegisterNewUserFrame {
                 String lastName = getFieldText("Last Name:");
                 String address = getFieldText("Address:");
                 String email = getFieldText("Email:");
+
+                if (isEmpty(username) || isEmpty(password) || isEmpty(firstName) || isEmpty(lastName) || isEmpty(address) || isEmpty(email)) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 if (!isValidEmail(email)) {
                     JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -79,6 +85,10 @@ public class RegisterNewUserFrame {
         panel.add(registerButton);
 
         frame.setVisible(true);
+    }
+
+    private boolean isEmpty(String str) {
+        return str.trim().isEmpty();
     }
 
      private boolean isValidEmail(String email) {

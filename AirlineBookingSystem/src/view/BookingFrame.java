@@ -24,6 +24,8 @@ public class BookingFrame extends JFrame {
 
         panel.add(createBoldLabel("Booking Details:", boldFont));
         panel.add(createLabelWithSpacing(""));
+        panel.add(createLabelWithSpacing("Customer First Name: " + ticket.getCustomer().getFirstName()));
+        panel.add(createLabelWithSpacing("Customer Last Name: " + ticket.getCustomer().getLastName()));
         panel.add(createLabelWithSpacing("Booking Date: " + getCurrentDate())); 
         panel.add(createLabelWithSpacing("Flight Origin: " + ticket.getFlight().getOrigin()));
         panel.add(createLabelWithSpacing("Flight Destination: " + ticket.getFlight().getDestination()));
