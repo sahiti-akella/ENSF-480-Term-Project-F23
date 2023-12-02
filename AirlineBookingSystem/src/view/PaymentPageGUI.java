@@ -17,9 +17,11 @@ public class PaymentPageGUI {
     private JFrame frame;
     private Booking booking;
     private Connection connection;
+    private FlightSystem sys;
 
     public PaymentPageGUI(Booking booking) {
         this.booking = booking;
+        this.sys = FlightSystem.getInstance();
     }
 
     public void createUI() {
@@ -109,7 +111,10 @@ public class PaymentPageGUI {
 
                     saveToDatabase(booking);
                     updateSeatAvailability(booking.getSelectedSeat());
-    
+                    
+                    // synchronize flight system with database
+                    sys.synchronizeFlightSys();
+                    
                     openSuccessMessageFrame();
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid payment information. Please check and try again.\n" +
@@ -195,7 +200,7 @@ public class PaymentPageGUI {
                 preparedStatement.setString(4, booking.getOrigin());
                 preparedStatement.setString(5, booking.getDestination());
                 preparedStatement.setString(6, booking.getDepartureDate()); 
-            }
+            }     
         } catch (SQLException e) {
             e.printStackTrace();
         } 
