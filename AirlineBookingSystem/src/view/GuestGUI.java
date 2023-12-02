@@ -2,53 +2,26 @@ package view;
 
 import javax.swing.*;
 
-import model.*;
+import model.Flight;
+import model.Ticket;
 import model.users.*;
-
 import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TourismAgentGUI implements ActionListener {
-    private FlightSystem sys;
-    private TourismAgent agent;
-    private DefaultListModel<String> listModel; // DefaultListModel to manage tickets
+public class GuestGUI implements ActionListener {
 
-    public TourismAgentGUI(int agentID) {
-        this.sys = FlightSystem.getInstance();
-
-        ArrayList<TourismAgent> agents = sys.getTourismAgentList();
-
-        for (TourismAgent a : agents){
-            if (a.getUserID() == agentID){
-                this.agent = a;
-            }
-        }
-    }
-
-    private ArrayList<String> getAvailableFlights() {
-        ArrayList<Flight> flightList = sys.getFlightList();
-        ArrayList<String> strFlightList = new ArrayList<String>();
-
-        for (Flight flight : flightList){
-            int flightID = flight.getFlightID();
-            String origin = flight.getOrigin();
-            String destination = flight.getDestination();
-            String departureDate = flight.getDepartureDate();
-
-            String flightInfo = "ID: " + flightID + " | " + origin + " -> " + destination + " : " + departureDate;
-            strFlightList.add(flightInfo);
-        }
-
-        return strFlightList;
-    }
+    private String firstName;
+    private String lastName;
+    private int guestID;
+    private String guestUsername;
+    private FlightSystem sys = FlightSystem.getInstance();
 
     public void createUI() {
-
         JFrame frame = new JFrame();
-        frame.setTitle("Tourism Agent Menu");
+        frame.setTitle("Guest Information");
         JPanel panel = new JPanel();
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,79 +29,44 @@ public class TourismAgentGUI implements ActionListener {
 
         panel.setLayout(null);
 
-        JLabel welcomeLabel = new JLabel("Hello, " + agent.getFirstName() + "!");
-        welcomeLabel.setBounds(30, 10, 300, 40);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
-        panel.add(welcomeLabel);
+        JLabel firstNameLabel = new JLabel("First Name:");
+        firstNameLabel.setBounds(30, 20, 80, 25);
+        panel.add(firstNameLabel);
 
-        JLabel selectCustomerLabel = new JLabel("Select Existing Customer:");
-        selectCustomerLabel.setBounds(30, 60, 250, 40);
-        panel.add(selectCustomerLabel);
+        JTextField firstNameText = new JTextField();
+        firstNameText.setBounds(130, 20, 165, 25);
+        panel.add(firstNameText);
 
-        // Retrieve the list of existing customers from the database
-        ArrayList<Customer> customerList = sys.getCustomerList();
-        ArrayList<String> customerNameIDList = new ArrayList<String>();
-
-        for (Customer c : customerList){
-            String name = c.getFirstName() + " " + c.getLastName();
-            int customerID = c.getUserID();
-
-            String customerNameID = "ID: " + customerID + " | " + name;
-            customerNameIDList.add(customerNameID);
-        }
-
-        customerNameIDList.add(0, "Select customer.."); // Add a default option
-
-        // Initialize the DefaultListModel
-        listModel = new DefaultListModel<>();  // Initialize the listModel here
-        
-        //add to listmodel
-        for (String customerNameID : customerNameIDList ){
-            listModel.addElement(customerNameID);
-        }
-
-        JList<String> customerJList = new JList<>(listModel);
-        customerJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane scrollPane = new JScrollPane(customerJList);
-        scrollPane.setBounds(30, 100, 250, 200);
-        panel.add(scrollPane);
-
-        JButton continueButton = new JButton("Continue");
-        continueButton.setBounds(30, 320, 150, 40);
-        continueButton.addActionListener(new ActionListener() {
+        JButton registerButton = new JButton("Continue as Guest");
+        registerButton.setBounds(30, 100, 210, 25);
+        registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedCustomer = customerJList.getSelectedValue();
+                firstName = firstNameText.getText();
 
-                if (selectedCustomer != null && !selectedCustomer.equals("Select customer..")) {
-                    // Handle the selected customer
-                    handleSelectedCustomer(selectedCustomer);
+                if (isValidName(firstName)) {
+                    frame.dispose(); // Close the current frame
+
+                    //Create guest customer object
+                    Customer guestCustomer = new Customer("guest", "guest", firstName, lastName, null, null, false);
+                    guestID = guestCustomer.getGuestID();
+                    guestUsername = guestCustomer.getUsername();
+        
+                    openOptionsPanel(guestCustomer);
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Please select a valid customer.");
+                    JOptionPane.showMessageDialog(frame, "Please enter a name");
                 }
             }
         });
-        panel.add(continueButton);
-
-        JButton createNewCustomerButton = new JButton("Create New Customer");
-        // Adjusted the y-coordinate to give more space
-        createNewCustomerButton.setBounds(30, 370, 250, 40);
-        createNewCustomerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
-                new RegisterNewUserFrame("customer").createUI();
-            }
-        });
-        panel.add(createNewCustomerButton);
+        panel.add(registerButton);
 
         frame.setVisible(true);
     }
 
-
-    public void handleSelectedCustomer(String selectedCustomer) {
-        int userID = Integer.parseInt(extractCustomerID(selectedCustomer));
-
+    private boolean isValidName(String name) {
+        return name != null && !name.trim().isEmpty();
+    }
+    private void openOptionsPanel(Customer customer) {
         JFrame frame = new JFrame();
         frame.setTitle("Options Panel");
         JPanel panel = new JPanel();
@@ -136,9 +74,9 @@ public class TourismAgentGUI implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
-        panel.setLayout(null);
+           panel.setLayout(null);
 
-        JLabel welcomeLabel = new JLabel("Managing the bookings for UserID: " + userID);
+        JLabel welcomeLabel = new JLabel("Hello, " + customer.getFirstName() + "("+ guestUsername + ")" + "!");
         welcomeLabel.setBounds(30, 10, 300, 40);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 15));
         panel.add(welcomeLabel);
@@ -150,18 +88,18 @@ public class TourismAgentGUI implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current frame
                 //open browse flights
-                openBrowseFlightListFrame(userID);
+                openBrowseFlightListFrame();
             }
         });
         panel.add(browseFlightsButton);
-
+        
         JButton cancelFlightButton = new JButton("Cancel Flight");
         cancelFlightButton.setBounds(30, 120, 180, 40);
         cancelFlightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Get the user's ticket list
-                ArrayList<Ticket> userTicketList = getTicketsForUser(userID);
+                ArrayList<Ticket> userTicketList = getTicketsForUser(guestID);
 
                 // Check if the list is null or empty
                 if (userTicketList == null || userTicketList.isEmpty()) {
@@ -179,58 +117,55 @@ public class TourismAgentGUI implements ActionListener {
                         frame.dispose();
 
                         // Open the FlightCancellation GUI
-                        new FlightCancellationFrame(userID).createUI();
+                        new FlightCancellationFrame(guestID).createUI();
                     }
                 }
             }
         });
 
+
         panel.add(cancelFlightButton);
 
         frame.setVisible(true);
-        
     }
 
     private ArrayList<Ticket> getTicketsForUser(int userID) {
         FlightSystem sys = FlightSystem.getInstance();
 
         ArrayList<Ticket> userTicketList = new ArrayList<>();
-        ArrayList<Ticket> fullTicketList = sys.getTicketList();
-
-        for (Ticket ticket : fullTicketList) {
+        ArrayList<Ticket> ticketList = sys.getTicketList();
+        
+        for (Ticket ticket : ticketList) {
             if (ticket.getCustomer().getUserID() == userID) {
                 userTicketList.add(ticket);
             }
         }
-
+    
         return userTicketList;
     }
 
-    
     @Override
     public void actionPerformed(ActionEvent e) {
-        //empty 
+        // empty
     }
+    private ArrayList<String> getAvailableFlights() {
+        ArrayList<Flight> flightList = sys.getFlightList();
+        ArrayList<String> strFlightList = new ArrayList<String>();
 
-     // Helper function to extract ticketID from String in format: "ID: XX | Origin -> Destination : Date"
-     private static String extractCustomerID(String customerInfo) {
-        // Define a pattern for extracting the ID
-        Pattern pattern = Pattern.compile("ID: (\\d+)");
+        for (Flight flight : flightList){
+            int flightID = flight.getFlightID();
+            String origin = flight.getOrigin();
+            String destination = flight.getDestination();
+            String departureDate = flight.getDepartureDate();
 
-        // Create a matcher for the input string
-        Matcher matcher = pattern.matcher(customerInfo);
-
-        // Check if the pattern is found
-        if (matcher.find()) {
-            // Group 1 contains the matched ID
-            return matcher.group(1);
-        } else {
-            // Return an empty string or handle the case when no match is found
-            return "";
+            String flightInfo = "ID: " + flightID + " | " + origin + " -> " + destination + " : " + departureDate;
+            strFlightList.add(flightInfo);
         }
+
+        return strFlightList;
     }
 
-    private void openBrowseFlightListFrame(int userID) {
+    private void openBrowseFlightListFrame() {
         JFrame frame = new JFrame();
         frame.setTitle("Browse Flight List");
         JPanel panel = new JPanel();
@@ -291,7 +226,7 @@ public class TourismAgentGUI implements ActionListener {
 
                 if (!selectedFlightStr.equals("Select flight..")) {
                     frame.dispose(); // Close the current frame
-                    openBrowseSeatFrame(selectedFlight, userID);
+                    openBrowseSeatFrame(selectedFlight, guestID);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid flight.");
                 }
@@ -303,8 +238,8 @@ public class TourismAgentGUI implements ActionListener {
     }
     
 
-    private void openBrowseSeatFrame(Flight selectedFlight, int userID) {
-        BrowseSeatFrame seatGUI = new BrowseSeatFrame(selectedFlight, userID);
+    private void openBrowseSeatFrame(Flight selectedFlight, int guestID) {
+        BrowseSeatFrame seatGUI = new BrowseSeatFrame(selectedFlight, guestID);
         seatGUI.createUI();
     }
 }

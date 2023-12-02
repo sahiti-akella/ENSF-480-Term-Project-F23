@@ -23,7 +23,6 @@ public class FlightSystem {
     private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>();
     private ArrayList<Flight> flights = new ArrayList<Flight>();
     private ArrayList<Seat> seats = new ArrayList<Seat>();
-    private ArrayList<Payment> payments = new ArrayList<Payment>();
     private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
     //Singleton instance
@@ -92,6 +91,18 @@ public class FlightSystem {
         return this.customers;
     }
 
+    public ArrayList<TourismAgent> getTourismAgentList(){
+        return this.tourismAgents;
+    }
+    
+    public ArrayList<AirlineAgent> getAirlineAgentList(){
+        return this.airlineAgents;
+    }
+
+    public ArrayList<FlightAttendant> getFlightAttendantList(){
+        return this.flightAttendants;
+    }
+
     public ArrayList<Aircraft> getAircraftList() {
         return this.aircrafts;
     }
@@ -102,10 +113,6 @@ public class FlightSystem {
 
     public ArrayList<Seat> getSeatList() {
         return this.seats;
-    }
-
-    public ArrayList<Payment> getPaymentList() {
-        return this.payments;
     }
 
     public ArrayList<Ticket> getTicketList() {
@@ -174,7 +181,8 @@ public class FlightSystem {
                 results.getString("LastName"),
                 results.getString("Email"),
                 results.getString("Address"),
-                results.getBoolean("isRegistered"));
+                results.getBoolean("isRegistered"),
+                results.getString("CreditCardNumber"));
                 customers.add(customer);
             }
 
@@ -349,8 +357,6 @@ public class FlightSystem {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
-        // List of Payments
   
     }
 

@@ -27,6 +27,14 @@ public class Ticket {
         return this.ticketID;
     }
 
+    public double getTotalPrice(){
+        double insurancePrice = 100;
+        if (this.insuranceSelected == false){
+            insurancePrice = 0;
+        }
+        return this.seat.getPrice() + insurancePrice;
+    }
+
     public Customer getCustomer(){
         return this.customer;
     }
@@ -45,10 +53,6 @@ public class Ticket {
         return this.isCancelled;
     }
 
-    // public double getTotal(){
-    //     return this.total;
-    // }
-
     // Ticket Setters
     public void setCustomer(Customer customer){
         this.customer = customer;
@@ -65,10 +69,6 @@ public class Ticket {
     public void setInsuranceSelection(boolean insuranceSelected){
         this.insuranceSelected = insuranceSelected;
     }
-
-    // public void setTotal(double total){
-    //     this.total = total;
-    // }
 
     @Override
     public String toString() {

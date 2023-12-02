@@ -1,23 +1,22 @@
 package view;
 
 import javax.swing.*;
-
 import model.*;
 import model.users.*;
-
 import java.awt.event.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 public class CustomerGUI implements ActionListener {
     
     private int userID;
     private FlightSystem sys;
-
+    
+    
     public CustomerGUI(int userID) {
         this.userID = userID;
         this.sys = FlightSystem.getInstance();
@@ -49,44 +48,89 @@ public class CustomerGUI implements ActionListener {
             if (c.getUserID() == userID) {
                 customer = c;
             }
-        }
+        } 
 
-        // Prompt user for membership registration
-        int choice = JOptionPane.showConfirmDialog(null, "Would you like to register for a membership?", "Membership Registration", JOptionPane.YES_NO_OPTION);
+        System.out.println(customer.getCreditCardNumber());
 
-        if (choice == JOptionPane.YES_OPTION) {
-            // User wants to register for a membership
+        if(customer.getCreditCardNumber() == null){
             showCreditCardOption(customer);
-        } else {
-            // User does not want to register for a membership
-            openOptionsPanel(customer);
         }
+        else{
+            showCreditCardUpdateOption(customer);
+        }  
     }
-
+    
     private void showCreditCardOption(Customer customer) {
         int creditCardChoice = JOptionPane.showConfirmDialog(null, "Would you like to register for a company credit card?", "Credit Card Registration", JOptionPane.YES_NO_OPTION);
 
         if (creditCardChoice == JOptionPane.YES_OPTION) {
-            // User wants to register for a credit card
-            registerCreditCard(customer);
+            String creditCardNumber = JOptionPane.showInputDialog(null, "Please enter a 16-digit credit card number:");
+
+            if (isValidCreditCardNumber(creditCardNumber)) {
+                // Credit card number is valid
+                registerCreditCard(customer, creditCardNumber);
+                updateUserCreditCard(userID, creditCardNumber);
+               
+            } else {
+                // Credit card number is invalid
+                JOptionPane.showMessageDialog(null, "Invalid credit card number. Please enter a valid 16-digit number.");
+                showCreditCardOption(customer); 
+            }
         } else {
             // User does not want to register for a credit card
             openOptionsPanel(customer);
         }
     }
 
-    private void registerCreditCard(Customer customer) {
-        // Perform credit card registration logic here
+    private void showCreditCardUpdateOption(Customer customer) {
+        int creditCardChoice = JOptionPane.showConfirmDialog(null, "Would you like to change your company card?", "Credit Card Update", JOptionPane.YES_NO_OPTION);
 
-        // For demonstration purposes, let's just show a message
+        if (creditCardChoice == JOptionPane.YES_OPTION) {
+            String creditCardNumber = JOptionPane.showInputDialog(null, "Please enter a new 16-digit credit card number:");
+
+            if (isValidCreditCardNumber(creditCardNumber)) {
+                // Credit card number is valid
+                registerCreditCard(customer, creditCardNumber);
+                updateUserCreditCard(userID, creditCardNumber);
+               
+            } else {
+                // Credit card number is invalid
+                JOptionPane.showMessageDialog(null, "Invalid credit card number. Please enter a valid 16-digit number.");
+                showCreditCardOption(customer); 
+            }
+        } else {
+            // User does not want to register for a credit card
+            openOptionsPanel(customer);
+        }
+    }
+
+
+    private boolean isValidCreditCardNumber(String creditCardNumber) {
+        return creditCardNumber != null && creditCardNumber.matches("\\d{16}");
+    }
+
+   private void registerCreditCard(Customer customer, String creditCardNumber) {
+
+        FlightSystem sys = FlightSystem.getInstance();
+        String updateCreditCardQuery = "UPDATE CUSTOMERS SET isRegistered = TRUE WHERE UserID = ?";
+
+        // Execute the SQL query to mark the ticket as cancelled
+        try {
+            PreparedStatement updateCreditCardStmt = sys.getConnection().prepareStatement(updateCreditCardQuery);
+            updateCreditCardStmt.setInt(1, userID);
+            updateCreditCardStmt.executeUpdate();
+            // Update flight system
+            sys.synchronizeFlightSys();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error updating user credit card information. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         JOptionPane.showMessageDialog(null, "Successfully registered credit card for "
                 + customer.getFirstName() + " " + customer.getLastName() + "!", "Credit Card Registration",
                 JOptionPane.INFORMATION_MESSAGE);
 
-        // Now, proceed to the options panel
         openOptionsPanel(customer);
     }
-    
 
     private void openOptionsPanel(Customer customer) {
         JFrame frame = new JFrame();
@@ -126,21 +170,50 @@ public class CustomerGUI implements ActionListener {
                 // Check if the list is null or empty
                 if (userTicketList == null || userTicketList.isEmpty()) {
                     // Display a message to the user
-                    JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "No Flights", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    // Close the current frame
-                    frame.dispose();
+                    // Check if all tickets are cancelled
+                    boolean allCancelled = userTicketList.stream().allMatch(Ticket::isCancelled);
 
-                    // Open the FlightCancellation GUI
-                    new FlightCancellation(userID).createUI();
+                    if (allCancelled) {
+                        // Display a message to the user
+                        JOptionPane.showMessageDialog(null, "All your flights are already cancelled.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        // Close the current frame
+                        frame.dispose();
+
+                        // Open the FlightCancellation GUI
+                        new FlightCancellationFrame(userID).createUI();
+                    }
                 }
             }
         });
+
 
         panel.add(cancelFlightButton);
 
         frame.setVisible(true);
     }
+
+     private void updateUserCreditCard(int userID, String creditCardNumber) {
+        
+        FlightSystem sys = FlightSystem.getInstance();
+        String updateCreditCardQuery = "UPDATE CUSTOMERS SET CreditCardNumber = ? WHERE UserID = ?";
+
+        // Execute the SQL query to mark the ticket as cancelled
+        try {
+            PreparedStatement updateCreditCardStmt = sys.getConnection().prepareStatement(updateCreditCardQuery);
+            updateCreditCardStmt.setString(1, creditCardNumber);
+            updateCreditCardStmt.setInt(2, userID);
+            updateCreditCardStmt.executeUpdate();
+            // Update flight system
+            sys.synchronizeFlightSys();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error updating user credit card information. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     private ArrayList<Ticket> getTicketsForUser(int userID) {
         FlightSystem sys = FlightSystem.getInstance();
@@ -223,7 +296,7 @@ public class CustomerGUI implements ActionListener {
 
                 if (!selectedFlightStr.equals("Select flight..")) {
                     frame.dispose(); // Close the current frame
-                    openBrowseSeatFrame(selectedFlight);
+                    openBrowseSeatFrame(selectedFlight, userID);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid flight.");
                 }
@@ -235,8 +308,8 @@ public class CustomerGUI implements ActionListener {
     }
     
 
-    private void openBrowseSeatFrame(Flight selectedFlight) {
-        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight);
+    private void openBrowseSeatFrame(Flight selectedFlight, int userID) {
+        BrowseSeatFrame seatGUI = new BrowseSeatFrame(selectedFlight, userID);
         seatGUI.createUI();
     }
 }

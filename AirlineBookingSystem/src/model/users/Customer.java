@@ -9,13 +9,24 @@ public class Customer extends User {
     private String email;
     private String address;
     private boolean isRegistered;
+    private String creditCard;
 
     // Customer Constructor
-    public Customer (int userID, String username, String password, String firstName, String lastName, String email, String address, boolean isRegistered){
+    public Customer (int userID, String username, String password, String firstName, String lastName, String email, String address, boolean isRegistered, String creditCard){
         super(userID, username, password, firstName, lastName);
         this.email = email;
         this.address = address;
         this.isRegistered = isRegistered;
+        this.creditCard = creditCard;
+    }
+
+    // Customer Constructor for guest
+    public Customer (String username, String password, String firstName, String lastName, String email, String address, boolean isRegistered){
+        super(username, password, firstName, lastName);
+        this.email = email;
+        this.address = address;
+        this.isRegistered = isRegistered;
+
     }
 
     // Customer Getters
@@ -26,8 +37,12 @@ public class Customer extends User {
     public String getAddress(){
         return this.address;
     }
+    
+    public String getCreditCardNumber(){
+        return this.creditCard;
+    }
 
-    public boolean getRegistered(){
+    public boolean getIsRegistered(){
         return this.isRegistered;
     }
 
@@ -44,52 +59,4 @@ public class Customer extends User {
         this.isRegistered = registered;
     }
 
-
-    // Validation functions for customer information
-    private boolean isValidEmail(String email) {
-        // Simple email validation using regex
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    private boolean isValidName(String name) {
-        // Simple name validation: should not be empty
-        return !name.trim().isEmpty();
-    }
-
-    private boolean isValidAddress(String address) {
-        // Simple address validation: should not be empty
-        return !address.trim().isEmpty();
-    }
-
-    // Validate all customer information
-    public boolean isValidCustomerInfo() {
-        return isValidName(getFirstName()) &&
-                isValidName(getLastName()) &&
-                isValidEmail(email) &&
-                isValidAddress(address);
-    }
-
-    // Customer Operations (Do these go here??)
-    public void register(){
-
-    }
-
-    public void applyCreditCard(){
-        
-    }
-
-    public void recievePromotionNews(){
-
-    }
-
-    public void useAirportLounge(){
-
-    }
-
-    public void receiveCompanionTicket(){
-
-    }
 }

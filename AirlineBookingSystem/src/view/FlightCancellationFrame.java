@@ -12,14 +12,14 @@ import java.util.regex.Pattern;
 
 import model.*;
 
-public class FlightCancellation {
+public class FlightCancellationFrame {
     private JFrame frame;
     private JPanel panel;
     private int userID; // User ID for whom we want to display tickets
     private JList<String> ticketListJL; // JList to display tickets
     private DefaultListModel<String> listModel; // DefaultListModel to manage tickets
 
-    public FlightCancellation(int userID) {
+    public FlightCancellationFrame(int userID) {
         this.userID = userID;
     }
 
@@ -79,9 +79,10 @@ public class FlightCancellation {
             String destination = ticket.getFlight().getDestination();
             String origin = ticket.getFlight().getOrigin(); 
             String departureDate = ticket.getFlight().getDepartureDate(); 
+            String seatType = ticket.getSeat().getSeatType(); 
             
             
-            String ticketInfo = "ID: " + ticketID + " | " + origin + " -> " + destination + " : " + departureDate;
+            String ticketInfo = "ID: " + ticketID + " | " + origin + " -> " + destination + " : " + departureDate + " | Seat Class: " + seatType;
 
             if(!ticket.isCancelled()){
                 //only add to the list is ticket is not cancelled
@@ -90,7 +91,7 @@ public class FlightCancellation {
         }
     }
 
-    //getTicketsForUser looks good
+    
     private ArrayList<Ticket> getTicketsForUser(int userID) {
         FlightSystem sys = FlightSystem.getInstance();
 

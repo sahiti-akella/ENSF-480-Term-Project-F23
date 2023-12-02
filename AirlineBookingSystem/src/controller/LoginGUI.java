@@ -1,40 +1,43 @@
-package view;
+package controller;
 import javax.swing.*;
+
+import view.*;
+
 import java.awt.event.*;
 import java.sql.*;
 import java.util.Properties;
 
 public class LoginGUI implements ActionListener {
 	JTextField userText;
-	JPasswordField passwordText;
-	JLabel success;
-	
-	public static void main(String[] args) {
+    JPasswordField passwordText;
+    JLabel success;
+
+    public static void main(String[] args) {
         LoginGUI gui = new LoginGUI();
         gui.createUI();
     }
-	
-	public void openUserGui(String type, int userID) {
-		// Valid credentials, check account type
+
+    public void openUserGui(String type, int userID) {
+        // Valid credentials, check account type
         if (type.equals("admin")) {
             // Open System Admin GUI
             new SystemAdminGUI().createUI();
         } else if (type.equals("customer")) {
             // Open Customer GUI
             new CustomerGUI(userID).createUI();
-        } else if (type.equals("airline-agent")){
+        } else if (type.equals("airline-agent")) {
             // Open Airline Agent GUI
-        	new AirlineAgentGUI().createUI();
-        } else if (type.equals("flight-attendant")){
-        	// Open Flight Attendant GUI
-        	new FlightAttendantGUI().createUI();
-        } else if (type.equals("tourism-agent")){
+            new AirlineAgentGUI(userID).createUI();
+        } else if (type.equals("flight-attendant")) {
+            // Open Flight Attendant GUI
+            new FlightAttendantGUI(userID).createUI();
+        } else if (type.equals("tourism-agent")) {
             // Open Tourism Agent GUI
-            new TourismAgentGUI().createUI();
+            new TourismAgentGUI(userID).createUI();
         } else {
-        	success.setText("Unknown acount type");
+            success.setText("Unknown account type");
         }
-	}
+    }
 
     public void createUI() {
         JFrame frame = new JFrame();
@@ -67,12 +70,88 @@ public class LoginGUI implements ActionListener {
         logButton.addActionListener(this);
         login.add(logButton);
 
+        JButton guestButton = new JButton("Guest Login");
+        guestButton.setBounds(120, 100, 120, 25);
+        guestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GuestGUI().createUI();
+            }
+        });
+        login.add(guestButton);
+
+        JButton createButton = new JButton("Create New User");
+        createButton.setBounds(250, 100, 150, 25);
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Open a dialog for selecting user type
+                openUserTypeDialog();
+            }
+        });
+        login.add(createButton);
+
         success = new JLabel("");
-        success.setBounds(20, 120, 300, 25);
+        success.setBounds(20, 130, 300, 25);
         login.add(success);
 
         frame.setVisible(true);
     }
+
+    private void openUserTypeDialog() {
+        JFrame dialogFrame = new JFrame();
+        dialogFrame.setTitle("User Registration");
+        JPanel panel = new JPanel();
+        dialogFrame.setSize(800, 600);
+
+        panel.setLayout(null);
+
+        JLabel label = new JLabel("Select User Type:");
+        label.setBounds(20, 20, 150, 25);
+        panel.add(label);
+
+        String[] userTypes = {"Customer", "Administrator", "Tourism-Agent", "Flight-Attendant", "Airline-Agent"};
+        JComboBox<String> typeDropdown = new JComboBox<>(userTypes);
+        typeDropdown.setBounds(150, 20, 120, 25);
+        panel.add(typeDropdown);
+
+        JButton okButton = new JButton("OK");
+        okButton.setBounds(20, 60, 80, 25);
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialogFrame.dispose(); // Close the dialog
+                String selectedType = (String) typeDropdown.getSelectedItem();
+                // Open the RegisterNewUserGUI with the selected user type
+                new RegisterNewUserFrame(selectedType.toLowerCase()).createUI();
+            }
+        });
+        panel.add(okButton);
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBounds(120, 60, 80, 25);
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialogFrame.dispose(); // Close the dialog
+            }
+        });
+        panel.add(cancelButton);
+
+        JLabel noteLabel = new JLabel("<html><div style='text-align: left;'>Note for Customers:<br><br>" +
+        "Registered customers will be able to: <br><br> " + 
+        "* Sign up for company credit card<br>" +
+        "* Receive monthly promotion news<br>" +
+        "* Receive an annual free companion ticket<br>" +
+        "* Use airport lounges with a discount price</div></html>");
+        noteLabel.setBounds(20, 100, 300, 300);
+        panel.add(noteLabel);
+
+        dialogFrame.add(panel);
+        dialogFrame.setVisible(true);
+
+    }
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
