@@ -30,67 +30,76 @@ public class RegisterNewUser {
         frame = new JFrame();
         frame.setTitle("Register New User");
         panel = new JPanel();
-        frame.setSize(400, 400);
+        frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
-        panel.setLayout(new GridLayout(7, 2));
+        panel.setLayout(null);
 
-        JLabel usernameLabel = new JLabel("Username:");
-        JTextField usernameField = new JTextField();
-        JLabel passwordLabel = new JLabel("Password:");
-        JPasswordField passwordField = new JPasswordField();
-        JLabel firstNameLabel = new JLabel("First Name:");
-        JTextField firstNameField = new JTextField();
-        JLabel lastNameLabel = new JLabel("Last Name:");
-        JTextField lastNameField = new JTextField();
-        JLabel addressLabel = new JLabel("Address:");
-        JTextField addressField = new JTextField();
-        JLabel emailLabel = new JLabel("Email:");
-        JTextField emailField = new JTextField();
-        JLabel creditCardLabel = new JLabel("Credit Card Number:");
-        JTextField creditCardField = new JTextField();
+        JLabel titleLabel = new JLabel("User Registration");
+        titleLabel.setBounds(150, 10, 200, 25);
+        panel.add(titleLabel);
 
+        // Create labels and text fields
+        createLabelAndTextField("Username:", 30);
+        createLabelAndTextField("Password:", 60);
+        createLabelAndTextField("First Name:", 90);
+        createLabelAndTextField("Last Name:", 120);
+        createLabelAndTextField("Address:", 150);
+        createLabelAndTextField("Email:", 180);
+        createLabelAndTextField("Credit Card Number:", 210);
+
+        // Create Register button
         JButton registerButton = new JButton("Register");
+        registerButton.setBounds(150, 240, 100, 30);
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Handle registration logic here
-                String username = usernameField.getText();
-                String password = String.valueOf(passwordField.getPassword());
-                String firstName = firstNameField.getText();
-                String lastName = lastNameField.getText();
-                String address = addressField.getText();
-                String email = emailField.getText();
-                int creditCardNumber = Integer.parseInt(creditCardField.getText());
+                // Retrieve data from text fields and perform registration
+                String username = getFieldText("Username:");
+                String password = getFieldText("Password:");
+                String firstName = getFieldText("First Name:");
+                String lastName = getFieldText("Last Name:");
+                String address = getFieldText("Address:");
+                String email = getFieldText("Email:");
+                int creditCardNumber = Integer.parseInt(getFieldText("Credit Card Number:"));
 
                 // Validate the input fields (add your validation logic)
 
                 // Create the user in the database (add your database logic)
-                insertUser(username, password, firstName, lastName, address, email, userType, false, creditCardNumber);
+                // insertUser(username, password, firstName, lastName, address, email, userType, false, creditCardNumber);
 
                 // Close the registration window
                 frame.dispose();
             }
         });
-
-        panel.add(usernameLabel);
-        panel.add(usernameField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(firstNameLabel);
-        panel.add(firstNameField);
-        panel.add(lastNameLabel);
-        panel.add(lastNameField);
-        panel.add(addressLabel);
-        panel.add(addressField);
-        panel.add(emailLabel);
-        panel.add(emailField);
-        panel.add(creditCardLabel);
-        panel.add(creditCardField);
         panel.add(registerButton);
 
         frame.setVisible(true);
+    }
+
+    private void createLabelAndTextField(String label, int yPos) {
+        JLabel jLabel = new JLabel(label);
+        jLabel.setBounds(30, yPos, 150, 25);
+        panel.add(jLabel);
+
+        JTextField textField = new JTextField();
+        textField.setBounds(180, yPos, 150, 25);
+        panel.add(textField);
+    }
+
+    private String getFieldText(String label) {
+        Component[] components = panel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JLabel && ((JLabel) component).getText().equals(label)) {
+                int index = panel.getComponentZOrder(component);
+                if (index + 1 < components.length && components[index + 1] instanceof JTextField) {
+                    return ((JTextField) components[index + 1]).getText();
+                }
+            }
+        }
+        return "";
     }
 
     // SQL Helpers
