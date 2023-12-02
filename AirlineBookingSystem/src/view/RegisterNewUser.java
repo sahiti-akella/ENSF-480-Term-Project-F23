@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterNewUser {
     private JFrame frame;
@@ -63,11 +65,11 @@ public class RegisterNewUser {
                 String lastName = getFieldText("Last Name:");
                 String address = getFieldText("Address:");
                 String email = getFieldText("Email:");
-                //int creditCardNumber = Integer.parseInt(getFieldText("Credit Card Number:"));
+                if (!isValidEmail(email)) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-                // Validate the input fields (add your validation logic)
-
-                // Create the user in the database (add your database logic)
                 insertUser(username, password, firstName, lastName, address, email, userType, true);
 
                 // Close the registration window
@@ -77,6 +79,15 @@ public class RegisterNewUser {
         panel.add(registerButton);
 
         frame.setVisible(true);
+    }
+
+     private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 
     private void createLabelAndTextField(String label, int yPos) {
