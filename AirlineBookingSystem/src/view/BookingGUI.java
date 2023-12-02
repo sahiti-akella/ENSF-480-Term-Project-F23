@@ -26,6 +26,7 @@ public class BookingGUI extends JFrame {
         panel.add(createLabelWithSpacing("Booking Date: " + getCurrentDate())); 
         panel.add(createLabelWithSpacing("Flight Origin: " + booking.getOrigin()));
         panel.add(createLabelWithSpacing("Flight Destination: " + booking.getDestination()));
+        panel.add(createLabelWithSpacing("Flight Departure Date: " + booking.getDepartureDate()));
         panel.add(createLabelWithSpacing("Selected Seat: " + booking.getSelectedSeat()));
         panel.add(createLabelWithSpacing("Seat Price: $" + booking.getSeatPrice()));
         panel.add(createLabelWithSpacing("Ticket Cancellation Insurance ($100) Selected: " + (booking.hasInsurance() ? "Yes" : "No")));

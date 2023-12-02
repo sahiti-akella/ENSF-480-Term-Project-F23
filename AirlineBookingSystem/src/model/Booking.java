@@ -8,13 +8,15 @@ public class Booking {
     private double totalPrice;
     private String origin;  
     private String destination;
+    private String departureDate;
 
-    public Booking(String selectedSeat, boolean hasInsurance, double seatPrice, String origin, String destination) {
+    public Booking(String selectedSeat, boolean hasInsurance, double seatPrice, String origin, String destination, String departureDate) {
         this.selectedSeat = selectedSeat;
         this.hasInsurance = hasInsurance;
         this.seatPrice = seatPrice;
         this.origin = origin;
         this.destination = destination;
+        this.departureDate = departureDate;
         calculateTotalPrice();
     }
 
@@ -40,6 +42,10 @@ public class Booking {
 
     public String getDestination() {
         return destination;
+    }
+
+    public String getDepartureDate() {
+        return departureDate;
     }
 
     public double getTotalPrice() {

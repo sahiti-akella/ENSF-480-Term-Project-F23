@@ -4,12 +4,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Properties;
+
 import model.Payment;
 import model.Booking;
 
 public class PaymentPageGUI {
     private JFrame frame;
     private Booking booking;
+    private Connection connection;
 
     public PaymentPageGUI(Booking booking) {
         this.booking = booking;
@@ -99,6 +106,8 @@ public class PaymentPageGUI {
                 if (payment.isValid()) {
                     JOptionPane.showMessageDialog(frame, "Payment Successful!");
                     frame.dispose(); 
+
+                    saveToDatabase(booking);
     
                     openSuccessMessageFrame();
                 } else {
@@ -146,4 +155,61 @@ public class PaymentPageGUI {
 
         successFrame.setVisible(true);
     }
+
+    private void initializeDatabase() {
+        // Load database properties
+        Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
+        if (properties == null) {
+            // Handle the error appropriately
+            return;
+        }
+
+        String url = properties.getProperty("db.url");
+        String dbUsername = properties.getProperty("db.username");
+        String dbPassword = properties.getProperty("db.password");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(url, dbUsername, dbPassword);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+       private void saveToDatabase(Booking booking) {
+        initializeDatabase();
+        if (connection == null) {
+            // Handle the error appropriately
+            return;
+        }
+
+        try {
+            // Insert into BOOKINGS table
+            String insertQuery = "INSERT INTO BOOKINGS (SelectedSeat, InsuranceSelected, SeatPrice, Origin, Destination, DepartureDate) " +
+                                "VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                preparedStatement.setString(1, booking.getSelectedSeat());
+                preparedStatement.setBoolean(2, booking.hasInsurance());
+                preparedStatement.setDouble(3, booking.getSeatPrice());
+                preparedStatement.setString(4, booking.getOrigin());
+                preparedStatement.setString(5, booking.getDestination());
+                preparedStatement.setString(6, booking.getDepartureDate());
+
+                int affectedRows = preparedStatement.executeUpdate();
+
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(frame, "Booking information saved successfully!");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Failed to save booking information.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+    }
+
+    
+
+
+
 }
