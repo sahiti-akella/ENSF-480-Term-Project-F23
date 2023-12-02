@@ -7,8 +7,8 @@ import model.Ticket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class BookingGUI extends JFrame {
-    public BookingGUI(Ticket ticket) {
+public class BookingFrame extends JFrame {
+    public BookingFrame(Ticket ticket) {
         setTitle("Booking");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -24,6 +24,8 @@ public class BookingGUI extends JFrame {
 
         panel.add(createBoldLabel("Booking Details:", boldFont));
         panel.add(createLabelWithSpacing(""));
+        panel.add(createLabelWithSpacing("Customer First Name: " + ticket.getCustomer().getFirstName()));
+        panel.add(createLabelWithSpacing("Customer Last Name: " + ticket.getCustomer().getLastName()));
         panel.add(createLabelWithSpacing("Booking Date: " + getCurrentDate())); 
         panel.add(createLabelWithSpacing("Flight Origin: " + ticket.getFlight().getOrigin()));
         panel.add(createLabelWithSpacing("Flight Destination: " + ticket.getFlight().getDestination()));

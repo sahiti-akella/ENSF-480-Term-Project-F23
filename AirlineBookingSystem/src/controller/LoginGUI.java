@@ -123,7 +123,7 @@ public class LoginGUI implements ActionListener {
                 dialogFrame.dispose(); // Close the dialog
                 String selectedType = (String) typeDropdown.getSelectedItem();
                 // Open the RegisterNewUserGUI with the selected user type
-                new RegisterNewUser(selectedType.toLowerCase()).createUI();
+                new RegisterNewUserFrame(selectedType.toLowerCase()).createUI();
             }
         });
         panel.add(okButton);

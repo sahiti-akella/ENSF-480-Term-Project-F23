@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import model.*;
 
-public class BrowseSeatGUI {
+public class BrowseSeatFrame {
     private JFrame frame;
     private JPanel seatPanel;
     private Flight selectedFlight;
@@ -16,7 +16,7 @@ public class BrowseSeatGUI {
     private static final int SEATS_PER_FLIGHT = 12;
 
 
-    public BrowseSeatGUI(Flight selectedFlight, int userID) {
+    public BrowseSeatFrame(Flight selectedFlight, int userID) {
         this.selectedFlight = selectedFlight;
         this.userID = userID;
         this.sys = FlightSystem.getInstance();
@@ -96,7 +96,7 @@ public class BrowseSeatGUI {
     }
 
     private void openInsuranceSelectionFrame(String selectedSeat, Flight selectedFlight, int userID) {
-        SelectInsuranceGUI insuranceGUI = new SelectInsuranceGUI(selectedSeat, selectedFlight, userID);
+        SelectInsuranceFrame insuranceGUI = new SelectInsuranceFrame(selectedSeat, selectedFlight, userID);
         insuranceGUI.createUI();
     }
 }

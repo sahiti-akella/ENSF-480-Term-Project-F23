@@ -117,7 +117,7 @@ public class TourismAgentGUI implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the current frame
-                new RegisterNewUser("customer").createUI();
+                new RegisterNewUserFrame("customer").createUI();
             }
         });
         panel.add(createNewCustomerButton);
@@ -179,7 +179,7 @@ public class TourismAgentGUI implements ActionListener {
                         frame.dispose();
 
                         // Open the FlightCancellation GUI
-                        new FlightCancellation(userID).createUI();
+                        new FlightCancellationFrame(userID).createUI();
                     }
                 }
             }
@@ -304,7 +304,7 @@ public class TourismAgentGUI implements ActionListener {
     
 
     private void openBrowseSeatFrame(Flight selectedFlight, int userID) {
-        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight, userID);
+        BrowseSeatFrame seatGUI = new BrowseSeatFrame(selectedFlight, userID);
         seatGUI.createUI();
     }
 }

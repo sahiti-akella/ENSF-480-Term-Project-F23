@@ -12,7 +12,7 @@ import model.*;
 import model.users.*;
 
 
-public class SelectInsuranceGUI {
+public class SelectInsuranceFrame {
     private JFrame frame;
     private Flight selectedFlight; 
     private String selectedSeat;
@@ -20,7 +20,7 @@ public class SelectInsuranceGUI {
     private Seat seat;
     private Customer customer;
 
-    public SelectInsuranceGUI(String selectedSeat, Flight selectedFlight, int userID) {
+    public SelectInsuranceFrame(String selectedSeat, Flight selectedFlight, int userID) {
         this.selectedSeat = selectedSeat;
         this.selectedFlight = selectedFlight;
         this.sys = FlightSystem.getInstance();
@@ -95,7 +95,7 @@ public class SelectInsuranceGUI {
         if (selectedFlight != null) {
             Ticket ticket = new Ticket(-1, customer, selectedFlight, seat, hasInsurance, false);
             // We need to pass in Ticket Object
-            PaymentPageGUI paymentPageGUI = new PaymentPageGUI(ticket);
+            PaymentPageFrame paymentPageGUI = new PaymentPageFrame(ticket);
             paymentPageGUI.createUI();
         } else {
             System.out.println("ERROR: selectedFlight is null");

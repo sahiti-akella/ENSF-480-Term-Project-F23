@@ -13,13 +13,13 @@ import java.sql.Date;
 
 import model.*;
 
-public class PaymentPageGUI {
+public class PaymentPageFrame {
     private JFrame frame;
     private Ticket ticket;
     private Connection connection;
     private FlightSystem sys;
 
-    public PaymentPageGUI(Ticket ticket) {
+    public PaymentPageFrame(Ticket ticket) {
         this.ticket = ticket;
         this.sys = FlightSystem.getInstance();
     }
@@ -130,7 +130,7 @@ public class PaymentPageGUI {
     }
 
     private void displayBooking(Ticket ticket) {
-        BookingGUI bookingFrame = new BookingGUI(ticket);
+        BookingFrame bookingFrame = new BookingFrame(ticket);
         bookingFrame.setVisible(true);
     }
 
