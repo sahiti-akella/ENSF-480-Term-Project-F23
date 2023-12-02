@@ -72,8 +72,7 @@ public class LoginGUI implements ActionListener {
         guestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implement guest login logic here
-                success.setText("Guest Login Successful");
+                new GuestGUI().createUI();
             }
         });
         login.add(guestButton);

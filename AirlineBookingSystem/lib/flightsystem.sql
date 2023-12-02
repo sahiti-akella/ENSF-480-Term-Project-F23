@@ -8,8 +8,8 @@ USE FRWA;
 DROP TABLE IF EXISTS USERS;
 CREATE TABLE USERS (
     UserID 				INT NOT NULL AUTO_INCREMENT,
-    UserName 			VARCHAR(50) NOT NULL,
-    UserPassword 		VARCHAR(50) NOT NULL,
+    UserName 			VARCHAR(50),
+    UserPassword 		VARCHAR(50),
     FirstName 			VARCHAR(50) NOT NULL,
     LastName 			VARCHAR(50) NOT NULL,
     Address             VARCHAR(100),

@@ -10,12 +10,23 @@ public class Customer extends User {
     private String address;
     private boolean isRegistered;
 
+    
+
     // Customer Constructor
     public Customer (int userID, String username, String password, String firstName, String lastName, String email, String address, boolean isRegistered){
         super(userID, username, password, firstName, lastName);
         this.email = email;
         this.address = address;
         this.isRegistered = isRegistered;
+    }
+
+    // Customer Constructor for guest
+    public Customer (String username, String password, String firstName, String lastName, String email, String address, boolean isRegistered){
+        super(username, password, firstName, lastName);
+        this.email = email;
+        this.address = address;
+        this.isRegistered = isRegistered;
+
     }
 
     // Customer Getters
@@ -26,6 +37,7 @@ public class Customer extends User {
     public String getAddress(){
         return this.address;
     }
+     
 
     public boolean getRegistered(){
         return this.isRegistered;
