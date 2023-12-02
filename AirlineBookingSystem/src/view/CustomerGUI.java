@@ -230,7 +230,7 @@ public class CustomerGUI implements ActionListener {
 
                 if (!selectedFlightStr.equals("Select flight..")) {
                     frame.dispose(); // Close the current frame
-                    openBrowseSeatFrame(selectedFlight);
+                    openBrowseSeatFrame(selectedFlight, userID);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid flight.");
                 }
@@ -242,8 +242,8 @@ public class CustomerGUI implements ActionListener {
     }
     
 
-    private void openBrowseSeatFrame(Flight selectedFlight) {
-        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight);
+    private void openBrowseSeatFrame(Flight selectedFlight, int userID) {
+        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight, userID);
         seatGUI.createUI();
     }
 }

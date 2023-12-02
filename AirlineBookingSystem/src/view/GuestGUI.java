@@ -226,7 +226,7 @@ public class GuestGUI implements ActionListener {
 
                 if (!selectedFlightStr.equals("Select flight..")) {
                     frame.dispose(); // Close the current frame
-                    openBrowseSeatFrame(selectedFlight);
+                    openBrowseSeatFrame(selectedFlight, guestID);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid flight.");
                 }
@@ -238,8 +238,8 @@ public class GuestGUI implements ActionListener {
     }
     
 
-    private void openBrowseSeatFrame(Flight selectedFlight) {
-        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight);
+    private void openBrowseSeatFrame(Flight selectedFlight, int guestID) {
+        BrowseSeatGUI seatGUI = new BrowseSeatGUI(selectedFlight, guestID);
         seatGUI.createUI();
     }
 }

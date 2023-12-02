@@ -21,27 +21,19 @@ CREATE TABLE USERS (
     PRIMARY KEY (UserID)
 );
 
-INSERT INTO USERS (UserID, UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered, CreditCardNumber) VALUES
-(1, 'johndoe', 'password', 'John', 'Doe', '123 Main St', 'john@gmail.com', 'admin', FALSE, NULL),
-(2, 'nedberry', 'password', 'Ned', 'Berry', '123 Main St', 'ned@gmail.com', 'customer', TRUE, '1234567897654321'),
-(3, 'alicejohnson', 'password', 'Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', 'airline-agent', NULL, NULL),
-(4, 'bobsmith', 'password', 'Bob', 'Smith', '789 Pine St', 'bob@gmail.com', 'flight-attendant', NULL, NULL),
-(5, 'evadavis', 'password', 'Eva', 'Davis', '101 Elm St', 'eva@gmail.com', 'tourism-agent', NULL, NULL),
-(6, 'frankwhite', 'password', 'Frank', 'White', '222 Maple St', 'frank@gmail.com', 'customer', TRUE, NULL),
-(7, 'kellyjohnson', 'password', 'Kelly', 'Johnson', '543 Cedar St', 'kelly@gmail.com', 'customer', FALSE, NULL),
-(8, 'tombrown', 'password', 'Tom', 'Brown', '654 Birch St', 'tom@gmail.com', 'customer', FALSE, NULL),
-(9, 'saragreen', 'password', 'Sara', 'Green', '765 Pine St', 'sara@gmail.com', 'customer', TRUE, NULL),
-(10, 'philthomas', 'password', 'Phil', 'Thomas', '876 Oak St', 'thomas@gmail.com', 'customer', TRUE, NULL),
-(11, 'michaellee', 'password', 'Michael', 'Lee', '987 Elm St', 'michael@gmail.com', 'customer', FALSE, NULL),
-(12, 'lucywang', 'password', 'Lucy', 'Wang', '876 Cedar St', 'lucy@gmail.com', 'tourism-agent', NULL, NULL),
-(13, 'janesmith', 'password', 'Jane', 'Smith', '765 Birch St', 'jane@gmail.com', 'tourism-agent', NULL, NULL),
-(14, 'jackwilson', 'password', 'Jack', 'Wilson', '654 Pine St', 'jack@gmail.com', 'flight-attendant', NULL, NULL),
-(15, 'emmamiller', 'password', 'Emma', 'Miller', '543 Oak St', 'emma@gmail.com', 'flight-attendant', NULL, NULL),
-(16, 'hellenpotter', 'password', 'Helen', 'Potter', '432 Main St', 'helen@gmail.com', 'airline-agent', NULL, NULL),
-(17, 'adamjohnson', 'password', 'Adam', 'Johnson', '321 Elm St', 'adam@gmail.com', 'airline-agent', NULL, NULL),
-(18, 'gracedavis', 'password', 'Grace', 'Davis', '210 Oak St', 'grace@gmail.com', 'admin', NULL, NULL),
-(19, 'robertwhite', 'password', 'Robert', 'White', '109 Pine St', 'robert@gmail.com', 'admin', NULL, NULL);
-
+INSERT INTO USERS (UserName, UserPassword, FirstName, LastName, Address, Email, AccountType, isRegistered, CreditCardNumber) VALUES
+('johndoe', 'password', 'John', 'Doe', '123 Main St', 'john@gmail.com', 'admin', NULL, NULL),
+('alicejohnson', 'password', 'Alice', 'Johnson', '456 Oak St', 'alice@gmail.com', 'airline-agent', NULL, NULL),
+('bobsmith', 'password', 'Bob', 'Smith', '789 Pine St', 'bob@gmail.com', 'flight-attendant', NULL, NULL),
+('evadavis', 'password', 'Eva', 'Davis', '101 Elm St', 'eva@gmail.com', 'tourism-agent', NULL, NULL),
+('lucywang', 'password', 'Lucy', 'Wang', '876 Cedar St', 'lucy@gmail.com', 'tourism-agent', NULL, NULL),
+('janesmith', 'password', 'Jane', 'Smith', '765 Birch St', 'jane@gmail.com', 'tourism-agent', NULL, NULL),
+('jackwilson', 'password', 'Jack', 'Wilson', '654 Pine St', 'jack@gmail.com', 'flight-attendant', NULL, NULL),
+('emmamiller', 'password', 'Emma', 'Miller', '543 Oak St', 'emma@gmail.com', 'flight-attendant', NULL, NULL),
+('hellenpotter', 'password', 'Helen', 'Potter', '432 Main St', 'helen@gmail.com', 'airline-agent', NULL, NULL),
+('adamjohnson', 'password', 'Adam', 'Johnson', '321 Elm St', 'adam@gmail.com', 'airline-agent', NULL, NULL),
+('gracedavis', 'password', 'Grace', 'Davis', '210 Oak St', 'grace@gmail.com', 'admin', NULL, NULL),
+('robertwhite', 'password', 'Robert', 'White', '109 Pine St', 'robert@gmail.com', 'admin', NULL, NULL);
 
 
 # CUSTOMERS TABLE
@@ -257,20 +249,6 @@ INSERT INTO SEATS (SeatID, FlightID, LayoutID, IsAvailable) VALUES
 (109, 10, 1, 1), (110, 10, 1, 0), (111, 10, 1, 1), (112, 10, 1, 1),
 (113, 10, 2, 1), (114, 10, 2, 1), (115, 10, 2, 0), (116, 10, 2, 1),
 (117, 10, 3, 1), (118, 10, 3, 0), (119, 10, 3, 0), (120, 10, 3, 1);
-
-# BOOKINGS TABLE
-DROP TABLE IF EXISTS BOOKINGS;
-CREATE TABLE BOOKINGS (
-    BookingID           INT NOT NULL AUTO_INCREMENT,
-    SelectedSeat        VARCHAR(50) NOT NULL,
-    InsuranceSelected   BOOLEAN NOT NULL,
-    SeatPrice           DECIMAL(10, 2) NOT NULL,
-    Origin              VARCHAR(50) NOT NULL,
-    Destination         VARCHAR(50) NOT NULL,
-    DepartureDate       VARCHAR(50) NOT NULL,
-
-    PRIMARY KEY (BookingID)
-);
 
 # TICKETS TABLE
 DROP TABLE IF EXISTS TICKETS;
