@@ -6,35 +6,35 @@ import java.util.Properties;
 
 public class LoginGUI implements ActionListener {
 	JTextField userText;
-	JPasswordField passwordText;
-	JLabel success;
-	
-	public static void main(String[] args) {
+    JPasswordField passwordText;
+    JLabel success;
+
+    public static void main(String[] args) {
         LoginGUI gui = new LoginGUI();
         gui.createUI();
     }
-	
-	public void openUserGui(String type, int userID) {
-		// Valid credentials, check account type
+
+    public void openUserGui(String type, int userID) {
+        // Valid credentials, check account type
         if (type.equals("admin")) {
             // Open System Admin GUI
             new SystemAdminGUI().createUI();
         } else if (type.equals("customer")) {
             // Open Customer GUI
             new CustomerGUI(userID).createUI();
-        } else if (type.equals("airline-agent")){
+        } else if (type.equals("airline-agent")) {
             // Open Airline Agent GUI
-        	new AirlineAgentGUI(userID).createUI();
-        } else if (type.equals("flight-attendant")){
-        	// Open Flight Attendant GUI
-        	new FlightAttendantGUI(userID).createUI();
-        } else if (type.equals("tourism-agent")){
+            new AirlineAgentGUI(userID).createUI();
+        } else if (type.equals("flight-attendant")) {
+            // Open Flight Attendant GUI
+            new FlightAttendantGUI(userID).createUI();
+        } else if (type.equals("tourism-agent")) {
             // Open Tourism Agent GUI
             new TourismAgentGUI(userID).createUI();
         } else {
-        	success.setText("Unknown acount type");
+            success.setText("Unknown account type");
         }
-	}
+    }
 
     public void createUI() {
         JFrame frame = new JFrame();
@@ -67,8 +67,30 @@ public class LoginGUI implements ActionListener {
         logButton.addActionListener(this);
         login.add(logButton);
 
+        JButton guestButton = new JButton("Guest Login");
+        guestButton.setBounds(120, 100, 120, 25);
+        guestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Implement guest login logic here
+                success.setText("Guest Login Successful");
+            }
+        });
+        login.add(guestButton);
+
+        JButton createButton = new JButton("Create New User");
+        createButton.setBounds(250, 100, 150, 25);
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Implement create new user logic here
+                success.setText("Create New User Clicked");
+            }
+        });
+        login.add(createButton);
+
         success = new JLabel("");
-        success.setBounds(20, 120, 300, 25);
+        success.setBounds(20, 130, 300, 25);
         login.add(success);
 
         frame.setVisible(true);
