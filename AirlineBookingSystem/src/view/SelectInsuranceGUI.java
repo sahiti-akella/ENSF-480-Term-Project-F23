@@ -72,8 +72,9 @@ public class SelectInsuranceGUI {
         if (selectedFlight != null) {
             String origin = selectedFlight.getOrigin();
             String destination = selectedFlight.getDestination();
+            String departureDate = selectedFlight.getDepartureDate();
 
-            Booking booking = new Booking(selectedSeat, hasInsurance, seatPrice, origin, destination);
+            Booking booking = new Booking(selectedSeat, hasInsurance, seatPrice, origin, destination, departureDate);
             PaymentPageGUI paymentPageGUI = new PaymentPageGUI(booking);
             paymentPageGUI.createUI();
         } else {
