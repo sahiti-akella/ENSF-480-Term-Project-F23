@@ -15,7 +15,7 @@ public class SystemAdminGUI {
     public void createUI() {
         initializeDatabase();
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame() ;
 
         frame.setTitle("Admin Welcome Page");
         JPanel panel = new JPanel();
