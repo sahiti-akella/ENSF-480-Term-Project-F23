@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class TourismAgentGUI implements ActionListener {
     private FlightSystem sys;
     private TourismAgent agent;
-    private DefaultListModel<String> listModel; // DefaultListModel to manage tickets
+    private DefaultListModel<String> listModel; 
 
     public TourismAgentGUI(int agentID) {
         this.sys = FlightSystem.getInstance();
@@ -77,12 +77,10 @@ public class TourismAgentGUI implements ActionListener {
             customerNameIDList.add(customerNameID);
         }
 
-        customerNameIDList.add(0, "Select customer.."); // Add a default option
+        customerNameIDList.add(0, "Select customer.."); 
 
-        // Initialize the DefaultListModel
-        listModel = new DefaultListModel<>();  // Initialize the listModel here
+        listModel = new DefaultListModel<>(); 
         
-        //add to listmodel
         for (String customerNameID : customerNameIDList ){
             listModel.addElement(customerNameID);
         }
@@ -101,7 +99,6 @@ public class TourismAgentGUI implements ActionListener {
                 String selectedCustomer = customerJList.getSelectedValue();
 
                 if (selectedCustomer != null && !selectedCustomer.equals("Select customer..")) {
-                    // Handle the selected customer
                     handleSelectedCustomer(selectedCustomer);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid customer.");
@@ -111,12 +108,11 @@ public class TourismAgentGUI implements ActionListener {
         panel.add(continueButton);
 
         JButton createNewCustomerButton = new JButton("Create New Customer");
-        // Adjusted the y-coordinate to give more space
         createNewCustomerButton.setBounds(30, 370, 250, 40);
         createNewCustomerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
+                frame.dispose(); 
                 new RegisterNewUserFrame("customer").createUI();
             }
         });
@@ -148,8 +144,7 @@ public class TourismAgentGUI implements ActionListener {
         browseFlightsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
-                //open browse flights
+                frame.dispose(); 
                 openBrowseFlightListFrame(userID);
             }
         });
@@ -160,25 +155,17 @@ public class TourismAgentGUI implements ActionListener {
         cancelFlightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get the user's ticket list
                 ArrayList<Ticket> userTicketList = getTicketsForUser(userID);
 
-                // Check if the list is null or empty
                 if (userTicketList == null || userTicketList.isEmpty()) {
-                    // Display a message to the user
                     JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    // Check if all tickets are cancelled
                     boolean allCancelled = userTicketList.stream().allMatch(Ticket::isCancelled);
 
                     if (allCancelled) {
-                        // Display a message to the user
                         JOptionPane.showMessageDialog(null, "All your flights are already cancelled.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        // Close the current frame
                         frame.dispose();
-
-                        // Open the FlightCancellation GUI
                         new FlightCancellationFrame(userID).createUI();
                     }
                 }
@@ -214,10 +201,7 @@ public class TourismAgentGUI implements ActionListener {
 
      // Helper function to extract ticketID from String in format: "ID: XX | Origin -> Destination : Date"
      private static String extractCustomerID(String customerInfo) {
-        // Define a pattern for extracting the ID
         Pattern pattern = Pattern.compile("ID: (\\d+)");
-
-        // Create a matcher for the input string
         Matcher matcher = pattern.matcher(customerInfo);
 
         // Check if the pattern is found
@@ -225,7 +209,6 @@ public class TourismAgentGUI implements ActionListener {
             // Group 1 contains the matched ID
             return matcher.group(1);
         } else {
-            // Return an empty string or handle the case when no match is found
             return "";
         }
     }
@@ -251,7 +234,7 @@ public class TourismAgentGUI implements ActionListener {
     
         // Retrieve the list of available flights from the database
         ArrayList<String> flightList = getAvailableFlights();
-        flightList.add(0, "Select flight.."); // Add a default option
+        flightList.add(0, "Select flight.."); 
     
         JComboBox<String> dropdown = new JComboBox<>(flightList.toArray(new String[0]));
         dropdown.setBounds(30, 80, 250, 25);
@@ -264,11 +247,9 @@ public class TourismAgentGUI implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String selectedFlightStr = (String) dropdown.getSelectedItem();
 
-                int flightID = -99; //default value most likely not a flight ID
+                int flightID = -99; 
 
-                // Define the pattern for extracting the ID
                 Pattern pattern = Pattern.compile("ID: (\\d+)");
-
                 Matcher matcher = pattern.matcher(selectedFlightStr);
 
                 // Check if the pattern matches
@@ -290,7 +271,7 @@ public class TourismAgentGUI implements ActionListener {
                 }
 
                 if (!selectedFlightStr.equals("Select flight..")) {
-                    frame.dispose(); // Close the current frame
+                    frame.dispose(); 
                     openBrowseSeatFrame(selectedFlight, userID);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid flight.");

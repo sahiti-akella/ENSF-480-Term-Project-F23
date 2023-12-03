@@ -18,9 +18,7 @@ public class AirlineAgentGUI implements ActionListener {
     private ArrayList<String> options;
     private ArrayList<String> passengerList;
 
-    
-
-	public static void main(String[] args) {
+    	public static void main(String[] args) {
         AirlineAgentGUI gui = new AirlineAgentGUI(2);
         gui.createUI();
     }
@@ -81,8 +79,6 @@ public class AirlineAgentGUI implements ActionListener {
             int selectedFlightID = Integer.parseInt(options.get(selectedIndex));
             displayPassengerList(selectedFlightID);
         } else {
-            // Handle the case when the default option or an invalid index is selected
-            // You might want to show a message or take appropriate action
             System.out.println("Invalid selection");
         }
     }
@@ -112,37 +108,30 @@ public class AirlineAgentGUI implements ActionListener {
             int flightID = flight.getFlightID();
             options.add(Integer.toString(flightID));
         }
-        options.add(0, "Select flight.."); // default option
+        options.add(0, "Select flight.."); 
 
         dropdown = new JComboBox<>(options.toArray(new String[0]));
         dropdown.setBounds(30, 80, 250, 25);
         dropdown.addActionListener(this);
         panel.add(dropdown);
 
-        // Create a JLabel to display passenger list
         JLabel passengerListLabel = new JLabel("Passenger List:");
         passengerListLabel.setBounds(30, 120, 200, 25);
         panel.add(passengerListLabel);
 
-        // Create an empty list to store passenger information
         passengerList = new ArrayList<>();
 
-        // Create a JTextArea to display passenger information
         JTextArea passengerTextArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(passengerTextArea);
         scrollPane.setBounds(30, 150, 400, 200);
         panel.add(scrollPane);
 
-        // Create a JButton for going back to the welcome page
         JButton backButton = new JButton("Back to Welcome Page");
         backButton.setBounds(30, 400, 200, 30);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Close the current JFrame
                 frame.dispose();
-
-                // Re-create and display the welcome page
                 createUI();
             }
         });
@@ -168,7 +157,6 @@ public class AirlineAgentGUI implements ActionListener {
             }
         }
 
-        // Display passenger information in the JTextArea
         StringBuilder passengerInfo = new StringBuilder();
         for (String passenger : passengerList) {
             passengerInfo.append(passenger).append("\n");

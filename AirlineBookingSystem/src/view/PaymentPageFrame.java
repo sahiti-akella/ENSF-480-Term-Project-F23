@@ -185,12 +185,11 @@ public class PaymentPageFrame {
     private void saveToDatabase(Ticket ticket) {
         initializeDatabase();
         if (connection == null) {
-            // Handle the error appropriately
             return;
         }
 
         try {
-            // Insert into BOOKINGS table
+            // Insert into TICKETS table
             String insertQuery = "INSERT INTO TICKETS (UserID, FlightID, SeatID, InsuranceSelected, TicketDate, IsCancelled) " +
                                 "VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {

@@ -152,8 +152,7 @@ public class CustomerGUI implements ActionListener {
         browseFlightsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
-                //open browse flights
+                frame.dispose(); 
                 openBrowseFlightListFrame();
             }
         });
@@ -169,20 +168,15 @@ public class CustomerGUI implements ActionListener {
 
                 // Check if the list is null or empty
                 if (userTicketList == null || userTicketList.isEmpty()) {
-                    // Display a message to the user
                     JOptionPane.showMessageDialog(null, "You have no flights to cancel.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     // Check if all tickets are cancelled
                     boolean allCancelled = userTicketList.stream().allMatch(Ticket::isCancelled);
 
                     if (allCancelled) {
-                        // Display a message to the user
                         JOptionPane.showMessageDialog(null, "All your flights are already cancelled.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        // Close the current frame
                         frame.dispose();
-
-                        // Open the FlightCancellation GUI
                         new FlightCancellationFrame(userID).createUI();
                     }
                 }
@@ -256,7 +250,7 @@ public class CustomerGUI implements ActionListener {
     
         // Retrieve the list of available flights from the database
         ArrayList<String> flightList = getAvailableFlights();
-        flightList.add(0, "Select flight.."); // Add a default option
+        flightList.add(0, "Select flight.."); 
     
         JComboBox<String> dropdown = new JComboBox<>(flightList.toArray(new String[0]));
         dropdown.setBounds(30, 80, 250, 25);
@@ -295,7 +289,7 @@ public class CustomerGUI implements ActionListener {
                 }
 
                 if (!selectedFlightStr.equals("Select flight..")) {
-                    frame.dispose(); // Close the current frame
+                    frame.dispose(); 
                     openBrowseSeatFrame(selectedFlight, userID);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid flight.");
