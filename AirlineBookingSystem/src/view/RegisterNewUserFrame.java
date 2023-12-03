@@ -49,7 +49,6 @@ public class RegisterNewUserFrame {
         createLabelAndTextField("Last Name:", 120);
         createLabelAndTextField("Address:", 150);
         createLabelAndTextField("Email:", 180);
-        //createLabelAndTextField("Credit Card Number:", 210);
 
         // Create Register button
         JButton registerButton = new JButton("Register");
@@ -57,7 +56,6 @@ public class RegisterNewUserFrame {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle registration logic here
                 // Retrieve data from text fields and perform registration
                 String username = getFieldText("Username:");
                 String password = getFieldText("Password:");
@@ -70,7 +68,7 @@ public class RegisterNewUserFrame {
                     JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                
+
                 if (!isValidEmail(email)) {
                     JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -78,7 +76,6 @@ public class RegisterNewUserFrame {
 
                 insertUser(username, password, firstName, lastName, address, email, userType, true);
 
-                // Close the registration window
                 frame.dispose();
             }
         });
@@ -132,7 +129,6 @@ public class RegisterNewUserFrame {
         // Load database properties
         Properties properties = DBUtils.loadProperties("AirlineBookingSystem/config/database.properties");
         if (properties == null) {
-            // Handle the error appropriately
             return;
         }
 
@@ -164,7 +160,6 @@ public class RegisterNewUserFrame {
                 userInsertStmt.setString(6, email);
                 userInsertStmt.setString(7, accountType);
                 userInsertStmt.setBoolean(8, isRegistered);
-                //userInsertStmt.setInt(9, creditCardNumber);
     
                 userInsertStmt.executeUpdate();
             }
@@ -180,8 +175,7 @@ public class RegisterNewUserFrame {
                 userTypeInsertStmt.setString(1, accountType);
                 userTypeInsertStmt.executeUpdate();
             }
-    
-            // Display success message
+  
             JOptionPane.showMessageDialog(null, "User created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
             // Refresh Flight system after updates

@@ -38,7 +38,4 @@ public class Aircraft {
         this.seats = seats;
     }
 
-
-
-    
 }

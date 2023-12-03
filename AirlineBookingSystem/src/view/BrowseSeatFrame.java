@@ -82,7 +82,7 @@ public class BrowseSeatFrame {
             }
         }
         System.out.println("ERROR: seatNumber " + seatNumber + " not found in seat list");
-        return false; //in case of error
+        return false; 
     }
 
     private class SeatClickListener implements ActionListener {

@@ -152,7 +152,6 @@ public class LoginGUI implements ActionListener {
 
     }
 
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Login")) {

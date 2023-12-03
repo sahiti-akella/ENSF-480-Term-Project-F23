@@ -45,9 +45,7 @@ public class GuestGUI implements ActionListener {
                 firstName = firstNameText.getText();
 
                 if (isValidName(firstName)) {
-                    frame.dispose(); // Close the current frame
-
-                    //Create guest customer object
+                    frame.dispose(); 
                     Customer guestCustomer = new Customer("guest", "guest", firstName, lastName, null, null, false);
                     guestID = guestCustomer.getGuestID();
                     guestUsername = guestCustomer.getUsername();
@@ -86,7 +84,7 @@ public class GuestGUI implements ActionListener {
         browseFlightsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
+                frame.dispose(); 
                 //open browse flights
                 openBrowseFlightListFrame();
             }
@@ -110,13 +108,9 @@ public class GuestGUI implements ActionListener {
                     boolean allCancelled = userTicketList.stream().allMatch(Ticket::isCancelled);
 
                     if (allCancelled) {
-                        // Display a message to the user
                         JOptionPane.showMessageDialog(null, "All your flights are already cancelled.", "ERROR", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        // Close the current frame
                         frame.dispose();
-
-                        // Open the FlightCancellation GUI
                         new FlightCancellationFrame(guestID).createUI();
                     }
                 }
@@ -186,7 +180,7 @@ public class GuestGUI implements ActionListener {
     
         // Retrieve the list of available flights from the database
         ArrayList<String> flightList = getAvailableFlights();
-        flightList.add(0, "Select flight.."); // Add a default option
+        flightList.add(0, "Select flight.."); 
     
         JComboBox<String> dropdown = new JComboBox<>(flightList.toArray(new String[0]));
         dropdown.setBounds(30, 80, 250, 25);
@@ -201,9 +195,7 @@ public class GuestGUI implements ActionListener {
 
                 int flightID = -99; //default value most likely not a flight ID
 
-                // Define the pattern for extracting the ID
                 Pattern pattern = Pattern.compile("ID: (\\d+)");
-
                 Matcher matcher = pattern.matcher(selectedFlightStr);
 
                 // Check if the pattern matches
@@ -225,7 +217,7 @@ public class GuestGUI implements ActionListener {
                 }
 
                 if (!selectedFlightStr.equals("Select flight..")) {
-                    frame.dispose(); // Close the current frame
+                    frame.dispose(); 
                     openBrowseSeatFrame(selectedFlight, guestID);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a valid flight.");
@@ -236,7 +228,6 @@ public class GuestGUI implements ActionListener {
     
         frame.setVisible(true);
     }
-    
 
     private void openBrowseSeatFrame(Flight selectedFlight, int guestID) {
         BrowseSeatFrame seatGUI = new BrowseSeatFrame(selectedFlight, guestID);

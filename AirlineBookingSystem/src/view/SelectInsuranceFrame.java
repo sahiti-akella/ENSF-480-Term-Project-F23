@@ -42,7 +42,6 @@ public class SelectInsuranceFrame {
                 this.customer = c;
             }
         }
-        
 
     }
 
@@ -94,7 +93,6 @@ public class SelectInsuranceFrame {
 
         if (selectedFlight != null) {
             Ticket ticket = new Ticket(-1, customer, selectedFlight, seat, hasInsurance, false);
-            // We need to pass in Ticket Object
             PaymentPageFrame paymentPageGUI = new PaymentPageFrame(ticket);
             paymentPageGUI.createUI();
         } else {
@@ -104,7 +102,6 @@ public class SelectInsuranceFrame {
 
     // helper to extract seatID
     private static int extractSeatNumber(String seatString) {
-        // Define the pattern for extracting the seat number
         Pattern pattern = Pattern.compile("Seat (\\d+)");
         Matcher matcher = pattern.matcher(seatString);
 
@@ -116,8 +113,6 @@ public class SelectInsuranceFrame {
             // Convert the string seat number to an integer
             return Integer.parseInt(seatNumberStr);
         }
-
-        // Return a default value or handle the case where no match is found
         return -1;
     }
     

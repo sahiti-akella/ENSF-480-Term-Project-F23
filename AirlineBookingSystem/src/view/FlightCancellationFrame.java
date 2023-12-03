@@ -15,9 +15,9 @@ import model.*;
 public class FlightCancellationFrame {
     private JFrame frame;
     private JPanel panel;
-    private int userID; // User ID for whom we want to display tickets
-    private JList<String> ticketListJL; // JList to display tickets
-    private DefaultListModel<String> listModel; // DefaultListModel to manage tickets
+    private int userID; 
+    private JList<String> ticketListJL; 
+    private DefaultListModel<String> listModel; 
 
     public FlightCancellationFrame(int userID) {
         this.userID = userID;
@@ -38,27 +38,23 @@ public class FlightCancellationFrame {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 15));
         panel.add(titleLabel);
 
-        // Initialize the DefaultListModel
-        listModel = new DefaultListModel<>();  // Initialize the listModel here
+        
+        listModel = new DefaultListModel<>();  
 
         // Retrieve and display the list of tickets for the user
         displayTickets();
 
-        // Create the JList
         ticketListJL = new JList<String>(listModel);
         ticketListJL.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(ticketListJL);
         scrollPane.setBounds(30, 60, 500, 400);
         panel.add(scrollPane);
 
-        
-
         JButton cancelSelectedButton = new JButton("Cancel Selected Ticket");
         cancelSelectedButton.setBounds(30, 500, 200, 40);
         cancelSelectedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle cancellation logic here
                 handleCancellation();
             }
         });
@@ -71,7 +67,6 @@ public class FlightCancellationFrame {
     private void displayTickets() {
         ArrayList<Ticket> ticketList = getTicketsForUser(userID);
 
-        // Clear the existing items from the model
          listModel.clear();
 
         for (Ticket ticket : ticketList) {
@@ -81,7 +76,6 @@ public class FlightCancellationFrame {
             String departureDate = ticket.getFlight().getDepartureDate(); 
             String seatType = ticket.getSeat().getSeatType(); 
             
-            
             String ticketInfo = "ID: " + ticketID + " | " + origin + " -> " + destination + " : " + departureDate + " | Seat Class: " + seatType;
 
             if(!ticket.isCancelled()){
@@ -90,7 +84,6 @@ public class FlightCancellationFrame {
             }
         }
     }
-
     
     private ArrayList<Ticket> getTicketsForUser(int userID) {
         FlightSystem sys = FlightSystem.getInstance();
@@ -109,15 +102,11 @@ public class FlightCancellationFrame {
 
     // Helper function to extract ticketID from String in format: "ID: XX | Origin -> Destination : Date"
     private static String extractTicketID(String ticketInfo) {
-        // Define a pattern for extracting the ID
         Pattern pattern = Pattern.compile("ID: (\\d+)");
-
-        // Create a matcher for the input string
         Matcher matcher = pattern.matcher(ticketInfo);
 
         // Check if the pattern is found
         if (matcher.find()) {
-            // Group 1 contains the matched ID
             return matcher.group(1);
         } else {
             // Return an empty string or handle the case when no match is found
@@ -158,6 +147,6 @@ public class FlightCancellationFrame {
         sys.synchronizeFlightSys();
 
         JOptionPane.showMessageDialog(null, "Ticket canceled successfully.");
-        frame.dispose(); // Close the current frame after cancellation
+        frame.dispose(); 
     }
 }
